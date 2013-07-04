@@ -3,4 +3,8 @@ pygraphviz
 django-extensions
 django-bootstrap-toolkit
 gunicorn
-grappelli
+
+## Themes
+#grappelli
+#bootstrap_admin
+django-admin-bootstrapped
