@@ -8,3 +8,7 @@ gunicorn
 #grappelli
 #bootstrap_admin
 django-admin-bootstrapped
+
+django-multiuploader
+
+pyhaml

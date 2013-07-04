@@ -1,0 +1,9 @@
+{% if latest_packages %}
+    <ul>
+    {% for package in latest_packages %}
+        <li><a href="{% url 'uploader:show' package.id %}">{{ package.file_path }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No packages deployed recently.</p>
+{% endif %}

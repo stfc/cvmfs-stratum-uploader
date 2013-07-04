@@ -4,20 +4,28 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('vwa13376', 'michael.knapik@stfc.ac.uk'),
 )
+TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
+                               "django.core.context_processors.debug",
+                               "django.core.context_processors.i18n",
+                               "django.core.context_processors.media",
+                               "django.core.context_processors.static",
+                               "django.core.context_processors.tz",
+                               "django.contrib.messages.context_processors.messages",
+                               'multiuploader.context_processors.booleans')
 
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'dev.sqlite3',                      # Or path to database file if using sqlite3.
+        'NAME': 'dev.sqlite3', # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'HOST': '', # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '', # Set to empty string for default.
     }
 }
 
@@ -69,9 +77,9 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    # Put strings here, like "/home/html/static" or "C:/www/django/static".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
+# Put strings here, like "/home/html/static" or "C:/www/django/static".
+# Always use forward slashes, even on Windows.
+# Don't forget to use absolute paths, not relative paths.
 )
 
 # List of finder classes that know how to find static files in
@@ -79,7 +87,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'django.contrib.staticfiles.finders.FileSystemFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -89,7 +97,7 @@ SECRET_KEY = 'apksigo!uh4gth@7nco7y2biavj=0fxd0b3@2!ax6*rb29fq=w'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    #     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -108,7 +116,8 @@ ROOT_URLCONF = 'archer.urls'
 WSGI_APPLICATION = 'archer.wsgi.application'
 
 import os
-TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '..', 'templates').replace('\\','/'),)
+
+TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '..', 'templates').replace('\\', '/'),)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
@@ -159,3 +168,79 @@ LOGGING = {
         },
     }
 }
+
+## Multiuploader configuration
+MULTIUPLOADER_FILES_FOLDER = 'uploads'
+MULTIUPLOADER_FILE_EXPIRATION_TIME = '3600'
+MULTIUPLOADER_FORMS_SETTINGS = {
+    'default': {
+        'FILE_TYPES': ["txt", "zip", "jpg", "jpeg", "flv", "png"],
+        'CONTENT_TYPES': [
+            'image/jpeg',
+            'image/png',
+            'application/msword',
+            'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'application/vnd.ms-excel',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'application/vnd.ms-powerpoint',
+            'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+            'application/vnd.oasis.opendocument.text',
+            'application/vnd.oasis.opendocument.spreadsheet',
+            'application/vnd.oasis.opendocument.presentation',
+            'text/plain',
+            'text/rtf',
+        ],
+        'MAX_FILE_SIZE': 10485760,
+        'MAX_FILE_NUMBER': 5,
+        'AUTO_UPLOAD': True,
+    },
+    'images': {
+        'FILE_TYPES': ['jpg', 'jpeg', 'png', 'gif', 'svg', 'bmp', 'tiff', 'ico'],
+        'CONTENT_TYPES': [
+            'image/gif',
+            'image/jpeg',
+            'image/pjpeg',
+            'image/png',
+            'image/svg+xml',
+            'image/tiff',
+            'image/vnd.microsoft.icon',
+            'image/vnd.wap.wbmp',
+        ],
+        'MAX_FILE_SIZE': 10485760,
+        'MAX_FILE_NUMBER': 5,
+        'AUTO_UPLOAD': True,
+    },
+    'video': {
+        'FILE_TYPES': ['flv', 'mpg', 'mpeg', 'mp4', 'avi', 'mkv', 'ogg', 'wmv', 'mov', 'webm'],
+        'CONTENT_TYPES': [
+            'video/mpeg',
+            'video/mp4',
+            'video/ogg',
+            'video/quicktime',
+            'video/webm',
+            'video/x-ms-wmv',
+            'video/x-flv',
+        ],
+        'MAX_FILE_SIZE': 10485760,
+        'MAX_FILE_NUMBER': 5,
+        'AUTO_UPLOAD': True,
+    },
+    'audio': {
+        'FILE_TYPES': ['mp3', 'mp4', 'ogg', 'wma', 'wax', 'wav', 'webm'],
+        'CONTENT_TYPES': [
+            'audio/basic',
+            'audio/L24',
+            'audio/mp4',
+            'audio/mpeg',
+            'audio/ogg',
+            'audio/vorbis',
+            'audio/x-ms-wma',
+            'audio/x-ms-wax',
+            'audio/vnd.rn-realaudio',
+            'audio/vnd.wave',
+            'audio/webm'
+        ],
+        'MAX_FILE_SIZE': 10485760,
+        'MAX_FILE_NUMBER': 5,
+        'AUTO_UPLOAD': True,
+    }}
