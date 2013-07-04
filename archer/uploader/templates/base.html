@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+{% load bootstrap_toolkit %}
+{% load staticfiles %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Archer Uploader</title>
+    <meta name="author" content="Michał Knapik">
+    {% bootstrap_stylesheet_tag %}
+    {% bootstrap_stylesheet_tag "responsive" %}
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+        }
+    </style>
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src='{% static 'js/jquery-2.0.3.min.js' %}'></script>
+    {% bootstrap_javascript_tag %}
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="/">uploader</a>
+            {% include "nav.html" %}
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    {% bootstrap_messages %}
+
+    {% block content %}Empty page{% endblock %}
+
+    <p>
+    <hr>
+    </p>
+
+    <footer class="row">
+        <div class="span6 offset6" style="text-align:right">
+            <p>
+                &copy; <a href="#">Michał Knapik</a> 2013
+            </p>
+        </div>
+    </footer>
+
+</div>
+<!-- container -->
+
+</body>
+</html>

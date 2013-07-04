@@ -30,8 +30,10 @@ class Package(models.Model):
     class Meta:
         unique_together = ('fs', 'file_path',)
 
+
 class Tarball(models.Model):
     from multiuploader.forms import MultiuploaderField
+
     name = models.CharField(max_length=2000, null=False, blank=False, unique=True)
     files = MultiuploaderField(required=False)
 

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load bootstrap_toolkit %}
+
+{% block content %}
+
+    <h1>Upload new package</h1>
+
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+    <form action="{% url 'uploader:upload2' %}" method="post" class='form' enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form layout="vertical" %}
+        <input type="file" name="myfile" />
+        <input type="submit" name="submit" value="Upload" />
+{#        <div class="form-actions">#}
+{#            <input type="submit" class="btn btn-primary" value="Upload">#}
+{#        </div>#}
+    </form>
+
+{% endblock %}

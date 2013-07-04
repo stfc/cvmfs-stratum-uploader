@@ -6,6 +6,8 @@ from django.template import loader
 from django.template.context import RequestContext
 from archer.uploader.models import Package
 
+from bootstrap_toolkit.widgets import BootstrapUneditableInput
+
 NUMBER_OF_PACKAGES = 5
 
 
@@ -25,12 +27,17 @@ def index(request):
 
 
 def show(request, package_id):
-    try:
-        package = Package.objects.get(id=package_id)
-    except Package.DoesNotExist:
-        raise Http404
-    return render(request, 'packages/detail.html', {'package': package})
-
-def show2(request, package_id):
     package = get_object_or_404(Package, id=package_id)
     return render(request, 'packages/detail.html', {'package': package})
+
+
+def upload(request):
+    return render(request, 'packages/upload.html')
+
+
+def upload2(request):
+    from pprint import pprint
+
+    pprint(request.FILES)
+    print request.FILES['myfile'] # this is my file
+    return HttpResponse('asdqwe')
