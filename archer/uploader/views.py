@@ -4,7 +4,7 @@ from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404
 from django.template import loader
 from django.template.context import RequestContext
-from uploader.models import Package
+from archer.uploader.models import Package
 
 NUMBER_OF_PACKAGES = 5
 

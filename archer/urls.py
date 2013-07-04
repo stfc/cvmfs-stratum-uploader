@@ -15,7 +15,7 @@ urlpatterns = patterns('',
 
                        # Uncomment the next line to enable the admin:
                        # url(r'^grappelli/', include('grappelli.urls')),
-                       url(r'^$', include('uploader.urls')),
-                       url(r'^uploader/', include('uploader.urls', namespace='uploader')),
+                       url(r'^$', include('archer.uploader.urls')),
+                       url(r'^uploader/', include('archer.uploader.urls', namespace='uploader')),
                        url(r'^admin/', include(admin.site.urls)),
 )

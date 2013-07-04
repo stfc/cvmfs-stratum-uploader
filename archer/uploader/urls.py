@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from uploader import views
+from archer.uploader import views
 
 urlpatterns = patterns('',
                        url(r'^$', views.index, name='index'),

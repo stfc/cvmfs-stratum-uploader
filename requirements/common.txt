@@ -1,0 +1,14 @@
+Django==1.5.1
+pygraphviz
+django-extensions
+django-bootstrap-toolkit
+gunicorn
+
+## Themes
+#grappelli
+#bootstrap_admin
+django-admin-bootstrapped
+
+django-multiuploader
+
+pyhaml

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from uploader.models import CvmFs, Package
+from archer.uploader.models import CvmFs, Package
 
 
 class PackageAdmin(admin.ModelAdmin):
