@@ -16,20 +16,18 @@ class CvmFs(models.Model):
     def __unicode__(self):
         return self.mount_point
 
-
 class Package(models.Model):
+    def get_upload_path(instance, filename):
+        import os
+        return os.path.join('uploads', ".%s" % instance.fs, filename)
     STATUSES = [(a, a) for a in ['new', 'uploading', 'uploaded', 'unpacking', 'unpacked', 'cancelled', 'error']]
     STATUSES_LENGTH = 10 # max(STATUSES, key=len)
     fs = models.ForeignKey(CvmFs)
-    file_path = models.FilePathField(path='/', allow_files=True, allow_folders=False, null=True)
-    file = models.FileField(upload_to='uploads/',)
+    file = models.FileField(upload_to=get_upload_path, )
     status = models.CharField(max_length=STATUSES_LENGTH, choices=STATUSES, blank=False, null=False)
 
     def __unicode__(self):
-        return 'Package[fs=' + str(self.fs) + ', file_path=' + self.file_path + ']'
-
-    class Meta:
-        unique_together = ('fs', 'file_path',)
+        return 'Package[fs=' + str(self.fs) + ', file=' + str(self.file) + ', status=' + str(self.status) + ']'
 
 
 class Tarball(models.Model):

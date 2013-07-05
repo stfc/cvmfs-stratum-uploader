@@ -1,6 +1,7 @@
 # Create your views here.
 from pprint import pprint
 from django.core.context_processors import csrf
+from django.core.urlresolvers import reverse
 
 from django.http import HttpResponse
 from django.http.response import HttpResponseRedirect
@@ -9,7 +10,7 @@ from django.template import loader
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_protect
 from archer.uploader.forms import UploadFileForm
-from archer.uploader.models import Package
+from archer.uploader.models import Package, CvmFs
 
 NUMBER_OF_PACKAGES = 5
 
@@ -25,7 +26,10 @@ def index2(request):
 
 def index(request):
     latest_packages = Package.objects.order_by('id')[:NUMBER_OF_PACKAGES]
-    context = {'latest_packages': latest_packages}
+    file_systems = CvmFs.objects.all()
+    package_sets = dict([(fs, [package for package in fs.package_set.all()]) for fs in file_systems])
+    pprint(package_sets)
+    context = {'latest_packages': latest_packages, 'package_sets': package_sets}
     return render(request, 'packages/index.html', context)
 
 
@@ -39,8 +43,13 @@ def upload(request):
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
             # handle files
-            pprint(request.FILES)
+            pprint(form)
+            package = form.save()
+            package.status = 'uploaded'
+            package.save()
             return HttpResponseRedirect('/')
     else:
         form = UploadFileForm()
-    return render_to_response('packages/upload.html',   {'form': form}, context_instance=RequestContext(request))
+    return render_to_response('packages/upload.html',
+                              {'form': form},
+                              context_instance=RequestContext(request))

@@ -3,17 +3,70 @@
 {% load bootstrap_toolkit %}
 
 {% block content %}
+    <div class='row'>
+        {% if package_sets %}
+            <div class='span6'>
+                {% for fs, packages in package_sets.items %}
+                    <li>{{ fs }}
+                        <ul>
+                            {% for package in packages %}
+                                <li>
+                                    {% if package.status == 'new' %}
 
-    {% if latest_packages %}
-        <ul>
-            {% for package in latest_packages %}
-                <li><a href="{% url 'uploader:show' package.id %}">{{ package.file_path }}</a></li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No packages deployed recently.</p>
-    {% endif %}
+                                    {% elif package.status == 'uploading' %}
+                                        <span class='btn btn-mini btn-primary'>
+                                            <i class='icon-upload'></i>
+                                            uploading
+                                        </span>
+                                    {% elif package.status == 'uploaded' %}
+                                        <span class='btn btn-mini btn-info'>
+                                            <i class='icon-info-sign'></i>
+                                            uploaded
+                                        </span>
+                                    {% elif package.status == 'unpacking' %}
+                                        <span class='btn btn-mini btn-primary'>
+                                            <i class='icon-archive'></i>
+                                            unpacking
+                                        </span>
+                                    {% elif package.status == 'unpacked' %}
+                                        <span class='btn btn-mini btn-success'>
+                                            <i class='icon-ok'></i>
+                                            unpacked
+                                        </span>
+                                    {% elif package.status == 'cancelled' %}
+                                        <span class='btn btn-mini btn-warning'>
+                                            <i class='icon-warning-sign'></i>
+                                            cancelled
+                                        </span>
+                                    {% elif package.status == 'error' %}
+                                        <span class="btn btn-mini btn-danger">
+                                            <i class='icon-trash'></i>
+                                            error
+                                        </span>
+                                    {% else %}
+                                        {{ package.status }}
+                                    {% endif %}
+                                    {{ package.file }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </div>
+        {% endif %}
 
-    <a href="{% url 'uploader:upload' %}">Upload</a>
+        {% if latest_packages %}
+            <div class='offset2 span4'>
+                <ul>
+                    {% for package in latest_packages %}
+                        <li><a href="{% url 'uploader:show' package.id %}">{{ package.file }}</a></li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>No packages deployed recently.</p>
+            </div>
+        {% endif %}
 
+    </div>
+    <a href='{% url 'uploader:upload' %}'>Upload</a>
 {% endblock %}
