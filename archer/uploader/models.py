@@ -22,6 +22,7 @@ class Package(models.Model):
     STATUSES_LENGTH = 10 # max(STATUSES, key=len)
     fs = models.ForeignKey(CvmFs)
     file_path = models.FilePathField(path='/', allow_files=True, allow_folders=False, null=True)
+    file = models.FileField(upload_to='uploads/',)
     status = models.CharField(max_length=STATUSES_LENGTH, choices=STATUSES, blank=False, null=False)
 
     def __unicode__(self):

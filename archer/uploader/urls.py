@@ -5,7 +5,6 @@ from archer.uploader import views
 urlpatterns = patterns('',
                        url(r'^$', views.index, name='index'),
                        url(r'^upload$', views.upload, name='upload'),
-                       url(r'^upload2$', views.upload2, name='upload2'),
                        # ex: /packages/5/
                        url(r'^(?P<package_id>\d+)/$', views.show, name='show'),
                        # # ex: /packages/5/results/

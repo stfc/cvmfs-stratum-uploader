@@ -1,12 +1,15 @@
 # Create your views here.
+from pprint import pprint
+from django.core.context_processors import csrf
 
-from django.http import HttpResponse, Http404
-from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse
+from django.http.response import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404, render_to_response
 from django.template import loader
 from django.template.context import RequestContext
+from django.views.decorators.csrf import csrf_protect
+from archer.uploader.forms import UploadFileForm
 from archer.uploader.models import Package
-
-from bootstrap_toolkit.widgets import BootstrapUneditableInput
 
 NUMBER_OF_PACKAGES = 5
 
@@ -32,12 +35,12 @@ def show(request, package_id):
 
 
 def upload(request):
-    return render(request, 'packages/upload.html')
-
-
-def upload2(request):
-    from pprint import pprint
-
-    pprint(request.FILES)
-    print request.FILES['myfile'] # this is my file
-    return HttpResponse('asdqwe')
+    if request.method == 'POST':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            # handle files
+            pprint(request.FILES)
+            return HttpResponseRedirect('/')
+    else:
+        form = UploadFileForm()
+    return render_to_response('packages/upload.html',   {'form': form}, context_instance=RequestContext(request))
