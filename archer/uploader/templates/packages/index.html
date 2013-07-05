@@ -13,40 +13,37 @@
                                 <li>
                                     {% if package.status == 'new' %}
 
-                                    {% elif package.status == 'uploading' %}
-                                        <span class='btn btn-mini btn-primary'>
-                                            <i class='icon-upload'></i>
-                                            uploading
-                                        </span>
                                     {% elif package.status == 'uploaded' %}
                                         <span class='btn btn-mini btn-info'>
-                                            <i class='icon-info-sign'></i>
+                                            <i class='icon-upload'></i>
                                             uploaded
                                         </span>
                                     {% elif package.status == 'unpacking' %}
                                         <span class='btn btn-mini btn-primary'>
-                                            <i class='icon-archive'></i>
+                                            <i class='icon-refresh'></i>
                                             unpacking
                                         </span>
-                                    {% elif package.status == 'unpacked' %}
+                                    {% elif package.status == 'deployed' %}
                                         <span class='btn btn-mini btn-success'>
                                             <i class='icon-ok'></i>
-                                            unpacked
+                                            deployed
                                         </span>
                                     {% elif package.status == 'cancelled' %}
                                         <span class='btn btn-mini btn-warning'>
                                             <i class='icon-warning-sign'></i>
                                             cancelled
                                         </span>
-                                    {% elif package.status == 'error' %}
+                                    {% elif package.status == 'deleted' %}
                                         <span class="btn btn-mini btn-danger">
                                             <i class='icon-trash'></i>
-                                            error
+                                            deleted
                                         </span>
                                     {% else %}
                                         {{ package.status }}
                                     {% endif %}
-                                    {{ package.file }}
+                                    <a href='{% url 'uploader:show' package.id %}'>
+                                        {{ package.file }}
+                                    </a>
                                 </li>
                             {% endfor %}
                         </ul>

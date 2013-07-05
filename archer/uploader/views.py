@@ -25,9 +25,9 @@ def index2(request):
 
 
 def index(request):
-    latest_packages = Package.objects.order_by('id')[:NUMBER_OF_PACKAGES]
+    latest_packages = Package.objects.order_by('-id')[:NUMBER_OF_PACKAGES]
     file_systems = CvmFs.objects.all()
-    package_sets = dict([(fs, [package for package in fs.package_set.all()]) for fs in file_systems])
+    package_sets = dict([(fs, [package for package in fs.package_set.order_by('-id')]) for fs in file_systems])
     pprint(package_sets)
     context = {'latest_packages': latest_packages, 'package_sets': package_sets}
     return render(request, 'packages/index.html', context)

@@ -20,7 +20,7 @@ class Package(models.Model):
     def get_upload_path(instance, filename):
         import os
         return os.path.join('uploads', ".%s" % instance.fs, filename)
-    STATUSES = [(a, a) for a in ['new', 'uploading', 'uploaded', 'unpacking', 'unpacked', 'cancelled', 'error']]
+    STATUSES = [(a, a) for a in ['new', 'uploaded', 'unpacking', 'deployed', 'cancelled', 'deleted']]
     STATUSES_LENGTH = 10 # max(STATUSES, key=len)
     fs = models.ForeignKey(CvmFs)
     file = models.FileField(upload_to=get_upload_path, )
