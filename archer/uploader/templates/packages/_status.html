@@ -12,11 +12,14 @@
 {% elif status == 'cancelled' %}
     <span class='btn btn-mini btn-warning'>
     <i class='icon-warning-sign'></i>
+{% elif status == 'undeployed' %}
+    <span class='btn btn-mini btn-warning'>
+    <i class='icon-trash'></i>
 {% elif status == 'deleted' %}
     <span class="btn btn-mini btn-danger">
     <i class='icon-trash'></i>
 {% else %}
     <span>
 {% endif %}
-        {{ package.status }}
-    </span>
+    {{ status }}
+</span>

@@ -11,7 +11,7 @@
                         <ul>
                             {% for package in packages %}
                                 <li>
-                                    {% include 'packages/_status.html' with status=package.status %}
+                                    {% include 'packages/_status.html' with status=package.status_name %}
                                     <a href='{% url 'uploader:show' package.id %}'>
                                         {{ package.file }}
                                     </a>

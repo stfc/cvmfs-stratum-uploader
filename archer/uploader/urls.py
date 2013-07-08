@@ -7,6 +7,8 @@ urlpatterns = patterns('',
                        url(r'^upload$', views.upload, name='upload'),
                        # ex: /packages/5/
                        url(r'^(?P<package_id>\d+)/$', views.show, name='show'),
+                       url(r'^(?P<package_id>\d+)/deploy$', views.deploy, name='deploy'),
+                       url(r'^(?P<package_id>\d+)/remove$', views.remove, name='remove'),
                        # # ex: /packages/5/results/
                        # url(r'^(?P<poll_id>\d+)/results/$', views.results, name='results'),
                        # # ex: /packages/5/vote/

@@ -1,7 +1,9 @@
 # Create your views here.
 from pprint import pprint
+from django.contrib import messages
 from django.core.context_processors import csrf
 from django.core.urlresolvers import reverse
+from django.db.models import F
 
 from django.http import HttpResponse
 from django.http.response import HttpResponseRedirect
@@ -10,7 +12,7 @@ from django.template import loader
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_protect
 from archer.uploader.forms import UploadFileForm
-from archer.uploader.models import Package, FileSystem
+from archer.uploader.models import Package, FileSystem, Project
 
 NUMBER_OF_PACKAGES = 5
 
@@ -37,7 +39,47 @@ def index(request):
 
 def show(request, package_id):
     package = get_object_or_404(Package, id=package_id)
-    return render(request, 'packages/detail.html', {'package': package})
+
+    return render(request, 'packages/show.html', {'package': package})
+
+def deploy(request, package_id):
+    package = get_object_or_404(Package, id=package_id)
+
+    if not package.can_deploy():
+        messages.add_message(request, messages.ERROR, 'Cannot deploy a package!')
+        return render(request, 'packages/show.html', {'package': package})
+    else:
+        for p in Package.objects.filter(status=Package.Status.deployed):
+            p.status = Package.Status.undeployed
+            p.save()
+        try:
+            result = package.deploy()
+            if result:
+                messages.add_message(request, messages.INFO, 'Package deployed!')
+            else:
+                messages.add_message(request, messages.ERROR, 'Error during deployment of the package.')
+        except IOError as e:
+            messages.add_message(request, messages.ERROR, 'Error during deployment of the package: ' + e.message)
+
+        return render(request, 'packages/show.html', {'package': package})
+
+def remove(request, package_id):
+    package = get_object_or_404(Package, id=package_id)
+
+    if package.can_remove():
+        if package.status == Package.Status.deployed:
+            Package.clear_dir(package.project.full_path())
+        try:
+            if package.remove():
+                messages.add_message(request, messages.INFO, 'Package file successfully deleted!')
+            else:
+                messages.add_message(request, messages.WARNING, 'Package file was already deleted from the file system. Mark as deleted.')
+        except IOError as e:
+            messages.add_message(request, messages.ERROR, e.message)
+    else:
+        messages.add_message(request, messages.ERROR, 'Cannot delete package file!')
+    return render(request, 'packages/show.html', {'package': package})
+
 
 
 def upload(request):
@@ -46,8 +88,8 @@ def upload(request):
         if form.is_valid():
             # handle files
             pprint(form)
-            package = form.save()
-            package.status = 'uploaded'
+            package = form.save(commit=False)
+            package.status = Package.Status.uploaded
             package.save()
             return HttpResponseRedirect('/')
     else:
@@ -55,3 +97,5 @@ def upload(request):
     return render_to_response('packages/upload.html',
                               {'form': form},
                               context_instance=RequestContext(request))
+
+

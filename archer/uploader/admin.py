@@ -8,7 +8,7 @@ class PackageAdmin(admin.ModelAdmin):
     #     ('Example Set of Fields', {'fields': ['project', 'status']}) # 'classes': ['collapse']
     # ]
     # list_display = ('project', 'file_path', 'status')
-    list_filter = ('project', 'file', 'status', 'created_at', 'updated_at')
+    list_display = ('project', 'file', 'status', 'created_at', 'updated_at')
 
 
 class ProjectAdmin(admin.ModelAdmin):

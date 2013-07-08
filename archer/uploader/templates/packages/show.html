@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load bootstrap_toolkit %}
+
+{% block content %}
+
+    <h1>{{ package.file }}</h1>
+    <ul>
+        <li>{{ package.file }}</li>
+        <li>{% include 'packages/_status.html' with status=package.status_name %}</li>
+        <li>{{ package.project }}</li>
+    </ul>
+    {% if package.can_remove %}
+        <a href="{% url 'uploader:remove' package.id %}">Remove</a>
+    {% endif %}
+    {% if package.can_deploy %}
+        <a href="{% url 'uploader:deploy' package.id %}">Deploy</a>
+    {% endif %}
+    <a href="{% url 'uploader:index' %}">Back</a>
+
+{% endblock %}
