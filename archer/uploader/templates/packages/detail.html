@@ -7,8 +7,8 @@
     <h1>{{ package.file }}</h1>
     <ul>
         <li>{{ package.file }}</li>
-        <li>{{ package.status }}</li>
-        <li>{{ package.fs }}</li>
+        <li>{% include 'packages/_status.html' with status=package.status %}</li>
+        <li>{{ package.project }}</li>
     </ul>
     <a href="{% url 'uploader:index' %}">Back</a>
 

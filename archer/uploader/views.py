@@ -10,7 +10,7 @@ from django.template import loader
 from django.template.context import RequestContext
 from django.views.decorators.csrf import csrf_protect
 from archer.uploader.forms import UploadFileForm
-from archer.uploader.models import Package, CvmFs
+from archer.uploader.models import Package, FileSystem
 
 NUMBER_OF_PACKAGES = 5
 
@@ -26,8 +26,10 @@ def index2(request):
 
 def index(request):
     latest_packages = Package.objects.order_by('-id')[:NUMBER_OF_PACKAGES]
-    file_systems = CvmFs.objects.all()
-    package_sets = dict([(fs, [package for package in fs.package_set.order_by('-id')]) for fs in file_systems])
+    file_systems = FileSystem.objects.all()
+    package_sets = dict(
+        [(project, [package for package in project.package_set.order_by('-id')]) for file_system in file_systems for project in file_system.project_set.order_by('-id')]
+    )
     pprint(package_sets)
     context = {'latest_packages': latest_packages, 'package_sets': package_sets}
     return render(request, 'packages/index.html', context)

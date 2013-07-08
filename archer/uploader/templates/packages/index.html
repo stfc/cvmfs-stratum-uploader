@@ -6,41 +6,12 @@
     <div class='row'>
         {% if package_sets %}
             <div class='span6'>
-                {% for fs, packages in package_sets.items %}
-                    <li>{{ fs }}
+                {% for project, packages in package_sets.items %}
+                    <li>{{ project }}
                         <ul>
                             {% for package in packages %}
                                 <li>
-                                    {% if package.status == 'new' %}
-
-                                    {% elif package.status == 'uploaded' %}
-                                        <span class='btn btn-mini btn-info'>
-                                            <i class='icon-upload'></i>
-                                            uploaded
-                                        </span>
-                                    {% elif package.status == 'unpacking' %}
-                                        <span class='btn btn-mini btn-primary'>
-                                            <i class='icon-refresh'></i>
-                                            unpacking
-                                        </span>
-                                    {% elif package.status == 'deployed' %}
-                                        <span class='btn btn-mini btn-success'>
-                                            <i class='icon-ok'></i>
-                                            deployed
-                                        </span>
-                                    {% elif package.status == 'cancelled' %}
-                                        <span class='btn btn-mini btn-warning'>
-                                            <i class='icon-warning-sign'></i>
-                                            cancelled
-                                        </span>
-                                    {% elif package.status == 'deleted' %}
-                                        <span class="btn btn-mini btn-danger">
-                                            <i class='icon-trash'></i>
-                                            deleted
-                                        </span>
-                                    {% else %}
-                                        {{ package.status }}
-                                    {% endif %}
+                                    {% include 'packages/_status.html' with status=package.status %}
                                     <a href='{% url 'uploader:show' package.id %}'>
                                         {{ package.file }}
                                     </a>

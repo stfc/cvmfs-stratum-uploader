@@ -5,7 +5,7 @@ from archer.uploader.widgets import BootstrapFileInput
 class UploadFileForm(forms.ModelForm):
     class Meta:
         model = Package
-        fields = ['fs', 'file']
+        fields = ['project', 'file']
         widgets = {
             'file': BootstrapFileInput(),
         }
