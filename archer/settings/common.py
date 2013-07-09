@@ -165,3 +165,5 @@ LOGGING = {
         },
     }
 }
+
+LOGIN_URL = 'unauthenticated'

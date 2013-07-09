@@ -12,7 +12,7 @@ class PackageAdmin(admin.ModelAdmin):
 
 
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('file_system', 'directory', 'user')
+    list_display = ('file_system', 'directory', 'group')
 
 
 admin.site.register(FileSystem)

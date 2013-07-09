@@ -2,6 +2,7 @@ from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+from archer.uploader import views
 
 admin.autodiscover()
 
@@ -18,4 +19,5 @@ urlpatterns = patterns('',
                        url(r'^$', include('archer.uploader.urls'), name='index'),
                        url(r'^uploader/', include('archer.uploader.urls', namespace='uploader')),
                        url(r'^admin/', include(admin.site.urls)),
+                       url(r'^unauthenticated$', views.unauthenticated, name='unauthenticated')
 )

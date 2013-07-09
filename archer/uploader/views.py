@@ -1,6 +1,7 @@
 # Create your views here.
 from pprint import pprint
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.context_processors import csrf
 from django.core.urlresolvers import reverse
 from django.db.models import F
@@ -17,6 +18,11 @@ from archer.uploader.models import Package, FileSystem, Project
 NUMBER_OF_PACKAGES = 5
 
 
+def unauthenticated(request):
+    return render(request, 'unauthenticated.html')
+
+
+@login_required
 def index2(request):
     latest_packages = Package.objects.order_by('id')[:NUMBER_OF_PACKAGES]
     template = loader.get_template('packages/index.html')
@@ -26,22 +32,27 @@ def index2(request):
     return HttpResponse(template.render(context))
 
 
+@login_required
 def index(request):
     latest_packages = Package.objects.order_by('-id')[:NUMBER_OF_PACKAGES]
     file_systems = FileSystem.objects.all()
     package_sets = dict(
-        [(project, [package for package in project.package_set.order_by('-id')]) for file_system in file_systems for project in file_system.project_set.order_by('-id')]
+        [(project, [package for package in project.package_set.order_by('-id')]) for file_system in file_systems for
+         project in file_system.project_set.order_by('-id')]
     )
     pprint(package_sets)
     context = {'latest_packages': latest_packages, 'package_sets': package_sets}
     return render(request, 'packages/index.html', context)
 
 
+@login_required
 def show(request, package_id):
     package = get_object_or_404(Package, id=package_id)
 
     return render(request, 'packages/show.html', {'package': package})
 
+
+@login_required
 def deploy(request, package_id):
     package = get_object_or_404(Package, id=package_id)
 
@@ -63,6 +74,8 @@ def deploy(request, package_id):
 
         return render(request, 'packages/show.html', {'package': package})
 
+
+@login_required
 def remove(request, package_id):
     package = get_object_or_404(Package, id=package_id)
 
@@ -73,7 +86,8 @@ def remove(request, package_id):
             if package.remove():
                 messages.add_message(request, messages.INFO, 'Package file successfully deleted!')
             else:
-                messages.add_message(request, messages.WARNING, 'Package file was already deleted from the file system. Mark as deleted.')
+                messages.add_message(request, messages.WARNING,
+                                     'Package file was already deleted from the file system. Mark as deleted.')
         except IOError as e:
             messages.add_message(request, messages.ERROR, e.message)
     else:
@@ -81,7 +95,7 @@ def remove(request, package_id):
     return render(request, 'packages/show.html', {'package': package})
 
 
-
+@login_required
 def upload(request):
     if request.method == 'POST':
         form = UploadFileForm(request.POST, request.FILES)
