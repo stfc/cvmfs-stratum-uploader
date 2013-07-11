@@ -1,4 +1,5 @@
 # Django settings for archer project.
+from django.conf.global_settings import AUTHENTICATION_BACKENDS
 
 ADMINS = (
     ('vwa13376', 'michael.knapik@stfc.ac.uk'),
@@ -135,6 +136,7 @@ INSTALLED_APPS = (
     'gunicorn',
     'django_extensions',
     'bootstrap_toolkit',
+    'guardian',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -166,4 +168,12 @@ LOGGING = {
     }
 }
 
+# Authentication
 LOGIN_URL = 'unauthenticated'
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'guardian.backends.ObjectPermissionBackend',
+)
+
+ANONYMOUS_USER_ID = -1

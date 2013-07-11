@@ -11,4 +11,4 @@ django-admin-bootstrapped
 
 django-multiuploader
 
-pyhaml
+django-guardian
