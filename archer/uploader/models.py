@@ -34,7 +34,7 @@ class Package(models.Model):
         return os.path.join(settings.MEDIA_ROOT, ".%s" % instance.project, filename).replace('/./', '/')
 
     class Status:
-        new, uploaded, unpacking, deployed, cancelled, deleted, undeployed = range(7)
+        new, uploaded, unpacking, deployed, cancelled, deleted, undeployed, error = range(8)
 
     __STATUSES = dict((value, name) for name, value in vars(Status).items() if not name.startswith('__'))
 
@@ -78,9 +78,11 @@ class Package(models.Model):
                 raise IOError('package file ' + self.file.path + ' does not exist')
             self.status = Package.Status.unpacking
             self.save()
-            Package.clear_dir(self.project.full_path())
             if not tarfile.is_tarfile(self.file.path):
+                self.status = Package.Status.error
+                self.save()
                 raise IOError('package file ' + self.file.path + ' is not tarball file')
+            Package.clear_dir(self.project.full_path())
             path = self.file.path
             tar = tarfile.open(path)
             # tar.list()
