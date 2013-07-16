@@ -11,3 +11,4 @@ django-admin-bootstrapped
 django-multiuploader
 
 django-guardian
+psycopg2

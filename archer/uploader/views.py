@@ -1,20 +1,17 @@
 # Create your views here.
-from pprint import pprint
+import os
+from pprint import pprint, pformat
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.core.context_processors import csrf
-from django.core.urlresolvers import reverse
-from django.db.models import F
 
 from django.http import HttpResponse
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, render_to_response
 from django.template import loader
 from django.template.context import RequestContext
-from django.views.decorators.csrf import csrf_protect
 from django.views.generic import View
 from archer.uploader.forms import UploadFileForm
-from archer.uploader.models import Package, FileSystem, Project
+from archer.uploader.models import Package, FileSystem
 
 NUMBER_OF_PACKAGES = 5
 
@@ -35,6 +32,13 @@ def index2(request):
 
 @login_required
 def index(request):
+    certs = pformat(dict(os.environ.items()))
+    certs += "\n"
+    certs += pformat(dict(request.META))
+    certs += "\n"
+    certs += pformat(request.user.__dict__)
+    certs += "\n"
+    certs += pformat(request.user)
     latest_packages = Package.objects.order_by('-id')[:NUMBER_OF_PACKAGES]
     file_systems = FileSystem.objects.all()
     package_sets = dict(
@@ -42,7 +46,7 @@ def index(request):
          project in file_system.project_set.order_by('-id')]
     )
     pprint(package_sets)
-    context = {'latest_packages': latest_packages, 'package_sets': package_sets}
+    context = {'latest_packages': latest_packages, 'package_sets': package_sets, 'certs': certs}
     return render(request, 'packages/index.html', context)
 
 

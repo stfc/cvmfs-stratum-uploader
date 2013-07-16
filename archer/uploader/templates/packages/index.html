@@ -2,6 +2,7 @@
 
 {% load bootstrap_toolkit %}
 
+
 {% block content %}
     <div class='row'>
         {% if package_sets %}
@@ -22,7 +23,9 @@
                 {% endfor %}
             </div>
         {% endif %}
-
+        <pre>
+            {{ certs }}
+        </pre>
         {% if latest_packages %}
             <div class='offset2 span4'>
                 <ul>
