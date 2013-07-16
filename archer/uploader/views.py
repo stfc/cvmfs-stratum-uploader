@@ -1,4 +1,5 @@
 # Create your views here.
+from archer.uploader.decorators import class_view_decorator
 import os
 from pprint import pprint, pformat
 from django.contrib import messages
@@ -100,6 +101,7 @@ def remove(request, package_id):
     return render(request, 'packages/show.html', {'package': package})
 
 
+@class_view_decorator(login_required)
 class UploadView(View):
     def get(self, request):
         form = UploadFileForm()
