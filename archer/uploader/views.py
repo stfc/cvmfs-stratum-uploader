@@ -31,7 +31,7 @@ def index2(request):
     return HttpResponse(template.render(context))
 
 
-@login_required
+# @login_required
 def index(request):
     certs = pformat(dict(os.environ.items()))
     certs += "\n"

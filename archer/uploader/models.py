@@ -57,7 +57,6 @@ class Package(models.Model):
     def can_deploy(self):
         return self.status in [Package.Status.uploaded, Package.Status.undeployed, Package.Status.cancelled]
 
-
     @staticmethod
     def clear_dir(dir):
         try:
@@ -102,7 +101,6 @@ class Package(models.Model):
         self.status = Package.Status.deleted
         self.save()
         return result
-
 
     def __unicode__(self):
         return 'Package[project=' + str(self.project) + ', file=' + str(self.file) + ', status=' + Package.__STATUSES[

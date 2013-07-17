@@ -2,7 +2,6 @@ from django.conf import LazySettings
 from django.forms import FileInput, forms
 from django.utils.safestring import mark_safe
 
-
 settings = LazySettings()
 
 
