@@ -140,6 +140,8 @@ INSTALLED_APPS = (
     'django_extensions',
     'bootstrap_toolkit',
     'guardian',
+    'south',
+    'longerusername',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -181,3 +183,5 @@ AUTHENTICATION_BACKENDS = (
 )
 
 ANONYMOUS_USER_ID = -1
+
+MAX_USERNAME_LENGTH = 100
