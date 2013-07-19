@@ -15,7 +15,6 @@ class PackageAdmin(GuardedModelAdmin):
 class ProjectAdmin(GuardedModelAdmin):
     list_display = ('file_system', 'directory', 'group')
 
-
 admin.site.register(FileSystem)
 admin.site.register(Project, admin_class=ProjectAdmin)
 admin.site.register(Package, admin_class=PackageAdmin)

@@ -1,8 +1,7 @@
-import os
-from pprint import pprint
 import shutil
+import os
 from django.conf import settings
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import Group
 from django.db import models
 
 

@@ -12,5 +12,4 @@ django-multiuploader
 
 django-guardian
 psycopg2
-longerusername
 south
