@@ -1,7 +1,6 @@
 import shutil
 import os
 from django.conf import settings
-from django.contrib.auth.models import Group
 from django.db import models
 
 
@@ -15,7 +14,6 @@ class FileSystem(models.Model):
 class Project(models.Model):
     file_system = models.ForeignKey(FileSystem)
     directory = models.CharField(max_length=200, null=False, blank=False)
-    group = models.ForeignKey(Group, null=True, blank=True, unique=True)
 
     class Meta:
         unique_together = ('file_system', 'directory')

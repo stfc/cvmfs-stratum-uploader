@@ -1,5 +1,4 @@
 # Django settings for archer project.
-from django.conf.global_settings import AUTHENTICATION_BACKENDS
 
 import os
 
@@ -187,3 +186,7 @@ AUTHENTICATION_BACKENDS = (
 AUTH_USER_MODEL = 'custom_auth.User'
 
 ANONYMOUS_USER_ID = -1
+
+FIXTURE_DIRS = (
+    os.path.join(PROJECT_ROOT, 'fixtures/')
+)

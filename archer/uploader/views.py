@@ -12,7 +12,7 @@ from django.template import loader
 from django.template.context import RequestContext
 from django.views.generic import View
 from archer.uploader.forms import UploadFileForm
-from archer.uploader.models import Package, FileSystem
+from archer.uploader.models import Package, FileSystem, Project
 
 NUMBER_OF_PACKAGES = 5
 
@@ -46,7 +46,6 @@ def index(request):
         [(project, [package for package in project.package_set.order_by('-id')]) for file_system in file_systems for
          project in file_system.project_set.order_by('-id')]
     )
-    pprint(package_sets)
     context = {'latest_packages': latest_packages, 'package_sets': package_sets, 'certs': certs}
     return render(request, 'packages/index.html', context)
 

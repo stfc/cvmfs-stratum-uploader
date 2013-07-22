@@ -13,8 +13,13 @@ class PackageAdmin(GuardedModelAdmin):
 
 
 class ProjectAdmin(GuardedModelAdmin):
-    list_display = ('file_system', 'directory', 'group')
+    list_display = ('file_system', 'directory')
 
-admin.site.register(FileSystem)
+
+class FileSystemAdmin(GuardedModelAdmin):
+    pass
+
+
+admin.site.register(FileSystem, admin_class=FileSystemAdmin)
 admin.site.register(Project, admin_class=ProjectAdmin)
 admin.site.register(Package, admin_class=PackageAdmin)
