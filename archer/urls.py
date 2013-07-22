@@ -9,15 +9,14 @@ admin.autodiscover()
 urlpatterns = patterns('',
                        # Examples:
                        # url(r'^$', 'archer.views.home', name='home'),
-                       # url(r'^archer/', include('archer.foo.urls')),
 
                        # Uncomment the admin/doc line below to enable admin documentation:
                        # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
-                       # Uncomment the next line to enable the admin:
                        # url(r'^grappelli/', include('grappelli.urls')),
                        url(r'^$', include('archer.uploader.urls'), name='index'),
                        url(r'^uploader/', include('archer.uploader.urls', namespace='uploader')),
+                       # Uncomment the next line to enable the admin:
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^unauthenticated$', views.unauthenticated, name='unauthenticated')
 )

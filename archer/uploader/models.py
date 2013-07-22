@@ -25,7 +25,6 @@ class Project(models.Model):
 
     def __unicode__(self):
         return self.full_path()
-        # return os.path.join(str(self.file_system), str(self.directory))
 
 
 class Package(models.Model):

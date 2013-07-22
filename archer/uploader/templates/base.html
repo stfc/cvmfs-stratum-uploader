@@ -6,6 +6,7 @@
     <meta charset="utf-8">
     <title>Archer Uploader</title>
     <meta name="author" content="Michał Knapik">
+    <link rel='stylesheet' href='{% static 'jasny/css/bootstrap-fileupload.min.css' %}'>
     {% bootstrap_stylesheet_tag %}
     {% bootstrap_stylesheet_tag "responsive" %}
     <style type="text/css">
@@ -17,6 +18,7 @@
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <script src='{% static 'js/jquery-2.0.3.min.js' %}'></script>
+    <script src='{% static 'jasny/js/bootstrap-fileupload.min.js' %}'></script>
     {% bootstrap_javascript_tag %}
     {% block extra_head %}{% endblock %}
 </head>

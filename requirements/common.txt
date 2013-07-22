@@ -4,9 +4,8 @@ django-extensions
 gunicorn
 
 ## Themes
-#grappelli
-#bootstrap_admin
-django-admin-bootstrapped
+#django-grappelli
+#django-admin-bootstrapped
 
 django-multiuploader
 
