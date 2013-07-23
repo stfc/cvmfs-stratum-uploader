@@ -1,15 +1,13 @@
 import os
 from pprint import pprint, pformat
+from django.core.urlresolvers import reverse
 
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.http.response import HttpResponseRedirect
-from django.shortcuts import render, get_object_or_404, render_to_response
+from django.shortcuts import render, render_to_response
 from guardian.decorators import permission_required_or_403
 from django.template.context import RequestContext
 from django.views.generic import View
 from guardian.shortcuts import get_objects_for_user
-from django.core.exceptions import PermissionDenied
 
 from archer.core.decorators import class_view_decorator
 from archer.projects.forms import UploadFileForm
@@ -62,7 +60,7 @@ class UploadView(View):
             package.save()
             assign_perm('packages.deploy_package', request.user, package)
             assign_perm('packages.remove_package', request.user, package)
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse('projects:show', args=[project_id]))
         return render_to_response('projects/upload.html',
                                   {'form': form, 'project_id': project_id},
                                   context_instance=RequestContext(request))
