@@ -1,0 +1,63 @@
+[
+{
+  "pk": 1, 
+  "model": "projects.filesystem", 
+  "fields": {
+    "mount_point": "/cvmfs/fs0"
+  }
+},
+{
+  "pk": 2, 
+  "model": "projects.filesystem", 
+  "fields": {
+    "mount_point": "/cvmfs/fs1"
+  }
+},
+{
+  "pk": 3, 
+  "model": "projects.filesystem", 
+  "fields": {
+    "mount_point": "/cvmfs/fs2"
+  }
+},
+{
+  "pk": 1, 
+  "model": "projects.project", 
+  "fields": {
+    "directory": "proj1", 
+    "file_system": 1
+  }
+},
+{
+  "pk": 2, 
+  "model": "projects.project", 
+  "fields": {
+    "directory": "proj2", 
+    "file_system": 1
+  }
+},
+{
+  "pk": 3, 
+  "model": "projects.project", 
+  "fields": {
+    "directory": "proj1", 
+    "file_system": 3
+  }
+},
+{
+  "pk": 4, 
+  "model": "projects.project", 
+  "fields": {
+    "directory": "proj1", 
+    "file_system": 2
+  }
+},
+{
+  "pk": 5, 
+  "model": "projects.project", 
+  "fields": {
+    "directory": "proj3", 
+    "file_system": 1
+  }
+}
+]
