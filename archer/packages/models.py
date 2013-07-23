@@ -16,7 +16,7 @@ class Package(models.Model):
     __STATUSES = dict((value, name) for name, value in vars(Status).items() if not name.startswith('__'))
 
     project = models.ForeignKey(Project)
-    file = models.FileField(upload_to=__get_upload_path)
+    file = models.FileField(upload_to=__get_upload_path, max_length=1024)
     status = models.IntegerField(
         choices=__STATUSES.items(),
         blank=False,
