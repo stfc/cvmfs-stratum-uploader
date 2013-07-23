@@ -82,7 +82,9 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.join(PROJECT_ROOT, 'archer/uploader/static/'),
+    os.path.join(PROJECT_ROOT, 'archer/projects/static/'),
+    os.path.join(PROJECT_ROOT, 'archer/packages/static/'),
+    os.path.join(PROJECT_ROOT, 'archer/core/static/'),
 )
 
 # List of finder classes that know how to find static files in
@@ -109,7 +111,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     # 'django.contrib.auth.middleware.RemoteUserMiddleware',
-    'archer.uploader.middleware.CustomHeaderMiddleware',
+    'archer.core.middleware.CustomHeaderMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -126,7 +128,7 @@ INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
+    # 'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Themes:
@@ -136,8 +138,10 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'archer.core',
     'archer.custom_auth',
-    'archer.uploader',
+    'archer.projects',
+    'archer.packages',
     'gunicorn',
     'django_extensions',
     'bootstrap_toolkit',

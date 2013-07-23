@@ -14,7 +14,7 @@ class Migration(SchemaMigration):
             ('password', self.gf('django.db.models.fields.CharField')(max_length=128)),
             ('last_login', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
             ('is_superuser', self.gf('django.db.models.fields.BooleanField')(default=False)),
-            ('username', self.gf('django.db.models.fields.CharField')(unique=True, max_length=100)),
+            ('username', self.gf('django.db.models.fields.CharField')(unique=True, max_length=200)),
             ('first_name', self.gf('django.db.models.fields.CharField')(max_length=30, blank=True)),
             ('last_name', self.gf('django.db.models.fields.CharField')(max_length=30, blank=True)),
             ('email', self.gf('django.db.models.fields.EmailField')(max_length=75, blank=True)),
@@ -89,7 +89,7 @@ class Migration(SchemaMigration):
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'password': ('django.db.models.fields.CharField', [], {'max_length': '128'}),
             'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
-            'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100'})
+            'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '200'})
         }
     }
 

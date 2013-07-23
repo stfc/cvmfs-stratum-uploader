@@ -7,8 +7,6 @@ gunicorn
 #django-grappelli
 #django-admin-bootstrapped
 
-django-multiuploader
-
 django-guardian
 psycopg2
 south

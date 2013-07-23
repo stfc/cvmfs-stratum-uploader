@@ -2,7 +2,7 @@ from django.conf.urls import patterns, include, url
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
-from archer.uploader import views
+from archer.projects import views
 
 admin.autodiscover()
 
@@ -14,8 +14,9 @@ urlpatterns = patterns('',
                        # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
                        # url(r'^grappelli/', include('grappelli.urls')),
-                       url(r'^$', include('archer.uploader.urls'), name='index'),
-                       url(r'^uploader/', include('archer.uploader.urls', namespace='uploader')),
+                       url(r'^$', include('archer.projects.urls'), name='index'),
+                       url(r'^projects/', include('archer.projects.urls', namespace='projects')),
+                       url(r'^packages/', include('archer.packages.urls', namespace='packages')),
                        # Uncomment the next line to enable the admin:
                        url(r'^admin/', include(admin.site.urls)),
                        url(r'^unauthenticated$', views.unauthenticated, name='unauthenticated')

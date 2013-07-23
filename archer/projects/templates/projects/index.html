@@ -10,9 +10,9 @@
                 {% for project, can_upload, packages in package_sets %}
                     <div class='row-fluid'>
                         <div class='span3'>
-                            <a href="{% url 'uploader:show_project' project.id %}">{{ project }}</a>
+                            <a href="{% url 'projects:show' project.id %}">{{ project }}</a>
                             {% if can_upload %}
-                                <a href='{% url 'uploader:upload' project.id %}'>Upload</a>
+                                <a href='{% url 'projects:upload' project.id %}'>Upload</a>
                             {% endif %}
                         </div>
                         <div class='span6'>
@@ -20,7 +20,7 @@
                                 {% for package in packages %}
                                     <li>
                                         {% include 'packages/_status.html' with status=package.status_name %}
-                                        <a href='{% url 'uploader:show' package.id %}'>
+                                        <a href='{% url 'packages:show' package.id %}'>
                                             {{ package.file }}
                                         </a>
                                     </li>
@@ -41,7 +41,7 @@
             <div class='offset2 span4'>
                 <ul>
                     {% for package in latest_packages %}
-                        <li><a href="{% url 'uploader:show' package.id %}">{{ package.file }}</a></li>
+                        <li><a href="{% url 'packages:show' package.id %}">{{ package.file }}</a></li>
                     {% endfor %}
                 </ul>
                 {% else %}
