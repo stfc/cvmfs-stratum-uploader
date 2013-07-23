@@ -30,20 +30,15 @@ def get_objects_for_user2(user, perms, klass=None, use_groups=True, any_perm=Fal
 
 
 def index(request):
-    certs = u''
-    certs += pformat(request.user.__dict__)
-    certs += "\n"
-    certs += pformat(request.user)
-    certs += "\n"
-    certs += pformat(dict(os.environ.items()))
-    certs += "\n"
-    certs += pformat(dict(request.META))
+    debug_info = {'user': pformat(request.user.__dict__),
+                  'environ': pformat(dict(os.environ.items())),
+                  'meta': pformat(dict(request.META))}
     projects = get_objects_for_user2(request.user, 'projects.view_project')
     package_sets = [(project,
                      request.user.has_perm('projects.upload_package', project),
                      [package for package in project.package_set.order_by('-id')],
                     ) for project in projects]
-    context = {'package_sets': package_sets, 'certs': certs}
+    context = {'package_sets': package_sets, 'debug_info': debug_info}
     return render(request, 'projects/index.html', context)
 
 
