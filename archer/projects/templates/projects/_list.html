@@ -1,0 +1,10 @@
+<ul>
+    {% for package in packages %}
+        <li>
+            {% include 'packages/_status.html' with status=package.status_name %}
+            <a href='{% url 'packages:show' package.id %}'>
+                {{ package.file }}
+            </a>
+        </li>
+    {% endfor %}
+</ul>

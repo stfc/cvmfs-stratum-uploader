@@ -47,30 +47,26 @@ def index(request):
     return render(request, 'projects/index.html', context)
 
 
-@class_view_decorator(permission_required_or_403('projects.view_project', (Project, 'pk', 'project_id')))
+@class_view_decorator(permission_required_or_403('projects.upload_package', (Project, 'pk', 'project_id')))
 class UploadView(View):
-    def authorize(self, user, project_id):
-        project = Project.objects.get(pk=project_id)
-        if not user.has_perm('projects.upload_package', project):
-            raise PermissionDenied
-
     def get(self, request, project_id):
-        self.authorize(request.user, project_id)
         form = UploadFileForm()
         return render_to_response('projects/upload.html',
                                   {'form': form, 'project_id': project_id},
                                   context_instance=RequestContext(request))
 
     def post(self, request, project_id):
-        self.authorize(request.user, project_id)
         form = UploadFileForm(request.POST, request.FILES)
         if form.is_valid():
+            from guardian.shortcuts import assign_perm
             # handle files
             pprint(form)
             package = form.save(commit=False)
             package.status = Package.Status.uploaded
             package.project_id = project_id
             package.save()
+            assign_perm('packages.deploy_package', request.user, package)
+            assign_perm('packages.remove_package', request.user, package)
             return HttpResponseRedirect('/')
         return render_to_response('projects/upload.html',
                                   {'form': form, 'project_id': project_id},
@@ -80,8 +76,9 @@ class UploadView(View):
 @permission_required_or_403('projects.view_project', (Project, 'pk', 'project_id'))
 def show(request, project_id):
     project = Project.objects.get(pk=project_id)
-    # if not request.user.has_perm('projects.view_project', project):
-    #     raise PermissionDenied
     return render_to_response('projects/show.html',
-                              {'project': project},
+                              {'project': project,
+                               'can_upload': request.user.has_perm('projects.upload_package', project),
+                               'packages': [package for package in project.package_set.order_by('-id')],
+                              },
                               context_instance=RequestContext(request))

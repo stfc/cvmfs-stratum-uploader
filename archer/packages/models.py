@@ -25,6 +25,12 @@ class Package(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        permissions = (
+            ('deploy_package', 'Deploy package'),
+            ('remove_package', 'Remove package'),
+        )
+
     def status_name(self):
         return Package.__STATUSES[self.status]
 

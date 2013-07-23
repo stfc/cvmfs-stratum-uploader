@@ -5,7 +5,19 @@
 
 {% block content %}
 
-projects show html
-{{ project }}
+    <div class='row'>
+        <div class='span3'>
+            <a href="{% url 'projects:show' project.id %}">{{ project }}</a>
+            {% if can_upload %}
+                <a href='{% url 'projects:upload' project.id %}'>Upload</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class='row'>
+        <div class='span6'>
+            {% include 'projects/_list.html' with project=project packages=packages %}
+        </div>
+    </div>
+    <a href="{% url 'projects:index' %}">Back</a>
 
 {% endblock %}

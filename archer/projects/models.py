@@ -19,10 +19,6 @@ class Project(models.Model):
             ('view_project', 'View project'),
             ('upload_package', 'Upload package'),
             ('deploy_package', 'Deploy package'),
-
-            # ('add_project', 'Add project'),
-            # ('change_project', 'Change project'),
-            # ('delete_project', 'Delete project'),
         )
 
     def full_path(self):

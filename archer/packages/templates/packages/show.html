@@ -10,10 +10,10 @@
         <li>{% include 'packages/_status.html' with status=package.status_name %}</li>
         <li>{{ package.project }}</li>
     </ul>
-    {% if package.can_remove %}
+    {% if package.can_remove and can_remove %}
         <a href="{% url 'packages:remove' package.id %}">Remove</a>
     {% endif %}
-    {% if package.can_deploy %}
+    {% if package.can_deploy and can_deploy %}
         <a href="{% url 'packages:deploy' package.id %}">Deploy</a>
     {% endif %}
     <a href="{% url 'projects:index' %}">Back</a>

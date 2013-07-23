@@ -16,16 +16,7 @@
                             {% endif %}
                         </div>
                         <div class='span6'>
-                            <ul>
-                                {% for package in packages %}
-                                    <li>
-                                        {% include 'packages/_status.html' with status=package.status_name %}
-                                        <a href='{% url 'packages:show' package.id %}'>
-                                            {{ package.file }}
-                                        </a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
+                            {% include 'projects/_list.html' with project=projec packages=packages %}
                         </div>
                     </div>
                 {% endfor %}
