@@ -48,6 +48,7 @@ class Package(models.Model):
                     os.unlink(os.path.join(root, f))
                 for d in dirs:
                     shutil.rmtree(os.path.join(root, d))
+            return True
         except IOError as e:
             print e
             return False
@@ -64,15 +65,20 @@ class Package(models.Model):
                 self.status = Package.Status.error
                 self.save()
                 raise IOError('package file ' + self.file.path + ' is not tarball file')
-            Package.clear_dir(self.project.full_path())
-            path = self.file.path
-            tar = tarfile.open(path)
-            # tar.list()
-            tar.extractall(path=self.project.full_path())
-            tar.close()
-            self.status = Package.Status.deployed
-            self.save()
-            return True
+            cleared = Package.clear_dir(self.project.full_path())
+            if cleared:
+                path = self.file.path
+                tar = tarfile.open(path)
+                # tar.list()
+                tar.extractall(path=self.project.full_path())
+                tar.close()
+                self.status = Package.Status.deployed
+                self.save()
+                return True
+            else:
+                self.status = Package.Status.error
+                self.save()
+                return False
         else:
             return False
 
