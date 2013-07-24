@@ -74,16 +74,15 @@ def show(request, project_id):
 
     def index_maker():
         def _index(root):
+            rfiles = []
             files = os.listdir(root)
             for mfile in files:
                 t = os.path.join(root, mfile)
                 if os.path.isdir(t):
-                    yield loader.render_to_string('tree/_folder.html',
-                                                  {'file': mfile + '/',
-                                                   'subfiles': _index(os.path.join(root, t))})
-                    continue
-                yield loader.render_to_string('tree/_file.html',
-                                              {'file': mfile})
+                    rfiles += _index(os.path.join(root, t))
+                else:
+                    rfiles += [t]
+            return rfiles
 
         if not os.path.isdir(path):
             return None
