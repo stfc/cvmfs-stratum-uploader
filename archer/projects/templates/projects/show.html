@@ -5,19 +5,53 @@
 
 {% block content %}
 
-    <div class='row'>
+    <div class='hero-unit lesser-hero-unit'>
+        <h3>{{ package.file }}</h3>
+
         <div class='span3'>
-            <a href="{% url 'projects:show' project.id %}">{{ project }}</a>
-            {% if can_upload %}
-                <a href='{% url 'projects:upload' project.id %}'>Upload</a>
-            {% endif %}
+
         </div>
+        <h3>{{ project }}</h3>
+        <dl class='dl-horizontal dl-unwrapped-horizontal'>
+            <dt>project</dt>
+            <dd><a href="{% url 'projects:show' project.id %}">{{ project }}</a></dd>
+            <dt>mounting point</dt>
+            <dd>{{ project.file_system }}</dd>
+            <dt>last deployment</dt>
+            <dd>???</dd>
+        </dl>
+        <dl class='dl-horizontal dl-unwrapped-horizontal'>
+            <dt></dt>
+            <dd>
+                <a href="{% url 'projects:index' %}">Back</a>
+                {% if can_upload %}
+                    <a href='{% url 'projects:upload' project.id %}'>Upload</a>
+                {% endif %}
+            </dd>
+        </dl>
     </div>
     <div class='row'>
-        <div class='span6'>
+        <div class='span5'>
             {% include 'projects/_list.html' with project=project packages=packages %}
         </div>
+        <div class='span7'>
+            <div class="accordion" id="accordion-{{ uid }}">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2"
+                           href="#collapseProject{{ project.id }}">
+                            project content
+                        </a>
+                    </div>
+                    <div id="collapseProject{{ project.id }}" class="accordion-body collapse in">
+                        <div class="accordion-inner">
+                            {% include 'tree/_tree.html' with subfiles=files %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#            {% include '_filelist.html' with name='project content' files=files unfolded=True uid='projectContents' %}#}
+        </div>
     </div>
-    <a href="{% url 'projects:index' %}">Back</a>
 
 {% endblock %}

@@ -1,5 +1,7 @@
+import re
 import shutil
 import os
+import tarfile
 
 from django.db import models
 from django.conf import settings
@@ -38,7 +40,14 @@ class Package(models.Model):
         return self.status in [Package.Status.deployed, Package.Status.undeployed, Package.Status.uploaded]
 
     def can_deploy(self):
-        return self.status in [Package.Status.uploaded, Package.Status.undeployed, Package.Status.cancelled]
+        return self.status in [Package.Status.uploaded, Package.Status.undeployed, Package.Status.cancelled] \
+            and (os.path.isfile(self.file.path) and tarfile.is_tarfile(self.file.path))
+
+    def filepath(self):
+        return self.file.path.replace(settings.MEDIA_ROOT, '')
+
+    def filename(self):
+        return self.file.path.replace(os.path.join(settings.MEDIA_ROOT, self.project.full_path()[1::]) + '/', '')
 
     @staticmethod
     def clear_dir(dir):
@@ -53,21 +62,31 @@ class Package(models.Model):
             print e
             return False
 
+    def get_file_list(self):
+        path = self.file.path
+        if not os.path.isfile(path):
+            return None
+        if not tarfile.is_tarfile(path):
+            return None
+        tar = tarfile.open(path)
+        names = tar.getnames()
+        return names
+
     def deploy(self, force=False):
         import tarfile
 
         if self.can_deploy or force:
-            if not os.path.isfile(self.file.path):
-                raise IOError('package file ' + self.file.path + ' does not exist')
+            path = self.file.path
+            if not os.path.isfile(path):
+                raise IOError('package file ' + path + ' does not exist')
             self.status = Package.Status.unpacking
             self.save()
-            if not tarfile.is_tarfile(self.file.path):
+            if not tarfile.is_tarfile(path):
                 self.status = Package.Status.error
                 self.save()
-                raise IOError('package file ' + self.file.path + ' is not tarball file')
+                raise IOError('package file ' + path + ' is not tarball file')
             cleared = Package.clear_dir(self.project.full_path())
             if cleared:
-                path = self.file.path
                 tar = tarfile.open(path)
                 # tar.list()
                 tar.extractall(path=self.project.full_path())

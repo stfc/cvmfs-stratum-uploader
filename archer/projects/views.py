@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, render_to_response
+from django.template import loader
 from guardian.decorators import permission_required_or_403
 from django.template.context import RequestContext
 from django.views.generic import View
@@ -69,9 +70,29 @@ class UploadView(View):
 @permission_required_or_403('projects.view_project', (Project, 'pk', 'project_id'))
 def show(request, project_id):
     project = Project.objects.get(pk=project_id)
+    path = project.full_path()
+
+    def index_maker():
+        def _index(root):
+            files = os.listdir(root)
+            for mfile in files:
+                t = os.path.join(root, mfile)
+                if os.path.isdir(t):
+                    yield loader.render_to_string('tree/_folder.html',
+                                                  {'file': mfile + '/',
+                                                   'subfiles': _index(os.path.join(root, t))})
+                    continue
+                yield loader.render_to_string('tree/_file.html',
+                                              {'file': mfile})
+
+        if not os.path.isdir(path):
+            return None
+        return _index(path)
+
     return render_to_response('projects/show.html',
                               {'project': project,
                                'can_upload': request.user.has_perm('projects.upload_package', project),
                                'packages': [package for package in project.package_set.order_by('-id')],
+                               'files': index_maker(),
                               },
                               context_instance=RequestContext(request))

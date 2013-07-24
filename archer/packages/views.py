@@ -20,6 +20,7 @@ def show(request, package_id):
     can_remove = request.user.has_perm('packages.remove_package', package)
     return render(request, 'packages/show.html', {
         'package': package,
+        'files': package.get_file_list(),
         'can_deploy': can_deploy,
         'can_remove': can_remove})
 

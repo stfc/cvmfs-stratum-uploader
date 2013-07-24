@@ -1,10 +1,12 @@
-<ul>
+<dl class='dl-horizontal'>
     {% for package in packages %}
-        <li>
+        <dt>
             {% include 'packages/_status.html' with status=package.status_name %}
+        </dt>
+        <dd>
             <a href='{% url 'packages:show' package.id %}'>
-                {{ package.file }}
+                {{ package.filepath }}
             </a>
-        </li>
+        </dd>
     {% endfor %}
-</ul>
+</dl>
