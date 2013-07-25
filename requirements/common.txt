@@ -1,12 +1,10 @@
 Django==1.5.1
-django-extensions
+South==0.8.1
+django-extensions==1.1.1
+django-guardian==1.1.1
 -e git+git://github.com/mknapik/django-bootstrap-toolkit#egg=django-bootstrap-toolkit
-gunicorn
+psycopg2==2.5.1
 
 ## Themes
 #django-grappelli
 #django-admin-bootstrapped
-
-django-guardian
-psycopg2
-south
