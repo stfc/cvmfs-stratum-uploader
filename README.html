@@ -315,10 +315,11 @@ pre {
 </ol>
 <h2><a class="anchor" href="chrome-extension://efalomlklhakojjbdfehfkgoicablooc/preview.html#web-application" name="web-application"></a>Web Application</h2>
 <ol>
-<li>Get the application. The app can be placed anywhere but we will use <code>/var/www/t1student.esc.rl.ac.uk</code>.<ul>
-<li>unpack the <code>archer.tar.gz</code>:<pre><code class="lang-bash"># tar xvf archer.tar.gz /var/www/t1student.esc.rl.ac.uk</code></pre>
+<li>Get the application. The app can be placed anywhere but we will use <code>/var/www/t1student0.esc.rl.ac.uk</code>.<ul>
+<li>unpack the <code>archer.tar.gz</code>:<pre><code class="lang-bash"># mkdir /var/www/t1student0.esc.rl.ac.uk
+# tar xvf archer.tar.gz --strip-components 1 -C /var/www/t1student0.esc.rl.ac.uk</code></pre>
 </li>
-<li>or clone it with <code>git</code>:<pre><code class="lang-bash"># git clone git://repository_address/archer.git /var/www/t1student.esc.rl.ac.uk/</code></pre>
+<li>or clone it with <code>git</code>:<pre><code class="lang-bash"># git clone git://repository_address/archer.git /var/www/t1student0.esc.rl.ac.uk/</code></pre>
 </li>
 </ul>
 </li>
@@ -382,7 +383,7 @@ STATIC_URL = '/static/'</code></pre>
 </ol>
 <h2><a class="anchor" href="chrome-extension://efalomlklhakojjbdfehfkgoicablooc/preview.html#httpd" name="httpd"></a>httpd</h2>
 <ol>
-<li>Copy <code>archer.conf</code> to <code>sites-available</code> of <code>httpd</code><pre><code class="lang-bash"># cp /var/www/t1student.esc.rl.ac.uk/archer.conf /etc/apache2/sites-available/uploader.conf</code></pre>
+<li>Copy <code>archer.conf</code> to <code>sites-available</code> of <code>httpd</code><pre><code class="lang-bash"># cp /var/www/t1student0.esc.rl.ac.uk/archer.conf /etc/apache2/sites-available/uploader.conf</code></pre>
 </li>
 <li><p>Set the paths to the certificates:</p>
 <ol>

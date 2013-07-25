@@ -37,14 +37,15 @@ $ source /opt/venv/uploader/bin/activate
 
 ## Web Application
 
-1. Get the application. The app can be placed anywhere but we will use `/var/www/t1student.esc.rl.ac.uk`.
+1. Get the application. The app can be placed anywhere but we will use `/var/www/t1student0.esc.rl.ac.uk`.
     + unpack the `archer.tar.gz`:
     ```bash
-# tar xvf archer.tar.gz /var/www/t1student.esc.rl.ac.uk
-``` 
+# mkdir /var/www/t1student0.esc.rl.ac.uk
+# tar xvf archer.tar.gz --strip-components 1 -C /var/www/t1student0.esc.rl.ac.uk
+```
     + or clone it with `git`:
     ```bash
-# git clone git://repository_address/archer.git /var/www/t1student.esc.rl.ac.uk/
+# git clone git://repository_address/archer.git /var/www/t1student0.esc.rl.ac.uk/
 ```
 3. Install application dependencies using `pip`.
     1. Make sure you activated just created `VirtualEnv`.
@@ -110,14 +111,14 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'collectstatic/')
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'
 ```
- 
+
 9. ...
 
 ## httpd
 
 1. Copy `archer.conf` to `sites-available` of `httpd`
 ```bash
-# cp /var/www/t1student.esc.rl.ac.uk/archer.conf /etc/apache2/sites-available/uploader.conf
+# cp /var/www/t1student0.esc.rl.ac.uk/archer.conf /etc/apache2/sites-available/uploader.conf
 ```
 2. Set the paths to the certificates:
     1. set host certificate
