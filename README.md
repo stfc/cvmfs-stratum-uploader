@@ -138,6 +138,14 @@ STATIC_URL = '/static/'
 # a2ensite uploader.conf
 ```
 
+# Development
+
+## Create a bundle
+
+```bash
+pip bundle dev.pybundle -r requirements.txt
+```
+
 ## About
 
 The application is developed by [Michał Knapik](http://github.com/mknapik) for [SCD STFC](http://www.stfc.ac.uk/SCD)
