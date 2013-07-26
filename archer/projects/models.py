@@ -10,7 +10,7 @@ class FileSystem(models.Model):
 
 
 class Project(models.Model):
-    file_system = models.ForeignKey(FileSystem)
+    file_system = models.ForeignKey(FileSystem, null=False)
     directory = models.CharField(max_length=200, null=False, blank=False)
 
     class Meta:
