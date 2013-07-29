@@ -4,6 +4,7 @@ import sys
 sys.path = ['/home/vwa13376/workspace/archer'] + sys.path
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'archer.settings'
+os.environ['DJANGO_CONFIGURATION'] = 'Production'
 
 
 import django.core.handlers.wsgi

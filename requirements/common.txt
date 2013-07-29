@@ -8,3 +8,4 @@ psycopg2==2.5.1
 ## Themes
 #django-grappelli
 #django-admin-bootstrapped
+django-configurations
