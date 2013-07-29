@@ -19,8 +19,8 @@ import os
 # if running multiple sites in the same mod_wsgi process. To fix this, use
 # mod_wsgi daemon mode with each site in its own daemon process, or use
 # os.environ["DJANGO_SETTINGS_MODULE"] = "archer.settings"
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "archer.settings")
-os.environ.setdefault('DJANGO_CONFIGURATION', 'Dev')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "archer.settings.prod")
+os.environ.setdefault('DJANGO_CONFIGURATION', 'Production')
 
 
 # This application object is used by any WSGI server configured to use this
@@ -28,6 +28,9 @@ os.environ.setdefault('DJANGO_CONFIGURATION', 'Dev')
 # setting points here.
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
+
+# noinspection PyUnresolvedReferences
+from django.contrib.auth.handlers.modwsgi import check_password
 
 # Apply WSGI middleware here.
 # from helloworld.wsgi import HelloWorldApplication
