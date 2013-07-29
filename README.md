@@ -39,12 +39,12 @@ $ source /opt/venv/uploader/bin/activate
 
 1. Get the application. The app can be placed anywhere but we will use `/var/www/t1student0.esc.rl.ac.uk`.
     + unpack the `archer.tar.gz`:
-    ```bash
+```bash
 # mkdir /var/www/t1student0.esc.rl.ac.uk
 # tar xvf archer.tar.gz --strip-components 1 -C /var/www/t1student0.esc.rl.ac.uk
 ```
     + or clone it with `git`:
-    ```bash
+```bash
 # git clone ssh://git@bitbucket.org:mmk/stfc-uploader.git /var/www/t1student0.esc.rl.ac.uk/
 ```
 3. Install application dependencies using `pip`.
