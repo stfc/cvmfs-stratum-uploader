@@ -45,7 +45,7 @@ $ source /opt/venv/uploader/bin/activate
 ```
     + or clone it with `git`:
     ```bash
-# git clone git://repository_address/archer.git /var/www/t1student0.esc.rl.ac.uk/
+# git clone ssh://git@bitbucket.org:mmk/stfc-uploader.git /var/www/t1student0.esc.rl.ac.uk/
 ```
 3. Install application dependencies using `pip`.
     1. Make sure you activated just created `VirtualEnv`.
@@ -116,11 +116,27 @@ STATIC_URL = '/static/'
 
 ## httpd
 
-1. Copy `archer.conf` to `sites-available` of `httpd`
+1. Make sure `mod_wsgi` is installed and enabled.
+    + check if `mod_wsgi` is available:
+```bash
+$ apache2ctl -M | grep wsgi
+```
+    + if `mod_wsgi` is not present, install it from distribution packages
+    + make sure `mod_wsgi` is enabled:
+        + ```bash
+# a2enmod wsgi
+```
+        + or if `a2enmod` is not available ```bash
+# cd /etc/apache2/mods-enabled
+# ln -s ../mods-available/wsgi.load
+# ln -s ../mods-available/wsgi.conf
+```
+
+2. Copy `archer.conf` to `sites-available` of `httpd`
 ```bash
 # cp /var/www/t1student0.esc.rl.ac.uk/archer.conf /etc/apache2/sites-available/uploader.conf
 ```
-2. Set the paths to the certificates:
+3. Set the paths to the certificates:
     1. set host certificate
     2. set host private key
     3. set path to certificates directory
@@ -131,11 +147,14 @@ STATIC_URL = '/static/'
   SSLCACertificatePath  /path/certificates
 ```
 
-3. Adjust the configuration for this site by changing the paths if you used different ones than in this guide.
+4. Adjust the configuration for this site by changing the paths if you used different ones than in this guide.
     1. ...
-4. Enable the site
-```bash
+5. Enable the site
+    + ```bash
 # a2ensite uploader.conf
+```
+    + or ir `a2ensite` is not available ```bash
+# cd /etc/apache2/sites-enabled; ln -s ../sites-available/uploader.conf
 ```
 
 # Development
