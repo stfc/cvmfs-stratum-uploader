@@ -292,14 +292,14 @@ pre {
 <ul>
 <li><strong>Python</strong> 2.7.3</li>
 <li><strong><a href="http://www.virtualenv.org/en/latest/" target="_blank">virtualenv</a></strong> 1.7.1.2 -
-  Install it with pip or from distribution packages.<pre><code class="lang-bash">$ [sudo] pip install virtualenv</code></pre>
+  Install it with pip or from distribution packages.<pre><code class="lang-bash">sudo pip install virtualenv</code></pre>
 </li>
 <li><strong>PostgreSQL</strong> 9.1.9</li>
 <li>Apache <strong>httpd</strong> 2.2.22</li>
 </ul>
 <h2><a class="anchor" href="chrome-extension://efalomlklhakojjbdfehfkgoicablooc/preview.html#database" name="database"></a>Database</h2>
 <ol>
-<li>Login to <code>psql</code><pre><code class="lang-bash">$ su postgres -c psql</code></pre>
+<li>Login to <code>psql</code><pre><code class="lang-bash">su postgres -c psql</code></pre>
 </li>
 <li>Create a new database user <code>django</code> (you can also use an existing one).<pre><code class="lang-sql">CREATE USER django WITH PASSWORD 'password';</code></pre>
 </li>
@@ -308,27 +308,27 @@ pre {
 </ol>
 <h2><a class="anchor" href="chrome-extension://efalomlklhakojjbdfehfkgoicablooc/preview.html#virtualenv" name="virtualenv"></a>VirtualEnv</h2>
 <ol>
-<li>Create new <code>VirtualEnv</code> for the project. You can choose any location from which <code>httpd</code> can read from.<pre><code class="lang-bash">$ virtualenv /opt/venv/uploader</code></pre>
+<li>Create new <code>VirtualEnv</code> for the project. You can choose any location from which <code>httpd</code> can read from.<pre><code class="lang-bash">virtualenv /opt/venv/uploader</code></pre>
 </li>
-<li>Activate created <code>VirtualEnv</code> (you have to do that for each terminal window you are going to use any Python commands)<pre><code class="lang-bash">$ source /opt/venv/uploader/bin/activate</code></pre>
+<li>Activate created <code>VirtualEnv</code> (you have to do that for each terminal window you are going to use any Python commands)<pre><code class="lang-bash">source /opt/venv/uploader/bin/activate</code></pre>
 </li>
 </ol>
 <h2><a class="anchor" href="chrome-extension://efalomlklhakojjbdfehfkgoicablooc/preview.html#web-application" name="web-application"></a>Web Application</h2>
 <ol>
 <li>Get the application. The app can be placed anywhere but we will use <code>/var/www/t1student0.esc.rl.ac.uk</code>.<ul>
-<li>unpack the <code>archer.tar.gz</code>:<pre><code class="lang-bash"># mkdir /var/www/t1student0.esc.rl.ac.uk
-# tar xvf archer.tar.gz --strip-components 1 -C /var/www/t1student0.esc.rl.ac.uk</code></pre>
+<li>unpack the <code>archer.tar.gz</code>:<pre><code class="lang-bash">mkdir /var/www/t1student0.esc.rl.ac.uk
+tar xvf archer.tar.gz --strip-components 1 -C /var/www/t1student0.esc.rl.ac.uk</code></pre>
 </li>
-<li>or clone it with <code>git</code>:<pre><code class="lang-bash"># git clone git://repository_address/archer.git /var/www/t1student0.esc.rl.ac.uk/</code></pre>
+<li>or clone it with <code>git</code>:<pre><code class="lang-bash">git clone ssh://git@bitbucket.org:mmk/stfc-uploader.git /var/www/t1student0.esc.rl.ac.uk/</code></pre>
 </li>
 </ul>
 </li>
 <li>Install application dependencies using <code>pip</code>.<ol>
 <li>Make sure you activated just created <code>VirtualEnv</code>.</li>
 <li>Install dependencies using either:<ul>
-<li>provided bundle<pre><code class="lang-bash">$ pip install production.pybundle</code></pre>
+<li>provided bundle<pre><code class="lang-bash">pip install production.pybundle</code></pre>
 </li>
-<li>or by downloading packages from the internet<pre><code class="lang-bash">$ pip install -r requirements.txt</code></pre>
+<li>or by downloading packages from the internet<pre><code class="lang-bash">pip install -r requirements.txt</code></pre>
 </li>
 </ul>
 </li>
@@ -350,27 +350,27 @@ pre {
 </li>
 <li><p>Open <code>archer/settings/common.py</code> and set paths to directories.</p>
 <ol>
-<li>Set <code>PROJECT_ROOT</code> to application directory:<pre><code class="lang-bash">PROJECT_ROOT = '/var/www/t1student0.esc.rl.ac.uk/'</code></pre>
+<li>Set <code>PROJECT_ROOT</code> to application directory:<pre><code class="lang-python">PROJECT_ROOT = '/var/www/t1student0.esc.rl.ac.uk/'</code></pre>
 </li>
-<li>Change <code>SECRET_KEY</code> (production only):<pre><code class="lang-bash">SECRET_KEY = 'apksigo!uh4gth@7nco7y2biavj=0fxd0b3@2!ax6*rb29fq=w'</code></pre>
+<li>Change <code>SECRET_KEY</code> (production only):<pre><code class="lang-python">SECRET_KEY = 'apksigo!uh4gth@7nco7y2biavj=0fxd0b3@2!ax6*rb29fq=w'</code></pre>
 </li>
 <li>Customize if needed:<ol>
-<li>modify <code>MEDIA_ROOT</code> to set location of uploaded files on the filesystem:<pre><code class="lang-bash"># Absolute filesystem path to the directory that will hold user-uploaded files.
+<li>modify <code>MEDIA_ROOT</code> to set location of uploaded files on the filesystem:<pre><code class="lang-python"># Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'uploads/')</code></pre>
 </li>
-<li>modify <code>MEDIA_ROOT</code> to set url to uploaded files:<pre><code class="lang-bash"># URL that handles the media served from MEDIA_ROOT. Make sure to use a
+<li>modify <code>MEDIA_ROOT</code> to set url to uploaded files:<pre><code class="lang-python"># URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
 MEDIA_URL = 'http://t1student0.esc.rl.ac.uk/uploads/'</code></pre>
 </li>
-<li>modify <code>STATIC_ROOT</code> to ...<pre><code class="lang-bash"># Absolute path to the directory static files should be collected to.
+<li>modify <code>STATIC_ROOT</code> to ...<pre><code class="lang-python"># Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'collectstatic/')</code></pre>
 </li>
-<li>modify <code>STATIC_URL</code> to ...<pre><code class="lang-bash"># URL prefix for static files.
+<li>modify <code>STATIC_URL</code> to ...<pre><code class="lang-python"># URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
 STATIC_URL = '/static/'</code></pre>
 </li>
@@ -383,27 +383,52 @@ STATIC_URL = '/static/'</code></pre>
 </ol>
 <h2><a class="anchor" href="chrome-extension://efalomlklhakojjbdfehfkgoicablooc/preview.html#httpd" name="httpd"></a>httpd</h2>
 <ol>
-<li>Copy <code>archer.conf</code> to <code>sites-available</code> of <code>httpd</code><pre><code class="lang-bash"># cp /var/www/t1student0.esc.rl.ac.uk/archer.conf /etc/apache2/sites-available/uploader.conf</code></pre>
+<li><p>Make sure <code>mod_wsgi</code> is installed and enabled.</p>
+<ul>
+<li>check if <code>mod_wsgi</code> is available:<pre><code class="lang-bash">apache2ctl -M | grep wsgi</code></pre>
 </li>
-<li><p>Set the paths to the certificates:</p>
-<ol>
+<li>if <code>mod_wsgi</code> is not present, install it from distribution packages</li>
+<li>make sure <code>mod_wsgi</code> is enabled:<ul>
+<li>use <code>a2enmod</code>:<pre><code class="lang-bash">a2enmod wsgi</code></pre>
+</li>
+<li>or if <code>a2enmod</code> is not available simply create symbolic links:<pre><code class="lang-bash">cd /etc/apache2/mods-enabled
+ln -s ../mods-available/wsgi.load
+ln -s ../mods-available/wsgi.conf</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Copy <code>archer.conf</code> to <code>sites-available</code> of <code>httpd</code></p>
+<pre><code class="lang-bash">cp /var/www/t1student0.esc.rl.ac.uk/archer.conf /etc/apache2/sites-available/uploader.conf</code></pre>
+</li>
+<li>Set the paths to the certificates:<ol>
 <li>set host certificate</li>
 <li>set host private key</li>
-<li><p>set path to certificates directory</p>
-<pre><code class="lang-apache">SSLCertificateFile    /path/hostcert.pem
-SSLCertificateKeyFile /path/hostkey.pem
-SSLCACertificatePath  /path/certificates</code></pre>
-</li>
+<li>set path to certificates directory</li>
 </ol>
 </li>
-<li><p>Adjust the configuration for this site by changing the paths if you used different ones than in this guide.</p>
+</ol>
+<pre><code class="lang-apache">  SSLCertificateFile    /path/hostcert.pem
+  SSLCertificateKeyFile /path/hostkey.pem
+  SSLCACertificatePath  /path/certificates</code></pre>
 <ol>
+<li>Adjust the configuration for this site by changing the paths if you used different ones than in this guide.<ol>
 <li>...</li>
 </ol>
 </li>
-<li>Enable the site<pre><code class="lang-bash"># a2ensite uploader.conf</code></pre>
+<li>Enable the site<ul>
+<li>use <code>a2ensite</code>:<pre><code class="lang-bash">a2ensite uploader.conf</code></pre>
+</li>
+<li>or ir <code>a2ensite</code> is not available simply create symbolic link:<pre><code class="lang-bash">cd /etc/apache2/sites-enabled
+ln -s ../sites-available/uploader.conf</code></pre>
+</li>
+</ul>
 </li>
 </ol>
+<h1><a class="anchor" href="chrome-extension://efalomlklhakojjbdfehfkgoicablooc/preview.html#development" name="development"></a>Development</h1>
+<h2><a class="anchor" href="chrome-extension://efalomlklhakojjbdfehfkgoicablooc/preview.html#create-a-bundle" name="create-a-bundle"></a>Create a bundle</h2>
+<pre><code class="lang-bash">pip bundle dev.pybundle -r requirements.txt</code></pre>
 <h2><a class="anchor" href="chrome-extension://efalomlklhakojjbdfehfkgoicablooc/preview.html#about" name="about"></a>About</h2>
 <p>The application is developed by <a href="http://github.com/mknapik" target="_blank">Michał Knapik</a> for <a href="http://www.stfc.ac.uk/SCD" target="_blank">SCD STFC</a></p>
 <h2><a class="anchor" href="chrome-extension://efalomlklhakojjbdfehfkgoicablooc/preview.html#license" name="license"></a>License</h2>
