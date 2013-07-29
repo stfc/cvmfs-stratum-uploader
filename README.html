@@ -315,11 +315,13 @@ pre {
 </ol>
 <h2><a class="anchor" href="chrome-extension://efalomlklhakojjbdfehfkgoicablooc/preview.html#web-application" name="web-application"></a>Web Application</h2>
 <ol>
-<li>Get the application. The app can be placed anywhere but we will use <code>/var/www/t1student0.esc.rl.ac.uk</code>.<ul>
-<li>unpack the <code>archer.tar.gz</code>:<pre><code class="lang-bash">mkdir /var/www/t1student0.esc.rl.ac.uk
-tar xvf archer.tar.gz --strip-components 1 -C /var/www/t1student0.esc.rl.ac.uk</code></pre>
+<li>For convenience export the application directory as an environmental variable:<pre><code class="lang-bash">export APP_DIR=/var/www/t1student0.esc.rl.ac.uk</code></pre>
 </li>
-<li>or clone it with <code>git</code>:<pre><code class="lang-bash">git clone ssh://git@bitbucket.org:mmk/stfc-uploader.git /var/www/t1student0.esc.rl.ac.uk/</code></pre>
+<li>Get the application. The app can be placed anywhere but we will use <code>/var/www/t1student0.esc.rl.ac.uk</code>.<ul>
+<li>unpack the <code>uploader.tar.gz</code>:<pre><code class="lang-bash">mkdir $APP_DIR
+tar xvf uploader.tar.gz --strip-components 1 -C $APP_DIR</code></pre>
+</li>
+<li>or clone it with <code>git</code>:<pre><code class="lang-bash">git clone ssh://git@bitbucket.org:mmk/stfc-uploader.git $APP_DIR</code></pre>
 </li>
 </ul>
 </li>
@@ -337,20 +339,20 @@ tar xvf archer.tar.gz --strip-components 1 -C /var/www/t1student0.esc.rl.ac.uk</
 </ol>
 <h2><a class="anchor" href="chrome-extension://efalomlklhakojjbdfehfkgoicablooc/preview.html#configure-the-uploader" name="configure-the-uploader"></a>Configure the Uploader</h2>
 <ol>
-<li>Open <code>archer/settings/dev.py</code> and set the database connection credentials<pre><code class="lang-python">DATABASES = {
- 'default': {
-     'ENGINE': 'django.db.backends.postgresql_psycopg2',
-     'NAME': 'uploader',
-     'USER': 'django',
-     'PASSWORD': 'password',
-     'HOST': 'localhost', # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-     'PORT': '', # Set to empty string for default.
- }
-}</code></pre>
+<li>Open <code>archer/settings/prod.py</code> and set the database connection credentials<pre><code class="lang-python"> DATABASES = {
+     'default': {
+         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+         'NAME': 'uploader',
+         'USER': 'django',
+         'PASSWORD': 'password',
+         'HOST': 'localhost', # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+         'PORT': '', # Set to empty string for default.
+     }
+ }</code></pre>
 </li>
 <li><p>Open <code>archer/settings/common.py</code> and set paths to directories.</p>
 <ol>
-<li>Set <code>PROJECT_ROOT</code> to application directory:<pre><code class="lang-python">PROJECT_ROOT = '/var/www/t1student0.esc.rl.ac.uk/'</code></pre>
+<li>Set <code>PROJECT_ROOT</code> to application directory (<code>$APP_DIR</code>):<pre><code class="lang-python">PROJECT_ROOT = '/var/www/t1student0.esc.rl.ac.uk/'</code></pre>
 </li>
 <li>Change <code>SECRET_KEY</code> (production only):<pre><code class="lang-python">SECRET_KEY = 'apksigo!uh4gth@7nco7y2biavj=0fxd0b3@2!ax6*rb29fq=w'</code></pre>
 </li>
@@ -399,8 +401,8 @@ ln -s ../mods-available/wsgi.conf</code></pre>
 </li>
 </ul>
 </li>
-<li><p>Copy <code>archer.conf</code> to <code>sites-available</code> of <code>httpd</code></p>
-<pre><code class="lang-bash">cp /var/www/t1student0.esc.rl.ac.uk/archer.conf /etc/apache2/sites-available/uploader.conf</code></pre>
+<li><p>Copy <code>httpd.uploader.conf</code> to <code>sites-available</code> of <code>httpd</code></p>
+<pre><code class="lang-bash">cp $APP_DIR/httpd.uploader.conf /etc/apache2/sites-available/uploader.conf</code></pre>
 </li>
 <li>Set the paths to the certificates:<ol>
 <li>set host certificate</li>
@@ -425,7 +427,11 @@ ln -s ../sites-available/uploader.conf</code></pre>
 </li>
 </ul>
 </li>
+<li>Set correct <code>chmod</code>/<code>chown</code> for <code>media</code>, <code>uploads</code> and <code>cvmfs</code> directories.
+...</li>
 </ol>
+<h2><a class="anchor" href="chrome-extension://efalomlklhakojjbdfehfkgoicablooc/preview.html#uploader-initial-data" name="uploader-initial-data"></a>Uploader initial data</h2>
+<p>...</p>
 <h1><a class="anchor" href="chrome-extension://efalomlklhakojjbdfehfkgoicablooc/preview.html#development" name="development"></a>Development</h1>
 <h2><a class="anchor" href="chrome-extension://efalomlklhakojjbdfehfkgoicablooc/preview.html#create-a-bundle" name="create-a-bundle"></a>Create a bundle</h2>
 <pre><code class="lang-bash">pip bundle dev.pybundle -r requirements.txt</code></pre>
