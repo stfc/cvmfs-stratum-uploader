@@ -19,14 +19,14 @@ import os
 # if running multiple sites in the same mod_wsgi process. To fix this, use
 # mod_wsgi daemon mode with each site in its own daemon process, or use
 # os.environ["DJANGO_SETTINGS_MODULE"] = "archer.settings"
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "archer.settings.prod")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "archer.settings")
 os.environ.setdefault('DJANGO_CONFIGURATION', 'Production')
 
 
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION
 # setting points here.
-from django.core.wsgi import get_wsgi_application
+from configurations.wsgi import get_wsgi_application
 application = get_wsgi_application()
 
 # noinspection PyUnresolvedReferences
