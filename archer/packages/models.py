@@ -98,7 +98,7 @@ class Package(models.Model):
                 self.status = Package.Status.deployed
                 self.save()
                 return True
-            except ValueError, IOError:
+            except (OSError, ValueError, IOError):
                 self.status = Package.Status.error
                 self.save()
                 return False
