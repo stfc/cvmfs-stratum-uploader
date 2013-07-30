@@ -146,7 +146,6 @@ cp $APP_DIR/httpd.uploader.conf /etc/apache2/sites-available/uploader.conf
     1. set host certificate
     2. set host private key
     3. set path to certificates directory
-
 ```apache
   SSLCertificateFile    /path/hostcert.pem
   SSLCertificateKeyFile /path/hostkey.pem
