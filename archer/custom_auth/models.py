@@ -12,6 +12,14 @@ from django.utils.translation import ugettext_lazy as _
 
 class AbstractUser(AbstractBaseUser, PermissionsMixin):
     """
+    This class is just a copy of default Django AbstractUser with couple changes to validation and field lengths.
+    Copying all AbstractUser and User seemed to be better approach than any monkey patching.
+
+    Username is a certificate DN so it has to allow characters like '/'.
+    Additionally it is quite long so the length of username was increased to 200
+    and might be change in the future if needed.
+
+
     An abstract base class implementing a fully featured User model with
     admin-compliant permissions.
 
@@ -100,6 +108,9 @@ class AbstractUser(AbstractBaseUser, PermissionsMixin):
 
 class User(AbstractUser):
     """
+    This class is just a copy of default Django User with couple changes to validation and field lengths.
+    Copying all AbstractUser and User seemed to be better approach than any monkey patching.
+
     Users within the Django authentication system are represented by this
     model.
 

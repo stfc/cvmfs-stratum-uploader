@@ -1,4 +1,5 @@
 import os
+import shutil
 from django.db import models
 
 
@@ -23,6 +24,21 @@ class Project(models.Model):
 
     def full_path(self):
         return os.path.join(self.file_system.mount_point, self.directory)
+
+    def clear_dir(self):
+        """
+        Removes all files in project directory.
+        """
+        try:
+            for root, dirs, files in os.walk(self.full_path()):
+                for f in files:
+                    os.unlink(os.path.join(root, f))
+                for d in dirs:
+                    shutil.rmtree(os.path.join(root, d))
+            return True
+        except IOError as e:
+            print e
+            return False
 
     def __unicode__(self):
         return self.full_path()

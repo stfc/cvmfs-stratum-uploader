@@ -1,5 +1,4 @@
 import re
-import shutil
 import os
 import tarfile
 
@@ -9,10 +8,11 @@ from archer.projects.models import Project
 
 
 class Package(models.Model):
-    def __get_upload_path(instance, filename):
-        return os.path.join(settings.MEDIA_ROOT, ".%s" % instance.project, filename).replace('/./', '/')
+    def __get_upload_path(self, filename):
+        return os.path.join(settings.MEDIA_ROOT, ".%s" % self.project, filename).replace('/./', '/')
 
     class Status:
+        """Enumeration for Package status"""
         new, uploaded, unpacking, deployed, cancelled, deleted, undeployed, error = range(8)
 
     __STATUSES = dict((value, name) for name, value in vars(Status).items() if not name.startswith('__'))
@@ -44,25 +44,22 @@ class Package(models.Model):
             and (os.path.isfile(self.file.path) and tarfile.is_tarfile(self.file.path))
 
     def filepath(self):
-        return self.file.path.replace(settings.MEDIA_ROOT, '')
+        """
+        Returns path to the file but hides the path to MEDIA directory.
+        """
+        return re.sub('^%s' % settings.MEDIA_ROOT, '', self.file.path)
 
     def filename(self):
-        return self.file.path.replace(os.path.join(settings.MEDIA_ROOT, self.project.full_path()[1::]) + '/', '')
-
-    @staticmethod
-    def clear_dir(dir):
-        try:
-            for root, dirs, files in os.walk(dir):
-                for f in files:
-                    os.unlink(os.path.join(root, f))
-                for d in dirs:
-                    shutil.rmtree(os.path.join(root, d))
-            return True
-        except IOError as e:
-            print e
-            return False
+        """
+        Returns name of the file without full path.
+        """
+        replace = os.path.join(settings.MEDIA_ROOT, self.project.full_path()[1::]) + '/'
+        return re.sub('^%s' % replace, '', self.file.path)
 
     def get_file_list(self):
+        """
+        Returns list of files in the tarfile.
+        """
         path = self.file.path
         if not os.path.isfile(path):
             return None
@@ -73,6 +70,14 @@ class Package(models.Model):
         return names
 
     def deploy(self, force=False):
+        """
+        Unpacks the tar file at the project directory.
+        Any previous content is deleted.
+
+        Returns True if deployment succeeded.
+        Raises IOError if file does not exist.
+        Raises ValueError if file is not a tar file.
+        """
         import tarfile
 
         if self.can_deploy or force:
@@ -84,11 +89,10 @@ class Package(models.Model):
             if not tarfile.is_tarfile(path):
                 self.status = Package.Status.error
                 self.save()
-                raise IOError('package file ' + path + ' is not tarball file')
-            cleared = Package.clear_dir(self.project.full_path())
+                raise ValueError('package file ' + path + ' is not tarball file')
+            cleared = self.project.clear_dir()
             if cleared:
                 tar = tarfile.open(path)
-                # tar.list()
                 tar.extractall(path=self.project.full_path())
                 tar.close()
                 self.status = Package.Status.deployed
@@ -102,6 +106,9 @@ class Package(models.Model):
             return False
 
     def remove(self):
+        """
+        Removes package file from MEDIA directory.
+        """
         result = False
         if os.path.isfile(self.file.path):
             os.unlink(self.file.path)

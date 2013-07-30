@@ -8,7 +8,7 @@ from django.template import loader
 from guardian.decorators import permission_required_or_403
 from django.template.context import RequestContext
 from django.views.generic import View
-from guardian.shortcuts import get_objects_for_user
+import guardian.shortcuts
 
 from archer.core.decorators import class_view_decorator
 from archer.projects.forms import UploadFileForm
@@ -22,9 +22,9 @@ def unauthenticated(request):
     return render(request, 'unauthenticated.html')
 
 
-def get_objects_for_user2(user, perms, klass=None, use_groups=True, any_perm=False):
+def get_objects_for_user(user, perms, klass=None, use_groups=True, any_perm=False):
     if user.is_authenticated():
-        return get_objects_for_user(user, perms, klass, use_groups, any_perm)
+        return guardian.shortcuts.get_objects_for_user(user, perms, klass, use_groups, any_perm)
     return []
 
 
@@ -32,7 +32,7 @@ def index(request):
     debug_info = {'user': pformat(request.user.__dict__),
                   'environ': pformat(dict(os.environ.items())),
                   'meta': pformat(dict(request.META))}
-    projects = get_objects_for_user2(request.user, 'projects.view_project')
+    projects = get_objects_for_user(request.user, 'projects.view_project')
     package_sets = [(project,
                      request.user.has_perm('projects.upload_package', project),
                      [package for package in project.package_set.order_by('-id')],
