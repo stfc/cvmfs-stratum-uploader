@@ -1,5 +1,6 @@
 import os
 import shutil
+from termios import VEOF
 from django.db import models
 
 
@@ -29,16 +30,16 @@ class Project(models.Model):
         """
         Removes all files in project directory.
         """
-        try:
-            for root, dirs, files in os.walk(self.full_path()):
-                for f in files:
-                    os.unlink(os.path.join(root, f))
-                for d in dirs:
-                    shutil.rmtree(os.path.join(root, d))
-            return True
-        except IOError as e:
-            print e
-            return False
+        if not os.path.isdir(self.file_system.mount_point):
+            raise ValueError("mount_point %s is not a directory" % self.file_system.mount_point)
+        if not os.path.isdir(self.full_path()):
+            raise ValueError("%s is not a directory" % self.full_path())
+        for root, dirs, files in os.walk(self.full_path()):
+            for f in files:
+                os.unlink(os.path.join(root, f))
+            for d in dirs:
+                shutil.rmtree(os.path.join(root, d))
+        return True
 
     def __unicode__(self):
         return self.full_path()

@@ -90,15 +90,15 @@ class Package(models.Model):
                 self.status = Package.Status.error
                 self.save()
                 raise ValueError('package file ' + path + ' is not tarball file')
-            cleared = self.project.clear_dir()
-            if cleared:
+            try:
+                self.project.clear_dir()
                 tar = tarfile.open(path)
                 tar.extractall(path=self.project.full_path())
                 tar.close()
                 self.status = Package.Status.deployed
                 self.save()
                 return True
-            else:
+            except ValueError, IOError:
                 self.status = Package.Status.error
                 self.save()
                 return False
