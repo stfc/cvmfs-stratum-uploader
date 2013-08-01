@@ -38,8 +38,28 @@
         </div>
     </div>
     <div class='row'>
-        <div class='span12'>
-            {% include '_filelist.html' with name='project content' files=files unfolded=True uid='projectContents' %}
+{#        <div class='span12'>#}
+{#            {% include '_filelist.html' with name='project content' files=files unfolded=True uid='projectContents' %}#}
+{##}
+{#        </div>#}
+
+        <div class='span7'>
+            <div class="accordion" id="accordion-{{ uid }}">
+                <div class="accordion-group">
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2"
+                           href="#collapseProject{{ project.id }}">
+                            project content
+                        </a>
+                    </div>
+                    <div id="collapseProject{{ project.id }}" class="accordion-body collapse in">
+                        <div class="accordion-inner">
+                            {% include 'tree/_tree.html' with subfiles=files %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {#            {% include '_filelist.html' with name='project content' files=files unfolded=True uid='projectContents' %}#}
         </div>
     </div>
 
