@@ -69,7 +69,7 @@ class Package(models.Model):
         names = tar.getnames()
         return names
 
-    def deploy(self, force=False):
+    def deploy(self, subdir='', force=False):
         """
         Unpacks the tar file at the project directory.
         Any previous content is deleted.
@@ -81,23 +81,24 @@ class Package(models.Model):
         import tarfile
 
         if self.can_deploy or force:
-            path = self.file.path
-            if not os.path.isfile(path):
-                raise IOError('package file ' + path + ' does not exist')
-            self.status = Package.Status.unpacking
-            self.save()
-            if not tarfile.is_tarfile(path):
+            file_path = self.file.path
+            if not os.path.isfile(file_path):
                 self.status = Package.Status.error
                 self.save()
-                raise ValueError('package file ' + path + ' is not tarball file')
-            try:
-                self.project.clear_dir()
-                tar = tarfile.open(path)
-                tar.extractall(path=self.project.full_path())
-                tar.close()
-                self.status = Package.Status.deployed
+                raise IOError('package file ' + file_path + ' does not exist')
+            if not tarfile.is_tarfile(file_path):
+                self.status = Package.Status.error
                 self.save()
-                return True
+                raise ValueError('package file ' + file_path + ' is not tarball file')
+            try:
+                self.project.clear_dir(subdir)
+                with tarfile.open(file_path) as tar:
+                    self.status = Package.Status.unpacking
+                    self.save()
+                    tar.extractall(path=self.project.full_path())
+                    self.status = Package.Status.deployed
+                    self.save()
+                    return True
             except (OSError, ValueError, IOError):
                 self.status = Package.Status.error
                 self.save()

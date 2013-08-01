@@ -16,7 +16,8 @@ class Test(Common):
 
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
             'NAME': 'archer_dev', # Or path to database file if using sqlite3.
             'TEST_NAME': 'archer_test',
             # The following settings are not used with sqlite3:
@@ -26,3 +27,7 @@ class Test(Common):
             'PORT': '', # Set to empty string for default.
         }
     }
+
+    PASSWORD_HASHERS = (
+        'django.contrib.auth.hashers.MD5PasswordHasher',
+    )

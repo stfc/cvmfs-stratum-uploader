@@ -1,14 +1,17 @@
 import os
 import shutil
-from termios import VEOF
 from django.db import models
 
 
 class FileSystem(models.Model):
+    alias = models.CharField(max_length=2000, blank=True)
     mount_point = models.CharField(max_length=2000, null=False, blank=False, unique=True)
 
     def __unicode__(self):
-        return self.mount_point
+        if self.alias is None:
+            return self.mount_point
+        else:
+            return self.alias
 
 
 class Project(models.Model):
@@ -26,15 +29,18 @@ class Project(models.Model):
     def full_path(self):
         return os.path.join(self.file_system.mount_point, self.directory)
 
-    def clear_dir(self):
+    def clear_dir(self, subdir=''):
         """
-        Removes all files in project directory.
+        Removes all files in project's directory.
         """
         if not os.path.isdir(self.file_system.mount_point):
             raise ValueError("mount_point %s is not a directory" % self.file_system.mount_point)
         if not os.path.isdir(self.full_path()):
-            raise ValueError("%s is not a directory" % self.full_path())
-        for root, dirs, files in os.walk(self.full_path()):
+            raise ValueError("project %s is not a directory" % self.full_path())
+        path = os.path.join(self.full_path(), subdir)
+        if not os.path.isdir(path):
+            raise ValueError("%s is not a directory" % path)
+        for root, dirs, files in os.walk(path):
             for f in files:
                 os.unlink(os.path.join(root, f))
             for d in dirs:

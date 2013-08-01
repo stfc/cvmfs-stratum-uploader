@@ -32,16 +32,17 @@ def deploy(request, package_id):
     project = Project.objects.get(pk=package.project_id)
     if not request.user.has_perm('projects.deploy_package', project):
         raise PermissionDenied
-
     if not package.can_deploy():
         messages.add_message(request, messages.ERROR, 'Cannot deploy a package!')
         return render(request, 'packages/show.html', {'package': package})
     else:
-        for p in Package.objects.filter(status=Package.Status.deployed):
-            p.status = Package.Status.undeployed
-            p.save()
+        # for p in Package.objects.filter(status=Package.Status.deployed):
+        #     p.undeploy()
         try:
-            result = package.deploy()
+            if request.POST.has_key('subdir'):
+                result = package.deploy(request.POST['subdir'])
+            else:
+                result = package.deploy()
             if result:
                 messages.add_message(request, messages.INFO, 'Package deployed!')
             else:
