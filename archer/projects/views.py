@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render, render_to_response
 from django.template import loader
+from django.utils.safestring import mark_safe
 from guardian.decorators import permission_required_or_403
 from django.template.context import RequestContext
 from django.views.generic import View
@@ -67,35 +68,60 @@ class UploadView(View):
                                   context_instance=RequestContext(request))
 
 
+# @permission_required_or_403('projects.view_project', (Project, 'pk', 'project_id'))
+def rmdir(request, project_id, path):
+    pass
+
+
+def mkdir(request, project_id):
+    pass
+
+
 @permission_required_or_403('projects.view_project', (Project, 'pk', 'project_id'))
 def show(request, project_id):
     project = Project.objects.get(pk=project_id)
+    can_upload = request.user.has_perm('projects.upload_package', project)
     path = project.full_path()
 
     def index_maker():
         def _index(root):
             # rfiles = []
             files = os.listdir(root)
+            files_only = []
             for mfile in files:
                 t = os.path.join(root, mfile)
                 if os.path.isdir(t):
                     yield loader.render_to_string('tree/_folder.html',
                                                   {'file': mfile + '/',
-                                                   'subfiles': _index(os.path.join(root, t))})
+                                                   'subfiles': _index(os.path.join(root, t)),
+                                                   'can_upload': can_upload,
+                                                   'project_id': project_id,
+                                                   'path': root + '/' + mfile,
+                                                  })
                     continue
-                yield loader.render_to_string('tree/_file.html',
-                                              {'file': mfile})
-            #         rfiles += ('dir', mfile + '/', index(os.path.join(root, t)))
-            #     else:
-            #         rfiles += ('file', mfile)
-            # return rfiles
+                files_only += [mfile]
+            if len(files_only) > 0:
+                pre = len(files_only) > 50
+                if pre:
+                    files_only = "\n".join(files_only)
+                yield loader.render_to_string('tree/_files.html',
+                                              {'files': files_only,
+                                               'project_id': project_id,
+                                               'path': root + '/' + mfile,
+                                               'pre': pre,
+                                              })
+                #         rfiles += ('dir', mfile + '/', index(os.path.join(root, t)))
+                #     else:
+                #         rfiles += ('file', mfile)
+                # return rfiles
+
         if not os.path.isdir(path):
             return None
         return _index(path)
 
     return render_to_response('projects/show.html',
                               {'project': project,
-                               'can_upload': request.user.has_perm('projects.upload_package', project),
+                               'can_upload': can_upload,
                                'packages': [package for package in project.package_set.order_by('-id')],
                                'files': index_maker(),
                               },

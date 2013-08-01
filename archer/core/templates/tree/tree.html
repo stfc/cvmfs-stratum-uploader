@@ -1,0 +1,19 @@
+<div class="accordion" id="accordion-{{ uid }}">
+    <div class="accordion-group">
+        <div class="accordion-heading">
+            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2"
+               href="#collapseProject{{ project.id }}">
+                {{ name }}
+            </a>
+        </div>
+        <div id="collapseProject{{ project.id }}" class="accordion-body collapse in">
+            <div class="accordion-inner">
+                <div class='tree well'>
+                    <a class='expand_all'><i class='icon-plus-sign'></i></a>
+                    <a class='collapse_all'><i class='icon-minus-sign'></i></a>
+                    {% include 'tree/_tree.html' with subfiles=files %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
