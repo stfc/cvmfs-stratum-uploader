@@ -24,9 +24,11 @@ $(function () {
     });
     $('.tree a.collapse_all').on('click', function(e) {
         $('.tree li.parent_li > ul > li').hide();
+        $('.tree li.parent_li > span.folder > span.name').attr('title', 'Expand this branch').find(' > i').addClass('icon-folder-close').removeClass('icon-folder-open');;
     });
     $('.tree a.expand_all').on('click', function(e) {
         $('.tree li.parent_li > ul > li').show();
+        $('.tree li.parent_li > span.folder > span.name').attr('title', 'Collapse this branch').find(' > i').addClass('icon-folder-open').removeClass('icon-folder-close');
     });
 
     $('.tree li.parent_li > span.folder > span.actions').on('click', function (e) {
