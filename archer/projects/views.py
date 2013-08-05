@@ -116,10 +116,13 @@ def deploy(request, project_id, path):
 
                 try:
                     package.deploy(path)
+                    messages.add_message(request, messages.SUCCESS,
+                                         'Package "%s" successfully deployed in "%s" directory' % (package, path))
                 except (IOError, ValueError) as e:
                     messages.add_message(request, messages.ERROR, 'Cannot deploy a package "%s": %s' % (package, e))
             else:
-                messages.add_message(request, messages.ERROR, 'Does not have permission to deploy package "%s"!' % package)
+                messages.add_message(request, messages.ERROR,
+                                     'Does not have permission to deploy package "%s"!' % package)
         else:
             messages.add_message(request, messages.ERROR, 'Cannot deploy a package "%s"!' % package)
         return HttpResponseRedirect(reverse('projects:show', args=[project_id]))
@@ -128,13 +131,14 @@ def deploy(request, project_id, path):
         projects_packages = Package.objects.filter(project_id=project_id)
         packages = [package for package in projects_packages if
                     request.user.has_perm('packages.deploy_package', package) and package.can_deploy()
-                    ]
+        ]
         return render_to_response('projects/deploy.html',
                                   {'packages': packages,
                                    'project_id': project_id,
                                    'path': path,
                                   },
                                   context_instance=RequestContext(request))
+
 
 @class_view_decorator(permission_required_or_403('projects.remove_directory', (Project, 'pk', 'project_id')))
 class RemoveDirectory(ModifyDirectory):

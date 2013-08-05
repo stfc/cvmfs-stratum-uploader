@@ -43,7 +43,9 @@
 
     {% bootstrap_messages %}
 
-    {% block content %}Empty page{% endblock %}
+    <div id="content">
+        {% block content %}Empty page{% endblock %}
+    </div>
 
     {% block debug_content %}
         {% include 'debug.html' %}
