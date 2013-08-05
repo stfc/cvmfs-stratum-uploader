@@ -14,6 +14,7 @@
         {{ form | as_bootstrap }}
         <div class="form-actions">
             <input type="submit" class="btn btn-primary" value="Upload"/>
+            <a class='btn' href='{% url 'projects:show' project_id %}'>Cancel</a>
         </div>
     </form>
 

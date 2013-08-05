@@ -119,5 +119,4 @@ class Package(models.Model):
         return result
 
     def __unicode__(self):
-        return 'Package[project=' + str(self.project) + ', file=' + str(self.file) + ', status=' + Package.__STATUSES[
-            self.status] + ']'
+        return self.filename()

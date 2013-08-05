@@ -11,9 +11,11 @@
 
         <form action='{% url 'projects:deploy' project_id path %}' class='form' method='post'>
             {% csrf_token %}
-        <span class='path monospaced'>
-            {{ path }}
-        </span>
+            <a href='{% url 'projects:show' project_id path %}'>
+                <span class='path monospaced'>
+                    {{ path }}
+                </span>
+            </a>
             <div class="control-group required">
                 <label class="control-label" for="id_package">Package</label>
                 <div class="controls">
@@ -29,6 +31,7 @@
             </div>
             <div class="form-actions">
                 <input type="submit" class="btn btn-primary" value="Deploy"/>
+                <a class='btn' href='{% url 'projects:show' project_id path %}'>Cancel</a>
             </div>
         </form>
     </div>

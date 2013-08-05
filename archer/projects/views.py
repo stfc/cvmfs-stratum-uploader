@@ -213,7 +213,7 @@ class MakeDirectory(ModifyDirectory):
 
 
 @permission_required_or_403('projects.view_project', (Project, 'pk', 'project_id'))
-def show(request, project_id):
+def show(request, project_id, path=''):
     project = Project.objects.get(pk=project_id)
     can_upload = request.user.has_perm('projects.upload_package', project)
     can_deploy = request.user.has_perm('projects.deploy_package', project)
@@ -267,5 +267,6 @@ def show(request, project_id):
                                'can_deploy': can_deploy,
                                'packages': [package for package in project.package_set.order_by('-id')],
                                'files': index_maker(),
+                               'path': path,
                               },
                               context_instance=RequestContext(request))

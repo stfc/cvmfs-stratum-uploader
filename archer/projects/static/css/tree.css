@@ -83,7 +83,7 @@
     visibility: visible;
 }
 
-.mkdir form > span.path, .rmdir form > span.path, .deploy form > span.path {
+.mkdir form span.path, .rmdir form span.path, .deploy form span.path {
     cursor: pointer;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
@@ -96,7 +96,7 @@
     border: 1px solid #94a0b4;
     color: #000;
 }
-.mkdir form > span.path:hover, .rmdir form > span.path:hover, .deploy form > span.path:hover {
+.mkdir form span.path:hover, .rmdir form span.path:hover, .deploy form span.path:hover {
     background: #eee;
     border: 1px solid #94a0b4;
     color: #000;
