@@ -5,11 +5,12 @@
             {{ file }}
         </span>
         <span class='actions'>
-            {% if can_upload %}
-                <a href='{% url 'projects:upload' project_id %}'><i class='icon-download-alt'></i></a>
+            {% if can_deploy %}
+                <a title='Deploy package' href='{% url 'projects:deploy' project_id path %}'><i class='icon-download-alt'></i></a>
             {% endif %}
             <a href='{% url 'projects:rmdir' project_id path %}'><i class='icon-trash'></i></a>
-            <a href='{% url 'projects:mkdir' project_id %}'><i class='icon-plus-sign'></i></a>
+            <a href='{% url 'projects:mkdir' project_id path %}'><i class='icon-plus-sign'></i></a>
+{#            <a class='ajax-link' href='{% url 'projects:mkdir' project_id path %}'><i class='icon-plus-sign'></i></a>#}
         </span>
     </span>
     <ul>

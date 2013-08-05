@@ -29,6 +29,10 @@ class Project(models.Model):
     def full_path(self):
         return os.path.join(self.file_system.mount_point, self.directory)
 
+    def subdir(self, subdir=''):
+        """ TODO: add validations """
+        return os.path.join(self.full_path(), subdir)
+
     def clear_dir(self, subdir=''):
         """
         Removes all files in project's directory.

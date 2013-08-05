@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% load bootstrap_toolkit %}
+
+{% block content %}
+
+    <div class='deploy'>
+        <h1>Deploy directory</h1>
+
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+        <form action='{% url 'projects:deploy' project_id path %}' class='form' method='post'>
+            {% csrf_token %}
+        <span class='path monospaced'>
+            {{ path }}
+        </span>
+            <div class="control-group required">
+                <label class="control-label" for="id_package">Package</label>
+                <div class="controls">
+                    <select id="id_package" name="package">
+                        <option value="" selected="selected">---------</option>
+                        {% for package in packages %}
+                        <option value="{{ package.id }}">
+                            {{ package.filename }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="form-actions">
+                <input type="submit" class="btn btn-primary" value="Deploy"/>
+            </div>
+        </form>
+    </div>
+
+
+{% endblock %}

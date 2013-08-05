@@ -40,8 +40,8 @@ class Package(models.Model):
         return self.status in [Package.Status.deployed, Package.Status.undeployed, Package.Status.uploaded]
 
     def can_deploy(self):
-        return self.status in [Package.Status.uploaded, Package.Status.undeployed, Package.Status.cancelled] \
-            and (os.path.isfile(self.file.path) and tarfile.is_tarfile(self.file.path))
+        return self.status in [Package.Status.uploaded, Package.Status.undeployed, Package.Status.cancelled, Package.Status.deployed] \
+            and (os.path.isfile(self.file.path) and tarfile.is_tarfile(self.file.path)) # TODO
 
     def filepath(self):
         """
@@ -91,11 +91,11 @@ class Package(models.Model):
                 self.save()
                 raise ValueError('package file ' + file_path + ' is not tarball file')
             try:
-                self.project.clear_dir(subdir)
+                # self.project.clear_dir(subdir)
                 with tarfile.open(file_path) as tar:
                     self.status = Package.Status.unpacking
                     self.save()
-                    tar.extractall(path=self.project.full_path())
+                    tar.extractall(path=self.project.subdir(subdir))
                     self.status = Package.Status.deployed
                     self.save()
                     return True

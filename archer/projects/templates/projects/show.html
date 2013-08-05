@@ -7,7 +7,7 @@
 
     <div class='row'>
         <div class='span7'>
-            <div class='hero-unit lesser-hero-unit'>
+            <div class='lesser-hero-unit hero-unit lesser-hero-unit'>
                 <h3>{{ package.file }}</h3>
 
                 <div class='span3'>
@@ -25,6 +25,9 @@
                 <dl class='dl-horizontal dl-unwrapped-horizontal'>
                     <dt></dt>
                     <dd>
+                        {% if can_upload %}
+                            <a title='Upload' href='{% url 'projects:upload' project.id %}'><i class='icon-upload'></i></a>
+                        {% endif %}
                         <a href="{% url 'projects:index' %}">Back</a>
                     </dd>
                 </dl>
