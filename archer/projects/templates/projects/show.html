@@ -26,9 +26,9 @@
                     <dt></dt>
                     <dd>
                         {% if can_upload %}
-                            <a title='Upload' href='{% url 'projects:upload' project.id %}'><i class='icon-upload'></i></a>
+                            <a class='btn' title='Upload' href='{% url 'projects:upload' project.id %}'><i class='icon-upload'></i>Upload</a>
                         {% endif %}
-                        <a href="{% url 'projects:index' %}">Back</a>
+                        <a class='btn' href="{% url 'projects:index' %}">Back</a>
                     </dd>
                 </dl>
             </div>
@@ -38,10 +38,6 @@
         </div>
     </div>
     <div class='row'>
-{#        <div class='span12'>#}
-{#            {% include '_filelist.html' with name='project content' files=files unfolded=True uid='projectContents' %}#}
-{#        </div>#}
-
         <div class='span7'>
             {% include 'tree/tree.html' with name='project content' files=files unfolded=True uid='projectContents' %}
         </div>

@@ -12,7 +12,7 @@
                         <div class='span3'>
                             <a href="{% url 'projects:show' project.id %}">{{ project }}</a>
                             {% if can_upload %}
-                                <a href='{% url 'projects:upload' project.id %}'>Upload</a>
+                                <a class='btn btn-small' title='Upload' href='{% url 'projects:upload' project.id %}'><i class='icon-upload'></i>Upload</a>
                             {% endif %}
                         </div>
                         <div class='span6'>

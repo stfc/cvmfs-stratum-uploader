@@ -15,10 +15,10 @@
         <div id="collapseProject{{ project.id }}" class="accordion-body collapse in">
             <div class="accordion-inner">
                 <div class='tree well'>
-                    <a title='expand all branches' class='expand_all'><i class='icon-plus'></i></a>
-                    <a title='collapse all branches' class='collapse_all'><i class='icon-minus'></i></a>
-                    <a title='deploy package' href='{% url 'projects:deploy' project.id '.' %}'><i class='icon-download-alt'></i>deploy</a>
-                    <a title='make directory' href='{% url 'projects:mkdir' project.id '.' %}'><i class='icon-plus-sign'></i>mkdir</a>
+                    <a class='btn btn-mini expand_all' title='expand all branches'><i class='icon-plus'></i></a>
+                    <a class='btn btn-mini collapse_all' title='collapse all branches'><i class='icon-minus'></i></a>
+                    <a class='btn btn-mini' title='deploy package' href='{% url 'projects:deploy' project.id '.' %}'><i class='icon-download-alt'></i>deploy</a>
+                    <a class='btn btn-mini' title='make directory' href='{% url 'projects:mkdir' project.id '.' %}'><i class='icon-plus-sign'></i>mkdir</a>
                     {% include 'tree/_tree.html' with subfiles=files %}
                 </div>
             </div>

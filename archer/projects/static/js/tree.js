@@ -22,11 +22,12 @@ $(function () {
         }
         e.stopPropagation();
     });
-    $('.tree a.collapse_all').on('click', function(e) {
+    $('.tree a.collapse_all').on('click', function (e) {
         $('.tree li.parent_li > ul > li').hide();
-        $('.tree li.parent_li > span.folder > span.name').attr('title', 'Expand this branch').find(' > i').addClass('icon-folder-close').removeClass('icon-folder-open');;
+        $('.tree li.parent_li > span.folder > span.name').attr('title', 'Expand this branch').find(' > i').addClass('icon-folder-close').removeClass('icon-folder-open');
+        ;
     });
-    $('.tree a.expand_all').on('click', function(e) {
+    $('.tree a.expand_all').on('click', function (e) {
         $('.tree li.parent_li > ul > li').show();
         $('.tree li.parent_li > span.folder > span.name').attr('title', 'Collapse this branch').find(' > i').addClass('icon-folder-open').removeClass('icon-folder-close');
     });
@@ -36,9 +37,4 @@ $(function () {
     });
     $('.tree li.parent_li > ul > li').hide();
     $('.tree').show();
-//    (function (e) {
-//        var children = $(this).parent('li.parent_li').find(' > ul > li');
-//        var that = $(this).find(' > span.name');
-//        collapse(that, children, 1);
-//    });
 });
