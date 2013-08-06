@@ -31,7 +31,6 @@ def get_objects_for_user(user, perms, klass=None, use_groups=True, any_perm=Fals
         return guardian.shortcuts.get_objects_for_user(user, perms, klass, use_groups, any_perm)
     return []
 
-
 def index(request):
     debug_info = {'user': pformat(request.user.__dict__),
                   'environ': pformat(dict(os.environ.items())),
