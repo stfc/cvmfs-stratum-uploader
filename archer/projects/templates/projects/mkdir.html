@@ -11,7 +11,7 @@
 
         <form action='{% url 'projects:mkdir' project_id path %}' class='form' method='post'>
             {% csrf_token %}
-            <a href='{% url 'projects:show' project_id %}'>
+            <a href='{% url 'projects:show' project_id path %}'>
                 <span class='path monospaced'>
                     {{ path }}
                 </span>
@@ -19,7 +19,7 @@
             {{ form | as_bootstrap }}
             <div class="form-actions">
                 <input type="submit" class="btn btn-primary" value="Create"/>
-                <a class='btn' href='{% url 'projects:show' project_id %}'>Cancel</a>
+                <a class='btn' href='{% url 'projects:show' project_id path %}'>Cancel</a>
             </div>
         </form>
     </div>

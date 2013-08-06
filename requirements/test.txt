@@ -3,3 +3,4 @@ django-coverage
 django-nose
 mock
 nosexcover
+-e git+git@github.com:SeanHayes/django-inmemorystorage.git#egg=django-inmemorystorage

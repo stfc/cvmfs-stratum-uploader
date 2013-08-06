@@ -8,7 +8,7 @@ class FileSystem(models.Model):
     mount_point = models.CharField(max_length=2000, null=False, blank=False, unique=True)
 
     def __unicode__(self):
-        if self.alias is None:
+        if self.alias is None or len(self.alias) == 0:
             return self.mount_point
         else:
             return self.alias

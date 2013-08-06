@@ -2,13 +2,14 @@ import os
 import shutil
 import uuid
 from django.utils.unittest import TestCase
-from models import Project, FileSystem
+from archer.projects.models import Project, FileSystem
 
 
 class ProjectTestCase(TestCase):
     def setUp(self):
         uid = str(uuid.uuid4())[0:8]
-        self.fs = FileSystem.objects.create(mount_point=('/tmp/cvmfs-%s' % uid))
+        self.mount_point = ('/tmp/cvmfs-%s' % uid)
+        self.fs = FileSystem.objects.create(mount_point=self.mount_point)
         os.makedirs(self.fs.mount_point)
 
         # def remove_mount_point():
@@ -65,3 +66,15 @@ class ProjectTestCase(TestCase):
         with self.assertRaises(ValueError):
             p = Project(file_system=self.fs, directory='project2')
             p.clear_dir()
+
+    def test_subdir_none_or_empty(self):
+        should_be = '%s/%s' % (self.mount_point, self.project1.directory)
+
+        dir1 = self.project1.subdir()
+        dir2 = self.project1.subdir('')
+        dir3 = self.project1.subdir('.')
+        dir4 = self.project1.subdir('././.')
+
+        self.assertEqual(os.path.realpath(dir1), should_be)
+        self.assertEqual(os.path.realpath(dir2), should_be)
+        self.assertEqual(os.path.realpath(dir3), should_be)

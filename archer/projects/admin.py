@@ -4,11 +4,11 @@ from archer.projects.models import FileSystem, Project
 
 
 class ProjectAdmin(GuardedModelAdmin):
-    list_display = ('file_system', 'directory')
+    list_display = ('__unicode__', 'file_system', 'directory')
 
 
 class FileSystemAdmin(GuardedModelAdmin):
-    pass
+    list_display = ('__unicode__', 'alias', 'mount_point')
 
 
 admin.site.register(FileSystem, admin_class=FileSystemAdmin)

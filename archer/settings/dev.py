@@ -1,5 +1,5 @@
 # noinspection PyUnresolvedReferences
-from common import Common
+from archer.settings.common import Common
 
 
 class Dev(Common):

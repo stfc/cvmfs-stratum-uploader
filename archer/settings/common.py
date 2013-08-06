@@ -191,7 +191,7 @@ class Common(Settings):
 
     AUTH_USER_MODEL = 'custom_auth.User'
 
-    ANONYMOUS_USER_ID = -1
+    ANONYMOUS_USER_ID = 1
 
     FIXTURE_DIRS = (
         os.path.join(PROJECT_ROOT, 'fixtures/')
