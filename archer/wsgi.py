@@ -20,7 +20,7 @@ import os
 # mod_wsgi daemon mode with each site in its own daemon process, or use
 # os.environ["DJANGO_SETTINGS_MODULE"] = "archer.settings"
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "archer.settings")
-os.environ.setdefault('DJANGO_CONFIGURATION', 'Production')
+os.environ.setdefault('DJANGO_CONFIGURATION', 'Prod')
 
 
 # This application object is used by any WSGI server configured to use this

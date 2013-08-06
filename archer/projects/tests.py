@@ -68,13 +68,34 @@ class ProjectTestCase(TestCase):
             p.clear_dir()
 
     def test_subdir_none_or_empty(self):
-        should_be = '%s/%s' % (self.mount_point, self.project1.directory)
+        path = '%s/%s' % (self.mount_point, self.project1.directory)
 
-        dir1 = self.project1.subdir()
+        dir0 = self.project1.subdir()
+        dir1 = self.project1.subdir(None)
         dir2 = self.project1.subdir('')
         dir3 = self.project1.subdir('.')
         dir4 = self.project1.subdir('././.')
 
-        self.assertEqual(os.path.realpath(dir1), should_be)
-        self.assertEqual(os.path.realpath(dir2), should_be)
-        self.assertEqual(os.path.realpath(dir3), should_be)
+        self.assertEqual(dir0, path)
+        self.assertEqual(dir1, path)
+        self.assertEqual(dir2, path)
+        self.assertEqual(dir3, path)
+        self.assertEqual(dir4, path)
+
+    def test_subdir_allowed_parent(self):
+        subdir = 'foo/bar'
+        path = '%s/%s/%s' % (self.mount_point, self.project1.directory, subdir)
+
+        dir = self.project1.subdir('foo/bar/../bar')
+
+        self.assertEqual(dir, path)
+
+    def test_subdir_disallowed_parent(self):
+        with self.assertRaises(ValueError):
+            self.project1.subdir('foo/../../foo/bar')
+
+    def test_subdir_root_dir(self):
+        with self.assertRaises(ValueError):
+            self.project1.subdir('/tmp')
+
+

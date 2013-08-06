@@ -30,8 +30,17 @@ class Project(models.Model):
         return os.path.join(self.file_system.mount_point, self.directory)
 
     def subdir(self, subdir=''):
-        """ TODO: add validations """
-        return os.path.join(self.full_path(), subdir)
+        """
+        Returns absolute path to subdirectory of `self.directory`.
+        Raises ValueError if `subdir` is not a offspring of `self.directory`.
+        """
+        if subdir is None or len(subdir) == 0:
+            return self.full_path()
+        if subdir.startswith('/'):
+            raise ValueError('Cannot provide root path "%s" as subdir!' % subdir)
+        if os.path.relpath(subdir).startswith('..'):
+            raise ValueError('')
+        return os.path.abspath(os.path.join(self.full_path(), subdir))
 
     def clear_dir(self, subdir=''):
         """
@@ -41,7 +50,7 @@ class Project(models.Model):
             raise ValueError("mount_point %s is not a directory" % self.file_system.mount_point)
         if not os.path.isdir(self.full_path()):
             raise ValueError("project %s is not a directory" % self.full_path())
-        path = os.path.join(self.full_path(), subdir)
+        path = self.subdir(subdir)
         if not os.path.isdir(path):
             raise ValueError("%s is not a directory" % path)
         for root, dirs, files in os.walk(path):
