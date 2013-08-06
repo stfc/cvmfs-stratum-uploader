@@ -1,6 +1,11 @@
 #!/usr/bin/ruby
 # ruby 1.9 or 2.0 is required
 
+guard 'livereload' do
+  watch(%r{.+\.(css|html|js)$})
+  watch(%r{archer/.+\.(py)$})
+end
+
 guard :shell do
   cmd = 'python ./manage.py test'
   watch(%r{^archer/(packages|projects)/(models|views|tests|admin)\.py$}) do |p|
@@ -17,4 +22,3 @@ guard :shell do
     end
   end
 end
-
