@@ -2,7 +2,7 @@
 # ruby 1.9 or 2.0 is required
 
 guard :shell do
-  cmd = 'python ./test_manage.py test'
+  cmd = 'python ./manage.py test'
   watch(%r{^archer/(packages|projects)/(models|views|tests|admin)\.py$}) do |p|
     file = "archer.#{p[1]}.#{p[2]}"
     test_file = "archer.#{p[1]}"

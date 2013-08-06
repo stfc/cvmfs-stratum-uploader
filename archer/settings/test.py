@@ -1,4 +1,8 @@
 # noinspection PyUnresolvedReferences
+import os
+from configurations import importer
+importer.install()
+
 from archer.settings.common import Common
 
 

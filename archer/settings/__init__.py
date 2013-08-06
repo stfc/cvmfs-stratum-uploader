@@ -1,4 +1,19 @@
-from dev import *
-from prod import *
-from test import *
+import os
+import configurations.importer
+configurations.importer.install()
 
+from dev import Dev
+from prod import Production
+from test import Test
+
+# hack is needed to make sniffer/nosetests command work with django-configurations plugin
+if os.environ['DJANGO_CONFIGURATION'] == 'Test':
+    ANONYMOUS_USER_ID = Test.ANONYMOUS_USER_ID
+    SOUTH_TESTS_MIGRATE = Test.SOUTH_TESTS_MIGRATE
+    INSTALLED_APPS = Test.INSTALLED_APPS
+    TEST_RUNNER = Test.TEST_RUNNER
+    SECRET_KEY = Test.SECRET_KEY
+    DATABASES = Test.DATABASES
+    TEST_RUNNER = Test.TEST_RUNNER
+    PASSWORD_HASHERS = Test.PASSWORD_HASHERS
+    DEFAULT_FILE_STORAGE = Test.DEFAULT_FILE_STORAGE
