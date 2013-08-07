@@ -16,6 +16,7 @@ $(function () {
 ////        return false;
 //    });
 
+
     $('a.ajax-link').click(function() {
         console.log($('#actions-content'));
         $('#actions-content').load($(this).attr('href') + ' #content');

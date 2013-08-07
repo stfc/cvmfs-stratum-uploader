@@ -7,10 +7,10 @@
     <title>Archer Uploader</title>
     <meta name="author" content="Michał Knapik">
     <link rel='stylesheet' href='{% static 'jasny/css/bootstrap-fileupload.min.css' %}'>
-    <link rel='stylesheet' href='{% static 'css/tree.css' %}'>
     {% bootstrap_stylesheet_tag %}
     {% bootstrap_stylesheet_tag "responsive" %}
-    <link rel='stylesheet' href='{% static 'css/custom-bootstrap.css' %}'>
+    <link rel='stylesheet' href='{% static 'css/core.css' %}'>
+    <link rel='stylesheet' href='{% static 'css/projects.css' %}'>
     <style type="text/css">
         body {
             padding-top: 60px;
@@ -23,7 +23,7 @@
     <![endif]-->
     <script src='{% static 'js/jquery-2.0.3.min.js' %}'></script>
     <script src='{% static 'jasny/js/bootstrap-fileupload.min.js' %}'></script>
-    <script src='{% static 'js/ajax.js' %}'></script>
+    <script src='{% static 'js/core.js' %}'></script>
     {% bootstrap_javascript_tag %}
     {% block extra_head %}{% endblock %}
 </head>
