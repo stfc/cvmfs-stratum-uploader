@@ -220,7 +220,7 @@ export APP_DIR=/var/www/t1student0.esc.rl.ac.uk
       SSLCertificateKeyFile /path/hostkey.pem
       SSLCACertificatePath  /path/certificates
     ```
-
+3. Set the correct `WSGIPythonPath`. It should look like `$APP_DIR:$VENV_DIR/lib/$PYTHON_VERSION/site-package`.
 4. Adjust the configuration for this site by changing the paths if you used different ones than in this guide.
     1. ...
 5. Enable the site
@@ -239,7 +239,23 @@ export APP_DIR=/var/www/t1student0.esc.rl.ac.uk
 ...
 
 ## Uploader initial data
-...
+
+1. The database can be initialized with `manage.py`:
+    1. Create database structure:
+        
+        ```bash
+        DJANGO_CONFIGURATION=Production python manage.py syncdb
+        DJANGO_CONFIGURATION=Production python manage.py migrate
+        ```
+    2. Load example data:
+        
+        ```bash
+        DJANGO_CONFIGURATION=Production python manage.py loaddata fixtures/auth.json
+        DJANGO_CONFIGURATION=Production python manage.py loaddata fixtures/custom_auth.json
+        DJANGO_CONFIGURATION=Production python manage.py loaddata fixtures/guardian.json
+        DJANGO_CONFIGURATION=Production python manage.py loaddata fixtures/projects.json
+        DJANGO_CONFIGURATION=Production python manage.py sync_perms
+        ```
 
 # Development
 
