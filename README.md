@@ -17,9 +17,16 @@ sudo pip install virtualenv
 + **PostgreSQL** 9.1.9
 + Apache **httpd** 2.2.22
 
+
+For convenience export the application directory as an environmental variable:
+
+```bash
+export APP_DIR=/var/www/t1student0.esc.rl.ac.uk
+```
+
 ## Database
 
-# sqlite3
+### sqlite3
 
 1. Create empty database file with proper `chmod`:
 
@@ -33,7 +40,7 @@ sudo pip install virtualenv
     chgrp www-data $APP_DIR/db
     ```
 
-# PostgreSQL
+### PostgreSQL
 
 1. Login to `psql`:
 
@@ -53,7 +60,7 @@ sudo pip install virtualenv
 
 ## VirtualEnv
 
-1. Create new `VirtualEnv` for the project. You can choose any location from which `httpd` can read from.
+1. Create new `VirtualEnv` for the project. You can choose any location from which `httpd` can read from. Add `--system-site-packages` option if using PostgreSQL.
 
     ```bash
     virtualenv /opt/venv/uploader
@@ -66,11 +73,6 @@ sudo pip install virtualenv
 
 ## Web Application
 
-0. For convenience export the application directory as an environmental variable:
-
-    ```bash
-    export APP_DIR=/var/www/t1student0.esc.rl.ac.uk
-    ```
 1. Get the application. The app can be placed anywhere but we will use `/var/www/t1student0.esc.rl.ac.uk`.
     + unpack the `uploader.tar.gz`:
 
@@ -100,20 +102,6 @@ sudo pip install virtualenv
 ## Configure the Uploader
 
 1. Open `archer/settings/production.py` and set the database connection credentials
-    + PostgreSQL:
-
-        ```python
-            DATABASES = {
-                'default': {
-                    'ENGINE': 'django.db.backends.postgresql_psycopg2',
-                    'NAME': 'uploader',
-                    'USER': 'django',
-                    'PASSWORD': 'password',
-                    'HOST': 'localhost', # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-                    'PORT': '', # Set to empty string for default.
-                }
-            }
-        ```
     + sqlite3:
 
         ```python
@@ -128,19 +116,38 @@ sudo pip install virtualenv
                 }
             }
         ```
-
-2. Open `archer/settings/common.py` and set paths to directories.
-    1. Set `PROJECT_ROOT` to application directory (`$APP_DIR`):
+    + PostgreSQL:
 
         ```python
-            PROJECT_ROOT = '/var/www/t1student0.esc.rl.ac.uk/'
+            DATABASES = {
+                'default': {
+                    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                    'NAME': 'uploader',
+                    'USER': 'django',
+                    'PASSWORD': 'password',
+                    'HOST': 'localhost', # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+                    'PORT': '', # Set to empty string for default.
+                }
+            }
         ```
+
+2. Open `archer/settings/common.py` and set paths to directories.
     2. Change `SECRET_KEY` (production only):
 
         ```python
             SECRET_KEY = 'apksigo!uh4gth@7nco7y2biavj=0fxd0b3@2!ax6*rb29fq=w'
         ```
     9. Customize if needed:
+        1. Set `PROJECT_ROOT` to application directory (`$APP_DIR`):
+
+            ```python
+                PROJECT_ROOT = '/var/www/t1student0.esc.rl.ac.uk/'
+            ```
+        1. Set `HOSTNAME`:
+            
+            ```python
+            HOSTNAME = get_host_name()
+            ```
         1. modify `MEDIA_ROOT` to set location of uploaded files on the filesystem:
 
             ```python
