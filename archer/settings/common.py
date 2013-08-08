@@ -8,7 +8,7 @@ class Common(Settings):
         ('vwa13376', 'admin'),
     )
 
-    PROJECT_ROOT = '/var/www/t1student0.esc.rl.ac.uk/'
+    PROJECT_ROOT = os.path.join(__file__, '../../..')
 
     TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
                                    "django.core.context_processors.debug",
