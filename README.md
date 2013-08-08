@@ -83,7 +83,7 @@ export APP_DIR=/var/www/t1student0.esc.rl.ac.uk
     + or clone it with `git`:
 
         ```bash
-        git clone ssh://git@github.org:mknapik/uploader.git $APP_DIR
+        git clone https://github.com/mknapik/uploader.git $APP_DIR
         ```
 3. Install application dependencies using `pip`.
     1. Make sure you activated just created `VirtualEnv`.
