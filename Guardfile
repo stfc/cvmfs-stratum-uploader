@@ -7,17 +7,17 @@ guard 'bundler' do
   # watch(/^.+\.gemspec/)
 end
 
+guard :copy, from: 'archer/assets/js', to: 'archer/static/js/', mkpath: true do
+  watch(%r{^.+\.js$})
+end
+
+guard :copy, from: 'archer/assets/css', to: 'archer/static/css/', mkpath: true do
+  watch(%r{^.+\.css$})
+end
+
 guard :coffeescript, input: 'archer/assets/coffee', output: 'archer/static/js'
 
 guard :sass, input: 'archer/assets/sass', output: 'archer/static/css'
-
-guard :copy, :from => 'archer/assets/js', :to => 'archer/static/js', :mkpath => true  do
-  watch(/^.+\.js$/)
-end
-
-guard :copy, :from => 'archer/assets/css', :to => 'archer/static/css', :mkpath => true do
-  watch(/^.+\.css$/)
-end
 
 # This will concatenate the javascript files specified in :files to public/js/all.js
 guard :concat, type: 'js', files: %w(tree), input_dir: "archer/static/js/projects", output: "archer/static/js/projects"
@@ -26,7 +26,7 @@ guard :concat, type: 'js', files: %w(jquery-2.0.3 ajax), input_dir: "archer/stat
 guard :concat, type: 'css', files: %w(custom_bootstrap), input_dir: 'archer/static/css/core', output: 'archer/static/css/core'
 guard :concat, type: 'css', files: %w(tree actions), input_dir: 'archer/static/css/projects', output: 'archer/static/css/projects'
 
-['archer/static/js/projects'].each do |file|
+['archer/static/js/projects', 'archer/static/js/core'].each do |file|
   guard 'uglify', input: "#{file}.js", output: "#{file}.min.js" do
     watch ("#{file}.js")
   end
