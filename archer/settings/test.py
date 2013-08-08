@@ -1,6 +1,7 @@
 # noinspection PyUnresolvedReferences
 import os
 from configurations import importer
+
 importer.install()
 
 from archer.settings.common import Common
@@ -18,18 +19,6 @@ class Test(Common):
     )
 
     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
-
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': 'archer_test', # Or path to database file if using sqlite3.
-            'USER': '', # Not used with sqlite3.
-            'PASSWORD': '', # Not used with sqlite3.
-            'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
-            'PORT': '', # Set to empty string for default. Not used with sqlite3.
-        }
-    }
 
     # Use weak hashes to increase tests speed
     PASSWORD_HASHERS = (

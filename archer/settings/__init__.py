@@ -3,7 +3,7 @@ import configurations.importer
 configurations.importer.install()
 
 from dev import Dev
-from prod import Production
+from production import Production
 from test import Test
 
 # hack is needed to make sniffer/nosetests command work with django-configurations plugin

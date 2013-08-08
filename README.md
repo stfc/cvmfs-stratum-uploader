@@ -19,6 +19,22 @@ sudo pip install virtualenv
 
 ## Database
 
+# sqlite3
+
+1. Create empty database file with proper `chmod`:
+
+    ```bash
+    touch $APP_DIR/db/uploader.sqlite3
+    chmod 600 $APP_DIR/db/uploader.sqlite3
+    ```
+2. Set `db` directory security:
+    ```bash
+    chmod 770 $APP_DIR/db
+    chgrp www-data $APP_DIR/db
+    ```
+
+# PostgreSQL
+
 1. Login to `psql`:
 
     ```bash
@@ -83,20 +99,35 @@ sudo pip install virtualenv
 
 ## Configure the Uploader
 
-1. Open `archer/settings/prod.py` and set the database connection credentials
+1. Open `archer/settings/production.py` and set the database connection credentials
+    + PostgreSQL:
 
-    ```python
-        DATABASES = {
-            'default': {
-                'ENGINE': 'django.db.backends.postgresql_psycopg2',
-                'NAME': 'uploader',
-                'USER': 'django',
-                'PASSWORD': 'password',
-                'HOST': 'localhost', # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-                'PORT': '', # Set to empty string for default.
+        ```python
+            DATABASES = {
+                'default': {
+                    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                    'NAME': 'uploader',
+                    'USER': 'django',
+                    'PASSWORD': 'password',
+                    'HOST': 'localhost', # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+                    'PORT': '', # Set to empty string for default.
+                }
             }
-        }
-    ```
+        ```
+    + sqlite3:
+
+        ```python
+            DATABASES = {
+                'default': {
+                    'ENGINE': 'django.db.backends.sqlite3',
+                    'NAME': '%s/db/uploader.sqlite3' % Common.PROJECT_ROOT,
+                    'USER': '',
+                    'PASSWORD': '',
+                    'HOST': '',
+                    'PORT': '',
+                }
+            }
+        ```
 
 2. Open `archer/settings/common.py` and set paths to directories.
     1. Set `PROJECT_ROOT` to application directory (`$APP_DIR`):
@@ -167,10 +198,10 @@ sudo pip install virtualenv
             ln -s ../mods-available/wsgi.conf
             ```
 
-2. Copy `httpd.uploader.conf` to `sites-available` of `httpd`
+2. Link `httpd.uploader.conf` to `sites-available` of `httpd`
 
     ```bash
-    cp $APP_DIR/httpd.uploader.conf /etc/apache2/sites-available/uploader.conf
+    ln -s $APP_DIR/httpd.uploader.conf /etc/apache2/sites-available/uploader.conf
     ```
 3. Set the paths to the certificates:
     1. set host certificate

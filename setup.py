@@ -9,16 +9,15 @@ import os
 base_name = 'archer'
 v_file = open(os.path.join(os.path.dirname(__file__),
                            base_name, '__init__.py'))
-print v_file
+
 VERSION = re.compile(r".*__version__ = '(.*?)'",
                      re.S).match(v_file.read()).group(1)
 
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
-reqs = parse_requirements('requirements/prod.txt')
-for r in reqs:
-    print r
+reqs = parse_requirements('requirements/production.txt')
+
 setup(
     name='uploader',
     version=VERSION,
@@ -27,7 +26,7 @@ setup(
     package_dir={base_name: base_name},
     packages=find_packages(), # include all packages under this directory  
     include_package_data=True,
-    url='git://github.com/stfc/uploader.git',
+    url='git://github.com/mknapik/uploader.git',
     license='Apache 2.0',
     description='Provides interface for uploading and distributing software through cvmfs repositories.',
     long_description=open('README.md').read(),

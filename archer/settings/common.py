@@ -3,12 +3,25 @@ from configurations import Settings
 import os
 
 
+def get_host_name():
+    import socket
+
+    try:
+        return socket.gethostname()
+    except socket.error:
+        return 'localhost'
+
+
 class Common(Settings):
     ADMINS = (
-        ('vwa13376', 'admin'),
+        ('root', 'email@example.com'),
     )
 
-    PROJECT_ROOT = os.path.join(__file__, '../../..')
+    MANAGERS = ADMINS
+
+    PROJECT_ROOT = os.path.abspath(os.path.join(__file__, '../../..'))
+
+    HOSTNAME = get_host_name()
 
     TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
                                    "django.core.context_processors.debug",
@@ -19,19 +32,16 @@ class Common(Settings):
                                    "django.contrib.messages.context_processors.messages",
     )
 
-    MANAGERS = ADMINS
-
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': 'archer_dev', # Or path to database file if using sqlite3.
-            'TEST_NAME': 'archer_test',
-            # The following settings are not used with sqlite3:
-            'USER': 'django',
-            'PASSWORD': '234',
-            'HOST': 'localhost', # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-            'PORT': '', # Set to empty string for default.
+            'ENGINE': 'django.db.backends.sqlite3',
+            # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+            'NAME': '%s/db/uploader_dev.sqlite3' % PROJECT_ROOT,  # Or path to database file if using sqlite3.
+            'TEST_NAME': '%s/db/uploader_test.sqlite3' % PROJECT_ROOT,
+            'USER': '',  # Not used with sqlite3.
+            'PASSWORD': '',  # Not used with sqlite3.
+            'HOST': '',  # Set to empty string for localhost. Not used with sqlite3.
+            'PORT': '',  # Set to empty string for default. Not used with sqlite3.
         }
     }
 
@@ -69,7 +79,7 @@ class Common(Settings):
     # URL that handles the media served from MEDIA_ROOT. Make sure to use a
     # trailing slash.
     # Examples: "http://example.com/media/", "http://media.example.com/"
-    MEDIA_URL = 'http://t1student0.esc.rl.ac.uk/uploads/'
+    MEDIA_URL = 'http://%s/uploads/' % HOSTNAME
 
     # Absolute path to the directory static files should be collected to.
     # Don't put anything in this directory yourself; store your static files

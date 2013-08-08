@@ -2,7 +2,6 @@ Django>=1.5.1
 South==0.8.1
 django-extensions==1.1.1
 django-guardian==1.1.1
--e git+git://github.com/mknapik/django-bootstrap-toolkit#egg=django-bootstrap-toolkit
 psycopg2
 
 django-configurations

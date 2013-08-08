@@ -6,7 +6,7 @@ import sys
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'archer.settings')
 
-    if sys.argv[1] == 'test':
+    if len(sys.argv) > 1 and sys.argv[1] == 'test':
         os.environ.setdefault('DJANGO_CONFIGURATION', 'Test')
         os.environ.setdefault('REUSE_DB', '1')
     else:
