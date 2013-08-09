@@ -7,11 +7,14 @@ class FileSystem(models.Model):
     alias = models.CharField(max_length=2000, blank=True)
     mount_point = models.CharField(max_length=2000, null=False, blank=False, unique=True)
 
-    def __unicode__(self):
+    def alias_path(self):
         if self.alias is None or len(self.alias) == 0:
             return self.mount_point
         else:
             return self.alias
+
+    def __unicode__(self):
+        return self.alias_path()
 
 
 class Project(models.Model):
@@ -24,10 +27,15 @@ class Project(models.Model):
             ('view_project', 'View project'),
             ('upload_package', 'Upload package'),
             ('deploy_package', 'Deploy package'),
+            ('make_directory', 'Make directory'),
+            ('remove_directory', 'Remove directory'),
         )
 
     def full_path(self):
         return os.path.join(self.file_system.mount_point, self.directory)
+
+    def alias_path(self):
+        return os.path.join(self.file_system.alias_path(), self.directory)
 
     def subdir(self, subdir=''):
         """
@@ -61,4 +69,4 @@ class Project(models.Model):
         return True
 
     def __unicode__(self):
-        return self.full_path()
+        return self.alias_path()

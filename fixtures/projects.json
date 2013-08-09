@@ -3,21 +3,24 @@
   "pk": 1, 
   "model": "projects.filesystem", 
   "fields": {
-    "mount_point": "/cvmfs/fs0"
+    "alias": "/cvmfs/fs0",
+    "mount_point": "/cvmfs-mirror/fs0"
   }
 },
 {
   "pk": 2, 
   "model": "projects.filesystem", 
   "fields": {
-    "mount_point": "/cvmfs/fs1"
+    "alias": "/cvmfs/fs1",
+    "mount_point": "/cvmfs-mirror/fs1"
   }
 },
 {
   "pk": 3, 
   "model": "projects.filesystem", 
   "fields": {
-    "mount_point": "/cvmfs/fs2"
+    "alias": "/cvmfs/fs2",
+    "mount_point": "/cvmfs-mirror/fs2"
   }
 },
 {
