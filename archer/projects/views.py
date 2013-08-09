@@ -112,7 +112,7 @@ def deploy(request, project_id, path):
             return HttpResponseBadRequest()
         if not request.POST['package'].isdigit():
             messages.add_message(request, messages.ERROR,
-                                 'package with id = %s does not exist!' % request.POST['package'])
+                                 'package with id = "%s" does not exist!' % request.POST['package'])
             return HttpResponseRedirect(reverse('projects:deploy', args=[project_id, path]))
         package_id = request.POST['package']
         package = Package.objects.get(pk=package_id)
@@ -121,10 +121,13 @@ def deploy(request, project_id, path):
             if request.user.has_perm('packages.deploy_package', package):
 
                 try:
-                    package.deploy(path)
-                    messages.add_message(request, messages.SUCCESS,
+                    deployed = package.deploy(path)
+                    if deployed:
+                        messages.add_message(request, messages.SUCCESS,
                                          'Package "%s" successfully deployed in "%s" directory' % (package, path))
-                except (IOError, ValueError) as e:
+                    else:
+                        messages.add_message(request, messages.ERROR, 'Cannot deploy a pacakge "%s"' % (package))
+                except (IOError, ValueError, OSError) as e:
                     messages.add_message(request, messages.ERROR, 'Cannot deploy a package "%s": %s' % (package, e))
             else:
                 messages.add_message(request, messages.ERROR,
