@@ -57,7 +57,7 @@ class Package(models.Model):
         """
             Returns name of the file without full path.
             """
-        replace = os.path.join(settings.MEDIA_ROOT, self.project.full_path()[1::]) + '/'
+        replace = os.path.join(settings.MEDIA_ROOT, self.project.alias_path()[1::]) + '/'
         return re.sub('^%s' % replace, '', self.file.path)
 
     def get_file_list(self):

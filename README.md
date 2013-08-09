@@ -10,10 +10,17 @@ Uses Certificate Authentication provided by Apache `httpd` web server (or others
 + **[virtualenv](http://www.virtualenv.org/en/latest/)** 1.7.1.2 -
     Install it with pip or from distribution packages.
 
-```bash
-sudo pip install virtualenv
-```
+    ```bash
+    sudo pip install virtualenv
+    ```
+<!---
++ **virtualenvwrapper** 4.1.1
 
+    ```bash
+    sudo pip install virtualenvwrapper
+    source /usr/local/bin/virtualenvwrapper.sh
+    ```
+-->
 + **PostgreSQL** 9.1.9
 + Apache **httpd** 2.2.22
 
