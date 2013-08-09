@@ -1,3 +1,4 @@
+from contextlib import closing
 import re
 import os
 import tarfile
@@ -92,7 +93,7 @@ class Package(models.Model):
                 raise ValueError('package file ' + file_path + ' is not tarball file')
             try:
                 # self.project.clear_dir(subdir)
-                with tarfile.open(file_path) as tar:
+                with closing(tarfile.open(file_path)) as tar:
                     self.status = Package.Status.unpacking
                     self.save()
                     tar.extractall(path=self.project.subdir(subdir))
