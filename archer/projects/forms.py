@@ -22,17 +22,6 @@ class RemoveDirectoryForm(forms.Form):
     pass
 
 
-class DeployForm(forms.Form):
-    def __init__(self, packages, *args, **kwargs):
-        self.packages = packages
-        super(DeployForm, self).__init__(*args, **kwargs)
-
-    package = forms.ModelChoiceField(queryset=Package.objects.all())
-
-    def clean_package(self):
-        return [p for p in self.cleaned_data['package'] if p in self.packages]
-
-
 class MakeDirectoryForm(forms.Form):
     new_directory = forms.CharField(max_length=200, required=True)
 

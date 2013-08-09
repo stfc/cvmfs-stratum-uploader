@@ -4,7 +4,7 @@ import shutil
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render, render_to_response, get_object_or_404
 from django.template import loader
 from django.utils.safestring import mark_safe
@@ -15,7 +15,7 @@ import re
 import guardian.shortcuts
 
 from archer.core.decorators import class_view_decorator
-from archer.projects.forms import UploadFileForm, MakeDirectoryForm, RemoveDirectoryForm, DeployForm
+from archer.projects.forms import UploadFileForm, MakeDirectoryForm, RemoveDirectoryForm
 from archer.projects.models import Project
 from archer.packages.models import Package
 
@@ -87,12 +87,13 @@ class ModifyDirectory(View):
             raise ValueError('"%s" does not exist' % parent_directory)
         return project, parent_directory
 
+# TODO: use django forms
 @permission_required_or_403('projects.deploy_package', (Project, 'pk', 'project_id'))
 def deploy(request, project_id, path):
     def validate():
         if path.startswith('/'):
             raise ValueError('Directory "%s" cannot start with "/"' % path)
-        project = Project.objects.get(pk=project_id)
+        project = get_object_or_404(Project, pk=project_id)
         if re.search('(\.\./|/\.\.)', path):
             raise ValueError('%s contains ".."' % path)
         project_path = project.full_path()
@@ -105,11 +106,17 @@ def deploy(request, project_id, path):
             raise ValueError('"%s" does not exist' % parent_directory)
         return project, parent_directory
 
-    project = Project.objects.get(pk=project_id)
     validate()
     if request.POST:
+        if 'package' not in request.POST:
+            return HttpResponseBadRequest()
+        if not request.POST['package'].isdigit():
+            messages.add_message(request, messages.ERROR,
+                                 'package with id = %s does not exist!' % request.POST['package'])
+            return HttpResponseRedirect(reverse('projects:deploy', args=[project_id, path]))
         package_id = request.POST['package']
         package = Package.objects.get(pk=package_id)
+
         if package.can_deploy():
             if request.user.has_perm('packages.deploy_package', package):
 
