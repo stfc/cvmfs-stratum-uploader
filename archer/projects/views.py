@@ -2,6 +2,7 @@ import os
 from pprint import pprint, pformat
 import shutil
 from django.contrib import messages
+
 from django.core.urlresolvers import reverse
 
 from django.http.response import HttpResponseRedirect, HttpResponseBadRequest
@@ -119,16 +120,16 @@ def deploy(request, project_id, path):
 
         if package.can_deploy():
             if request.user.has_perm('packages.deploy_package', package):
-
                 try:
                     deployed = package.deploy(path)
                     if deployed:
                         messages.add_message(request, messages.SUCCESS,
-                                         'Package "%s" successfully deployed in "%s" directory' % (package, path))
+                                             'Package "%s" successfully deployed in "%s" directory' % (package, path))
                     else:
-                        messages.add_message(request, messages.ERROR, 'Cannot deploy a pacakge "%s"' % (package))
+                        messages.add_message(request, messages.ERROR, 'Cannot deploy a package "%s"!' % package)
                 except (IOError, ValueError, OSError) as e:
-                    messages.add_message(request, messages.ERROR, 'Cannot deploy a package "%s": %s' % (package, e))
+                    messages.add_message(request, messages.ERROR,
+                                         'Cannot deploy a package "%s": "%s"' % (package, e))
             else:
                 messages.add_message(request, messages.ERROR,
                                      'Does not have permission to deploy package "%s"!' % package)

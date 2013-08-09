@@ -41,7 +41,6 @@ guard 'livereload' do
   watch(%r{archer/.+\.(py)$})
 end
 
-=begin
 guard :shell do
   cmd = 'python ./manage.py test'
   watch(%r{^archer/(packages|projects)/(models|views|tests|admin)\.py$}) do |p|
@@ -58,4 +57,3 @@ guard :shell do
     end
   end
 end
-=end

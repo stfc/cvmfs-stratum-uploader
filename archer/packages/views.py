@@ -48,7 +48,7 @@ def deploy(request, package_id):
             else:
                 messages.add_message(request, messages.ERROR, 'Error during deployment of the package.')
         except IOError as e:
-            messages.add_message(request, messages.ERROR, 'Error during deployment of the package: ' + e.message)
+            messages.add_message(request, messages.ERROR, 'Error during deployment of the package: ' + str(e))
 
         return render(request, 'packages/show.html', {'package': package})
 
@@ -67,7 +67,7 @@ def remove(request, package_id):
                 messages.add_message(request, messages.WARNING,
                                      'Package file was already deleted from the file system. Mark as deleted.')
         except IOError as e:
-            messages.add_message(request, messages.ERROR, e.message)
+            messages.add_message(request, messages.ERROR, e)
     else:
         messages.add_message(request, messages.ERROR, 'Cannot delete package file!')
     return render(request, 'packages/show.html', {'package': package})

@@ -23,7 +23,7 @@
                         <option value="" selected="selected">---------</option>
                         {% for package in packages %}
                         <option value="{{ package.id }}">
-                            {{ package.filename }}
+                            {{ package }}
                         </option>
                         {% endfor %}
                     </select>

@@ -1,6 +1,7 @@
 from contextlib import closing
 import re
 import os
+import shutil
 import tarfile
 
 from django.db import models
@@ -41,26 +42,28 @@ class Package(models.Model):
         return self.status in [Package.Status.deployed, Package.Status.undeployed, Package.Status.uploaded]
 
     def can_deploy(self):
-        return self.status in [Package.Status.uploaded, Package.Status.undeployed, Package.Status.cancelled, Package.Status.deployed] \
-            and (os.path.isfile(self.file.path) and tarfile.is_tarfile(self.file.path)) # TODO
+        if self.status in [Package.Status.uploaded, Package.Status.undeployed, Package.Status.cancelled,
+                           Package.Status.deployed]:
+            return os.path.isfile(self.file.path) and tarfile.is_tarfile(self.file.path)
+        return False
 
     def filepath(self):
         """
-        Returns path to the file but hides the path to MEDIA directory.
-        """
+            Returns path to the file but hides the path to MEDIA directory.
+            """
         return re.sub('^%s' % settings.MEDIA_ROOT, '', self.file.path)
 
     def filename(self):
         """
-        Returns name of the file without full path.
-        """
+            Returns name of the file without full path.
+            """
         replace = os.path.join(settings.MEDIA_ROOT, self.project.full_path()[1::]) + '/'
         return re.sub('^%s' % replace, '', self.file.path)
 
     def get_file_list(self):
         """
-        Returns list of files in the tarfile.
-        """
+            Returns list of files in the tarfile.
+            """
         path = self.file.path
         if not os.path.isfile(path):
             return None
@@ -72,13 +75,13 @@ class Package(models.Model):
 
     def deploy(self, subdir='', force=False):
         """
-        Unpacks the tar file at the project directory.
-        Any previous content is deleted.
+            Unpacks the tar file at the project directory.
+            Any previous content is deleted.
 
-        Returns True if deployment succeeded.
-        Raises IOError if file does not exist.
-        Raises ValueError if file is not a tar file.
-        """
+            Returns True if deployment succeeded.
+            Raises IOError if file does not exist.
+            Raises ValueError if file is not a tar file.
+            """
         import tarfile
 
         if self.can_deploy or force:
@@ -86,17 +89,30 @@ class Package(models.Model):
             if not os.path.isfile(file_path):
                 self.status = Package.Status.error
                 self.save()
-                raise IOError('package file ' + file_path + ' does not exist')
+                raise IOError('package file ' + self.filepath() + ' does not exist')
             if not tarfile.is_tarfile(file_path):
                 self.status = Package.Status.error
                 self.save()
-                raise ValueError('package file ' + file_path + ' is not tarball file')
+                raise ValueError('package file ' + self.filepath() + ' is not tarball file')
             try:
                 # self.project.clear_dir(subdir)
                 with closing(tarfile.open(file_path)) as tar:
                     self.status = Package.Status.unpacking
                     self.save()
-                    tar.extractall(path=self.project.subdir(subdir))
+
+                    dir = self.project.subdir(subdir)
+                    for f in tar:
+                        if f.name.startswith('/'):
+                            raise ValueError('Tar contains disallowed paths starting with "/"!')
+                        if os.path.relpath(f.name) != f.name:
+                            raise ValueError('Tar contains disallowed paths using ".."!')
+                        content_path = os.path.join(dir, f.name)
+                        if os.path.isfile(content_path) and (not os.access(content_path, os.W_OK)) or \
+                                os.path.islink(content_path):
+                            os.remove(content_path)
+
+                    tar.extractall(path=dir)
+
                     self.status = Package.Status.deployed
                     self.save()
                     return True
@@ -109,8 +125,8 @@ class Package(models.Model):
 
     def remove(self):
         """
-        Removes package file from MEDIA directory.
-        """
+            Removes package file from MEDIA directory.
+            """
         result = False
         if os.path.isfile(self.file.path):
             os.unlink(self.file.path)
