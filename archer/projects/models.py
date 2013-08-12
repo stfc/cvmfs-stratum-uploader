@@ -1,11 +1,14 @@
 import os
+import re
 import shutil
+from django.core import validators
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from django.db import models
 from django.db.models import Q
+from django.utils.translation import ugettext_lazy as _
 
 
-def validate_mount_point(path):
+def validator_dir_exists(path):
     if not os.path.exists(path):
         raise ValidationError('%s does not exist!' % path, code='dir_not_exist')
     if not os.path.isdir(path):
@@ -14,10 +17,16 @@ def validate_mount_point(path):
         raise ValidationError('%s is not writable!' % path, code='dir_not_writable')
 
 
+def validator_relative_path(path):
+    rel_path = os.path.relpath(path)
+    if re.match('^(\.\./.+|/.+|\.\.)$', rel_path):
+        raise ValidationError(_('Directory path name must be relative path beneath the file system.'), code='dir_name')
+
+
 class FileSystem(models.Model):
     alias = models.CharField(max_length=2000, blank=True, unique=True)
     mount_point = models.CharField(max_length=2000, null=False, blank=False, unique=True,
-                                   validators=[validate_mount_point])
+                                   validators=[validator_dir_exists])
 
     class Meta:
         permissions = (
@@ -85,7 +94,7 @@ class FileSystem(models.Model):
 
 class Project(models.Model):
     file_system = models.ForeignKey(FileSystem, null=False)
-    directory = models.CharField(max_length=200, null=False, blank=False)
+    directory = models.CharField(max_length=200, null=False, blank=False, validators=[validator_relative_path])
 
     class Meta:
         unique_together = ('file_system', 'directory')
@@ -97,6 +106,15 @@ class Project(models.Model):
             ('remove_directory', 'Remove directory'),
             ('setup_project', 'Setup project'),
         )
+
+    def clean_fields(self, exclude=''):
+        path = self.full_path()
+        super(Project, self).clean_fields(exclude)
+
+        try:
+            validator_dir_exists(path)
+        except ValidationError as e:
+            raise ValidationError({'directory': (e.messages[0],)})
 
     def full_path(self):
         return os.path.join(self.file_system.mount_point, self.directory)
