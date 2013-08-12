@@ -1,7 +1,5 @@
-import os
 from django import forms
 from django.contrib import admin
-from django.core.exceptions import ValidationError
 from guardian.admin import GuardedModelAdmin
 from archer.projects.models import FileSystem, Project
 

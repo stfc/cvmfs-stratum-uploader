@@ -208,7 +208,7 @@ class MakeDirectory(ModifyDirectory):
             try:
                 new_directory = request.POST['new_directory']
                 dir_full_path = os.path.join(parent, new_directory)
-                os.mkdir(dir_full_path)
+                os.mkdir(dir_full_path, mode=0755)
                 messages.add_message(request, messages.SUCCESS,
                                      'Directory "%s" successfully created.' % dir_full_path)
             except OSError as e:

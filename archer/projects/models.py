@@ -1,11 +1,14 @@
 import os
 import re
 import shutil
-from django.core import validators
+from django.contrib.auth.models import Group
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from django.db import models
 from django.db.models import Q
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
+from guardian.shortcuts import assign_perm
 
 
 def validator_dir_exists(path):
@@ -24,7 +27,7 @@ def validator_relative_path(path):
 
 
 class FileSystem(models.Model):
-    alias = models.CharField(max_length=2000, blank=True, unique=True)
+    alias = models.CharField(max_length=2000, blank=True)
     mount_point = models.CharField(max_length=2000, null=False, blank=False, unique=True,
                                    validators=[validator_dir_exists])
 
@@ -107,15 +110,6 @@ class Project(models.Model):
             ('setup_project', 'Setup project'),
         )
 
-    def clean_fields(self, exclude=''):
-        path = self.full_path()
-        super(Project, self).clean_fields(exclude)
-
-        try:
-            validator_dir_exists(path)
-        except ValidationError as e:
-            raise ValidationError({'directory': (e.messages[0],)})
-
     def full_path(self):
         return os.path.join(self.file_system.mount_point, self.directory)
 
@@ -159,3 +153,41 @@ class Project(models.Model):
 
     def __unicode__(self):
         return self.alias_path()
+
+
+class MyModel(models.Model):
+    field1 = models.TextField()
+    field2 = models.IntegerField()
+
+
+@receiver(post_save, sender=Project)
+def project_create_directory(sender, **kwargs):
+    path = kwargs['instance'].full_path()
+    if not os.path.exists(path):
+        os.makedirs(path, mode=0755)
+
+
+@receiver(post_delete, sender=Project)
+def project_delete_directory(sender, **kwargs):
+    path = kwargs['instance'].full_path()
+    if os.path.exists(path):
+        shutil.rmtree(path, ignore_errors=True)
+
+
+@receiver(post_save, sender=Project)
+def project_create_project_group(sender, **kwargs):
+    instance = kwargs['instance']
+    group, created = Group.objects.get_or_create(name=instance.alias_path())
+    for permission in ['view_project', 'upload_package', 'deploy_package', 'make_directory', 'remove_directory']:
+        assign_perm('projects.%s' % permission, group, instance)
+
+
+@receiver(post_delete, sender=Project)
+def project_delete_project_group(sender, **kwargs):
+    instance = kwargs['instance']
+    try:
+        group = Group.objects.get(name=instance.alias_path())
+        group.delete()
+    except Group.DoesNotExist:
+        pass
+
