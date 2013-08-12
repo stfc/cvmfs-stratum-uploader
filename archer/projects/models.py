@@ -1,16 +1,63 @@
 import os
 import shutil
+from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from django.db import models
+from django.db.models import Q
 
 
 class FileSystem(models.Model):
-    alias = models.CharField(max_length=2000, blank=True)
+    alias = models.CharField(max_length=2000, blank=True, unique=True)
     mount_point = models.CharField(max_length=2000, null=False, blank=False, unique=True)
 
     class Meta:
         permissions = (
             ('setup_filesystem', 'Setup file system'),
         )
+
+    def validate_unique(self, *args, **kwargs):
+        """
+            Validates if "alias" is unique within scope of "mount_point".
+            "alias" mustn't be equal to any other "alias" or "mount_point".
+            Same applies to "mount_point" which mustn't equal to any other "alias" except for the same entity.
+            """
+
+        def validate_uniqueness_of_alias_and_mount_point(rethrow_error=None):
+            uq_mount = self.__class__.objects.filter(
+                Q(alias=self.mount_point)
+            )
+            uq_alias = self.__class__.objects.filter(
+                Q(mount_point=self.alias)
+            )
+
+            errors = {}
+            if not self._state.adding and self.pk is not None:
+                uq_mount = uq_mount.exclude(pk=self.pk)
+                uq_alias = uq_alias.exclude(pk=self.pk)
+
+            if uq_mount.exists():
+                errors['mount_point'] = (
+                    'Field is the same as "Alias" for file system (alias="%s", mount_point="%s")!' % (
+                        uq_mount.get().alias, uq_mount.get().mount_point), )
+            if uq_alias.exists():
+                errors['alias'] = (
+                    'Field is the same as "Mount point" for file system (alias="%s", mount_point="%s")!' % (
+                        uq_alias.get().alias, uq_alias.get().mount_point), )
+            if len(errors) > 0:
+                errors[NON_FIELD_ERRORS] = ('To avoid confusion choose different name!',)
+                if rethrow_error is None:
+                    rethrow_error = ValidationError(errors)
+                else:
+                    rethrow_error.message_dict.update(errors)
+            if rethrow_error is not None:
+                return rethrow_error
+
+        try:
+            super(FileSystem, self).validate_unique(*args, **kwargs)
+            e = validate_uniqueness_of_alias_and_mount_point()
+            if e is not None:
+                raise e
+        except ValidationError as e:
+            raise validate_uniqueness_of_alias_and_mount_point(e)
 
     def alias_path(self):
         if self.alias is None or len(self.alias) == 0:
