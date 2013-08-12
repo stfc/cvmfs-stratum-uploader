@@ -7,11 +7,20 @@ class FileSystem(models.Model):
     alias = models.CharField(max_length=2000, blank=True)
     mount_point = models.CharField(max_length=2000, null=False, blank=False, unique=True)
 
+    class Meta:
+        permissions = (
+            ('setup_filesystem', 'Setup file system'),
+        )
+
     def alias_path(self):
         if self.alias is None or len(self.alias) == 0:
             return self.mount_point
         else:
             return self.alias
+
+    @classmethod
+    def can_setup(cls, user):
+        return user is not None and user.is_superuser and user.is_staff
 
     def __unicode__(self):
         return self.alias_path()
@@ -68,6 +77,10 @@ class Project(models.Model):
             for d in dirs:
                 shutil.rmtree(os.path.join(root, d))
         return True
+
+    @classmethod
+    def can_setup(cls, user):
+        return user is not None and user.is_superuser and user.is_staff and FileSystem.objects.count() > 0
 
     def __unicode__(self):
         return self.alias_path()

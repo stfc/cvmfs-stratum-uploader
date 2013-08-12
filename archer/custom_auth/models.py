@@ -116,6 +116,9 @@ class User(AbstractUser):
 
     Username, password and email are required. Other fields are optional.
     """
+    @classmethod
+    def superuser_exist(cls):
+        return User.objects.filter(is_superuser=True, is_staff=True).count() > 0
 
     class Meta:
         app_label = 'custom_auth'
