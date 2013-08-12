@@ -41,19 +41,6 @@ guard 'livereload' do
   watch(%r{archer/.+\.(py)$})
 end
 
-guard :shell do
-  cmd = 'python ./manage.py test'
-  watch(%r{^archer/(packages|projects)/(models|views|tests|admin)\.py$}) do |p|
-    file = "archer.#{p[1]}.#{p[2]}"
-    test_file = "archer.#{p[1]}"
-    #n "#{file} changed", "Running #{test_file}", :pending
-    run_cmd = "#{cmd} archer/#{p[1]}"
-    result = system(run_cmd)
-    puts result
-    if result
-      n file, "Success", :success
-    else
-      n file, "Failure #{test_file}", :failed
-    end
-  end
+guard 'nosetests' do
+  watch(%r{^archer/[a-z]+/tests.py$})
 end
