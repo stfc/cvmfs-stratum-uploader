@@ -5,9 +5,19 @@ from django.db import models
 from django.db.models import Q
 
 
+def validate_mount_point(path):
+    if not os.path.exists(path):
+        raise ValidationError('%s does not exist!' % path, code='dir_not_exist')
+    if not os.path.isdir(path):
+        raise ValidationError('%s is not a directory!' % path, code='dir_not_dir')
+    if not os.access(path, os.W_OK | os.X_OK):
+        raise ValidationError('%s is not writable!' % path, code='dir_not_writable')
+
+
 class FileSystem(models.Model):
     alias = models.CharField(max_length=2000, blank=True, unique=True)
-    mount_point = models.CharField(max_length=2000, null=False, blank=False, unique=True)
+    mount_point = models.CharField(max_length=2000, null=False, blank=False, unique=True,
+                                   validators=[validate_mount_point])
 
     class Meta:
         permissions = (
@@ -36,11 +46,11 @@ class FileSystem(models.Model):
 
             if uq_mount.exists():
                 errors['mount_point'] = (
-                    'Field is the same as "Alias" for file system (alias="%s", mount_point="%s")!' % (
+                    'Field is the same as "Alias" for other file system (alias="%s", mount_point="%s")!' % (
                         uq_mount.get().alias, uq_mount.get().mount_point), )
             if uq_alias.exists():
                 errors['alias'] = (
-                    'Field is the same as "Mount point" for file system (alias="%s", mount_point="%s")!' % (
+                    'Field is the same as "Mount point" for other file system (alias="%s", mount_point="%s")!' % (
                         uq_alias.get().alias, uq_alias.get().mount_point), )
             if len(errors) > 0:
                 errors[NON_FIELD_ERRORS] = ('To avoid confusion choose different name!',)

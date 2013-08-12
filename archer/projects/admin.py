@@ -10,16 +10,6 @@ class FileSystemAdminForm(forms.ModelForm):
     class Meta:
         model = FileSystem
 
-    def clean_mount_point(self):
-        mount_point = self.cleaned_data["mount_point"]
-        if not os.path.exists(mount_point):
-            raise ValidationError('%s does not exist!' % mount_point)
-        if not os.path.isdir(mount_point):
-            raise ValidationError('%s is not a directory!' % mount_point)
-        if not os.access(mount_point, os.W_OK | os.X_OK):
-            raise ValidationError('%s is not writable!' % mount_point)
-        return mount_point
-
 
 class ProjectAdmin(GuardedModelAdmin):
     list_display = ('__unicode__', 'file_system', 'directory')
