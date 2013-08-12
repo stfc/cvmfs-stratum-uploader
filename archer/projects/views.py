@@ -129,7 +129,7 @@ def deploy(request, project_id, path):
                         messages.add_message(request, messages.ERROR, 'Cannot deploy a package "%s"!' % package)
                 except (IOError, ValueError, OSError) as e:
                     messages.add_message(request, messages.ERROR,
-                                         'Cannot deploy a package "%s": "%s"' % (package, e))
+                                         'Error while deploying a package "%s": "%s"' % (package, e))
             else:
                 messages.add_message(request, messages.ERROR,
                                      'Does not have permission to deploy package "%s"!' % package)

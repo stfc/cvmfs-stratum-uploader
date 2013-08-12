@@ -29,6 +29,7 @@ class Project(models.Model):
             ('deploy_package', 'Deploy package'),
             ('make_directory', 'Make directory'),
             ('remove_directory', 'Remove directory'),
+            ('setup_project', 'Setup project'),
         )
 
     def full_path(self):
@@ -46,8 +47,8 @@ class Project(models.Model):
             return self.full_path()
         if subdir.startswith('/'):
             raise ValueError('Cannot provide root path "%s" as subdir!' % subdir)
-        if os.path.relpath(subdir).startswith('..'):
-            raise ValueError('')
+        if os.path.normpath(subdir).startswith('..'):
+            raise ValueError('Cannot privide a path "%s" pointing to parent directory!' % subdir)
         return os.path.abspath(os.path.join(self.full_path(), subdir))
 
     def clear_dir(self, subdir=''):

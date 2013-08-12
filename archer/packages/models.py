@@ -104,12 +104,12 @@ class Package(models.Model):
                     for f in tar:
                         if f.name.startswith('/'):
                             raise ValueError('Tar contains disallowed paths starting with "/"!')
-                        if os.path.relpath(f.name) != f.name:
+                        normpath = os.path.normpath(f.name)
+                        if normpath.startswith('../'):
                             raise ValueError('Tar contains disallowed paths using ".."!')
                         content_path = os.path.join(dir, f.name)
-                        if os.path.isfile(content_path) and (not os.access(content_path, os.W_OK)) or \
-                                os.path.islink(content_path):
-                            os.remove(content_path)
+                        if not os.access(content_path, os.W_OK):
+                            shutil.rmtree(content_path, ignore_errors=True)
 
                     tar.extractall(path=dir)
 
