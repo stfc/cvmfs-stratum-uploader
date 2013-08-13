@@ -1,2 +1,5 @@
 include LICENSE
+include manage.py
+include requirements/*
+include httpd.uploader.conf
 recursive-include archer *
