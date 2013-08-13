@@ -6,7 +6,6 @@ from pip.req import parse_requirements
 import re
 import os
 
-setup_dir = os.path.dirname(os.path.abspath(__file__))
 base_name = 'archer'
 v_file = open(os.path.join(os.path.dirname(__file__),
                            base_name, '__init__.py'))
@@ -17,7 +16,7 @@ VERSION = re.compile(r".*__version__ = '(.*?)'",
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
-requirements = [str(ir.req) for ir in parse_requirements(os.path.join(setup_dir, 'requirements/common.txt'))]
+requirements = [str(ir.req) for ir in parse_requirements('requirements/common.txt')]
 
 setup(
     name='uploader',
@@ -31,7 +30,7 @@ setup(
     url='git://github.com/mknapik/uploader.git',
     license='LICENSE',
     description='Provides interface for uploading and distributing software through cvmfs repositories.',
-    long_description='', #open(os.path.join(setup_dir, 'README.md')).read(),
+    long_description=open('README.md').read(),
     zip_safe=False,
     keywords=['cvmfs', 'django', 'uploader', 'vo', 'cern', 'stfc', 'ral'],
     # Adds dependencies
