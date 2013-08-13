@@ -22,6 +22,10 @@ class RemoveDirectoryForm(forms.Form):
     pass
 
 
+class RemoveFileForm(forms.Form):
+    pass
+
+
 class MakeDirectoryForm(forms.Form):
     new_directory = forms.CharField(max_length=200, required=True)
 

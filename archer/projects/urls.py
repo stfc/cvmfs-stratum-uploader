@@ -11,5 +11,5 @@ urlpatterns = patterns('',
 
                        url(r'^(?P<project_id>\d+)/mkdir=(?P<path>\S+)$', views.MakeDirectory.as_view(), name='mkdir'),
                        url(r'^(?P<project_id>\d+)/rmdir=(?P<path>\S+)$', views.RemoveDirectory.as_view(), name='rmdir'),
-                       url(r'^(?P<project_id>\d+)/rm=(?P<path>\S+)$', views.RemoveDirectory.as_view(), name='rm'),
+                       url(r'^(?P<project_id>\d+)/rm=(?P<path>\S+)$', views.RemoveFile.as_view(), name='rm'),
                        )

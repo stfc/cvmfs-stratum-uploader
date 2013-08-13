@@ -100,6 +100,7 @@ class ProjectTestCase(TestCase):
 
     def tearDown(self):
         self.fs.delete()
+        os.chmod(self.mount_point, 00777)
         for r, d, f in os.walk(self.mount_point):
-            os.chmod(r, 0777)
+            os.chmod(r, 00777)
         shutil.rmtree(self.mount_point, ignore_errors=False)
