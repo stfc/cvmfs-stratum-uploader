@@ -98,4 +98,8 @@ class ProjectTestCase(TestCase):
         with self.assertRaises(ValueError):
             self.project1.subdir('/tmp')
 
-
+    def tearDown(self):
+        self.fs.delete()
+        for r, d, f in os.walk(self.mount_point):
+            os.chmod(r, 0777)
+        shutil.rmtree(self.mount_point, ignore_errors=False)
