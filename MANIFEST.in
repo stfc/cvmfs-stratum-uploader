@@ -1,5 +1,6 @@
 include LICENSE
 include manage.py
 include requirements/*
+include db/uploader.sqlite3
 include httpd.uploader.conf
 recursive-include archer *
