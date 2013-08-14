@@ -1,5 +1,7 @@
 ## Uploader
 
+[![Build Status](https://travis-ci.org/mknapik/uploader.png)](https://travis-ci.org/mknapik/uploader)
+
 Provides interface for uploading and distributing software through cvmfs repositories.
 
 Uses Certificate Authentication provided by Apache `httpd` web server (or others).
