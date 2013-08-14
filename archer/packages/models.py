@@ -7,6 +7,7 @@ import tarfile
 from django.db import models
 from django.conf import settings
 from archer.projects.models import Project
+from archer.core import exceptions
 
 
 class Package(models.Model):
@@ -16,6 +17,9 @@ class Package(models.Model):
     class Status:
         """Enumeration for Package status"""
         new, uploaded, unpacking, deployed, cancelled, deleted, undeployed, error = range(8)
+
+    class ContentsError(exceptions.ApplicationError):
+        pass
 
     __STATUSES = dict((value, name) for name, value in vars(Status).items() if not name.startswith('__'))
 
@@ -80,7 +84,7 @@ class Package(models.Model):
 
             Returns True if deployment succeeded.
             Raises IOError if file does not exist.
-            Raises ValueError if file is not a tar file.
+            Raises archer.core.exceptions.ValidationError if file is not a tar file.
             """
         import tarfile
 
@@ -93,7 +97,7 @@ class Package(models.Model):
             if not tarfile.is_tarfile(file_path):
                 self.status = Package.Status.error
                 self.save()
-                raise ValueError('package file ' + self.filepath() + ' is not tarball file')
+                raise Package.ContentsError('package file ' + self.filepath() + ' is not tarball file')
             try:
                 # self.project.clear_dir(subdir)
                 with closing(tarfile.open(file_path)) as tar:
@@ -103,10 +107,10 @@ class Package(models.Model):
                     dir = self.project.subdir(subdir)
                     for f in tar:
                         if f.name.startswith('/'):
-                            raise ValueError('Tar contains disallowed paths starting with "/"!')
+                            raise Package.ContentsError('Tar contains disallowed paths starting with "/"!')
                         normpath = os.path.normpath(f.name)
                         if normpath.startswith('../'):
-                            raise ValueError('Tar contains disallowed paths using ".."!')
+                            raise Package.ContentsError('Tar contains disallowed paths using ".."!')
                         content_path = os.path.join(dir, f.name)
                         if not os.access(content_path, os.W_OK):
                             shutil.rmtree(content_path, ignore_errors=True)
@@ -116,7 +120,7 @@ class Package(models.Model):
                     self.status = Package.Status.deployed
                     self.save()
                     return True
-            except (OSError, ValueError, IOError) as e:
+            except (Package.ContentsError, tarfile.TarError, IOError, OSError) as e:
                 self.status = Package.Status.error
                 self.save()
                 raise e

@@ -9,6 +9,7 @@ from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from guardian.shortcuts import assign_perm
+from archer.core import exceptions
 
 
 def validator_dir_exists(path):
@@ -120,14 +121,14 @@ class Project(models.Model):
     def subdir(self, subdir=''):
         """
         Returns absolute path to subdirectory of `self.directory`.
-        Raises ValueError if `subdir` is not a offspring of `self.directory`.
+        Raises archer.core.exceptions.ValidationError if `subdir` is not a offspring of `self.directory`.
         """
         if subdir is None or len(subdir) == 0:
             return self.full_path()
         if subdir.startswith('/'):
-            raise ValueError('Cannot provide root path "%s" as subdir!' % subdir)
+            raise exceptions.ValidationError('Cannot provide root path "%s" as subdir!' % subdir)
         if os.path.normpath(subdir).startswith('..'):
-            raise ValueError('Cannot privide a path "%s" pointing to parent directory!' % subdir)
+            raise exceptions.ValidationError('Cannot privide a path "%s" pointing to parent directory!' % subdir)
         return os.path.abspath(os.path.join(self.full_path(), subdir))
 
     def clear_dir(self, subdir=''):
@@ -135,12 +136,12 @@ class Project(models.Model):
         Removes all files in project's directory.
         """
         if not os.path.isdir(self.file_system.mount_point):
-            raise ValueError("mount_point %s is not a directory" % self.file_system.mount_point)
+            raise exceptions.ValidationError("mount_point %s is not a directory" % self.file_system.mount_point)
         if not os.path.isdir(self.full_path()):
-            raise ValueError("project %s is not a directory" % self.full_path())
+            raise exceptions.ValidationError("project %s is not a directory" % self.full_path())
         path = self.subdir(subdir)
         if not os.path.isdir(path):
-            raise ValueError("%s is not a directory" % path)
+            raise exceptions.ValidationError("%s is not a directory" % path)
         for root, dirs, files in os.walk(path):
             for f in files:
                 os.unlink(os.path.join(root, f))

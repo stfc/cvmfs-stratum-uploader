@@ -3,6 +3,7 @@ import shutil
 import uuid
 from django.utils.unittest import TestCase
 from archer.projects.models import Project, FileSystem
+from archer.core import exceptions
 
 
 class ProjectTestCase(TestCase):
@@ -32,7 +33,7 @@ class ProjectTestCase(TestCase):
 
         try:
             project2.clear_dir()
-        except (IOError, OSError, ValueError) as e:
+        except (IOError, OSError, exceptions.ValidationError) as e:
             print(e)
             self.fail(e)
 
@@ -41,7 +42,7 @@ class ProjectTestCase(TestCase):
         if os.path.exists(directory):
             shutil.rmtree(directory)
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(exceptions.ValidationError):
             p = Project(file_system=self.fs, directory='project2')
             p.clear_dir()
 
@@ -63,7 +64,7 @@ class ProjectTestCase(TestCase):
         os.mkdir(os.path.join(directory, 'something'))
         os.chmod(self.fs.mount_point, 02444)
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(exceptions.ValidationError):
             p = Project(file_system=self.fs, directory='project2')
             p.clear_dir()
 
@@ -91,11 +92,11 @@ class ProjectTestCase(TestCase):
         self.assertEqual(dir, path)
 
     def test_subdir_disallowed_parent(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(exceptions.ValidationError):
             self.project1.subdir('foo/../../foo/bar')
 
     def test_subdir_root_dir(self):
-        with self.assertRaises(ValueError):
+        with self.assertRaises(exceptions.ValidationError):
             self.project1.subdir('/tmp')
 
     def tearDown(self):

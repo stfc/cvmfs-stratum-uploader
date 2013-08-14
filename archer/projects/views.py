@@ -20,6 +20,7 @@ from archer.core.decorators import class_view_decorator
 from archer.projects.forms import UploadFileForm, MakeDirectoryForm, RemoveDirectoryForm, RemoveFileForm
 from archer.projects.models import Project
 from archer.packages.models import Package
+from archer.core import exceptions
 
 NUMBER_OF_PACKAGES = 5
 
@@ -77,25 +78,25 @@ class ModifyDirectory(View):
     def validate_directory(self, project_id, path):
         project, full_path = self.__validate_format(project_id, path)
         if not os.path.isdir(full_path):
-            raise ValueError('"%s" is not a directory' % full_path)
+            raise exceptions.ArgumentError('"%s" is not a directory' % full_path)
         if not os.path.exists(full_path):
-            raise ValueError('Directory "%s" does not exist' % full_path)
+            raise exceptions.ArgumentError('Directory "%s" does not exist' % full_path)
         return project, full_path
 
     def validate_file(self, project_id, path):
         project, full_path = self.__validate_format(project_id, path)
         if not os.path.isfile(full_path):
-            raise ValueError('"%s" is not a file' % full_path)
+            raise exceptions.ArgumentError('"%s" is not a file' % full_path)
         if not os.path.exists(full_path):
-            raise ValueError('File "%s" does not exist' % full_path)
+            raise exceptions.ArgumentError('File "%s" does not exist' % full_path)
         return project, full_path
 
     def __validate_format(self, project_id, path):
         if path.startswith('/'):
-            raise ValueError('File or directory "%s" cannot start with "/"' % path)
+            raise exceptions.ValidationError('File or directory "%s" cannot start with "/"' % path)
         project = get_object_or_404(Project, pk=project_id)
         if re.search('(\.\./|/\.\.)', path):
-            raise ValueError('File or directory "%s" contains ".."' % path)
+            raise exceptions.ValidationError('File or directory "%s" contains ".."' % path)
         full_path = os.path.join(project.full_path(), path)
         return project, full_path
 
@@ -104,18 +105,18 @@ class ModifyDirectory(View):
 def deploy(request, project_id, path):
     def validate():
         if path.startswith('/'):
-            raise ValueError('Directory "%s" cannot start with "/"' % path)
+            raise exceptions.ValidationError('Directory "%s" cannot start with "/"' % path)
         project = get_object_or_404(Project, pk=project_id)
         if re.search('(\.\./|/\.\.)', path):
-            raise ValueError('%s contains ".."' % path)
+            raise exceptions.ValidationError('%s contains ".."' % path)
         project_path = project.full_path()
         parent_directory = os.path.join(project_path, path)
         # if os.path.commonprefix([parent_directory, project_path]) != project_path:
         #     raise
         if not os.path.isdir(parent_directory):
-            raise ValueError('"%s" is not a directory' % parent_directory)
+            raise exceptions.ArgumentError('"%s" is not a directory' % parent_directory)
         if not os.path.exists(parent_directory):
-            raise ValueError('"%s" does not exist' % parent_directory)
+            raise exceptions.ArgumentError('"%s" does not exist' % parent_directory)
         return project, parent_directory
 
     validate()
@@ -138,7 +139,7 @@ def deploy(request, project_id, path):
                                              'Package "%s" successfully deployed in "%s" directory' % (package, path))
                     else:
                         messages.add_message(request, messages.ERROR, 'Cannot deploy a package "%s"!' % package)
-                except (IOError, ValueError, OSError) as e:
+                except (IOError, exceptions.ValidationError, OSError) as e:
                     messages.add_message(request, messages.ERROR,
                                          'Error while deploying a package "%s": "%s"' % (package, e))
             else:
@@ -174,7 +175,7 @@ class Remove(ModifyDirectory):
                                        'path': path,
                                       },
                                       context_instance=RequestContext(request))
-        except ValueError as e:
+        except exceptions.ApplicationError as e:
             messages.add_message(request, messages.ERROR, 'Could not delete %s: %s' % (text, e))
             return HttpResponseRedirect(reverse('projects:show', args=[project.id]))
 
@@ -189,10 +190,10 @@ class Remove(ModifyDirectory):
             elif os.path.isfile(to_remove):
                 os.remove(to_remove)
             else:
-                raise ValueError('How did that happen? Not a file nor directory!')
+                raise exceptions.ArgumentError('How did that happen? Not a file nor directory!')
             messages.add_message(request, messages.SUCCESS,
                                  '%s "%s" successfully removed.' % (text.title(), to_remove))
-        except (ValueError, OSError) as e:
+        except (exceptions.ApplicationError, OSError) as e:
             messages.add_message(request, messages.ERROR,
                                  'Could not delete %s "%s": %s' % (text, to_remove, e))
         return HttpResponseRedirect(reverse('projects:show', args=[project.id]))
