@@ -107,6 +107,7 @@ class Project(models.Model):
             ('deploy_package', 'Deploy package'),
             ('make_directory', 'Make directory'),
             ('remove_directory', 'Remove directory'),
+            ('remove_file', 'Remove file'),
             ('setup_project', 'Setup project'),
         )
 
