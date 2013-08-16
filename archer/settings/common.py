@@ -37,7 +37,7 @@ class Common(Settings):
             'ENGINE': 'django.db.backends.sqlite3',
             # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
             'NAME': '%s/db/uploader_dev.sqlite3' % PROJECT_ROOT,  # Or path to database file if using sqlite3.
-            'TEST_NAME': '%s/db/uploader_test.sqlite3' % PROJECT_ROOT,
+            'TEST_NAME': ':memory:',
             'USER': '',  # Not used with sqlite3.
             'PASSWORD': '',  # Not used with sqlite3.
             'HOST': '',  # Set to empty string for localhost. Not used with sqlite3.
@@ -122,7 +122,6 @@ class Common(Settings):
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.csrf.CsrfViewMiddleware',
         'django.contrib.auth.middleware.AuthenticationMiddleware',
-        # 'django.contrib.auth.middleware.RemoteUserMiddleware',
         'archer.core.middleware.CustomHeaderMiddleware',
         'django.contrib.messages.middleware.MessageMiddleware',
         # Uncomment the next line for simple clickjacking protection:
@@ -206,3 +205,5 @@ class Common(Settings):
     FIXTURE_DIRS = (
         os.path.join(PROJECT_ROOT, 'fixtures/')
     )
+
+    TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'

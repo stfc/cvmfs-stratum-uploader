@@ -10,6 +10,14 @@ from archer.settings.common import Common
 class Test(Common):
     DEBUG = True
     TEMPLATE_DEBUG = DEBUG
+    # in memory doesn't work for nosetests
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': ':memory:',
+            'TEST_NAME': ':memory:',
+        },
+    }
 
     # syncdb should be faster than using South migrations
     SOUTH_TESTS_MIGRATE = False

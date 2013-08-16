@@ -1,13 +1,17 @@
 import os
 import configurations.importer
+
 configurations.importer.install()
 
+from common import Common
 from dev import Dev
 from production import Production
 from test import Test
 
+if os.environ['DJANGO_CONFIGURATION'] == 'Production':
+    Production.load_cfg()
 # hack is needed to make sniffer/nosetests command work with django-configurations plugin
-if os.environ['DJANGO_CONFIGURATION'] == 'Test':
+elif os.environ['DJANGO_CONFIGURATION'] == 'Test':
     ANONYMOUS_USER_ID = Test.ANONYMOUS_USER_ID
     SOUTH_TESTS_MIGRATE = Test.SOUTH_TESTS_MIGRATE
     INSTALLED_APPS = Test.INSTALLED_APPS
