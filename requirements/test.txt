@@ -4,3 +4,4 @@ django-nose
 mock
 nosexcover
 -e git+https://github.com/SeanHayes/django-inmemorystorage.git#egg=django-inmemorystorage
+-e git+https://github.com/mknapik/django-bootstrap-toolkit.git#egg=django-bootstrap-toolkit
