@@ -19,7 +19,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 requirements = [str(ir.req) for ir in parse_requirements('requirements/common.txt')]
 
 setup(
-    name='uploader',
+    name='stfc-stratum-uploader',
     version=VERSION,
     author=u'Michal Knapik',
     author_email='Michael.Knapik@stfc.ac.uk',
@@ -28,9 +28,9 @@ setup(
     scripts=['manage.py'],
     include_package_data=True,
     url='git://github.com/mknapik/uploader.git',
-    license='LICENSE',
+    license='Apache License',
     description='Provides interface for uploading and distributing software through cvmfs repositories.',
-    long_description=open('README.md').read(),
+    long_description='see README.md',
     zip_safe=False,
     keywords=['cvmfs', 'django', 'uploader', 'vo', 'cern', 'stfc', 'ral'],
     # Adds dependencies
@@ -40,7 +40,4 @@ setup(
 #        'git+https://github.com/mknapik/django-bootstrap-toolkit#egg=django-bootstrap-toolkit',
         'https://github.com/mknapik/uploader/archive/master.zip3egg=django-bootstrap-toolkit'
     ],
-    extras_require={
-        'postgres': ['psycopg2'],
-    }
 )
