@@ -10,7 +10,7 @@ env:
   matrix:
     - REQUIREMENTS=postgres-ci DJANGO_CONFIGURATION=PostgresCI
     - REQUIREMENTS=test DJANGO_CONFIGURATION=SqliteCI
-    - REQUIREMENTS=production DJANGO_CONFIGURATION=Production DJANGO_CONFIG_FILE='./archer/settings/ci.cfg'
+    - REQUIREMENTS=postgres-ci DJANGO_CONFIGURATION=Production DJANGO_CONFIG_FILE='./archer/settings/ci.cfg'
 install: 'pip install -r requirements/${REQUIREMENTS}.txt --use-mirrors'
 script: python manage-stfc-stratum-uploader.py test
 services:
