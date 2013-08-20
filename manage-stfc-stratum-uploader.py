@@ -1,6 +1,9 @@
 #!/usr/bin/env python
+import logging
 import os
 import sys
+
+logger = logging.getLogger(__name__)
 
 
 def main():
@@ -12,8 +15,8 @@ def main():
     else:
         os.environ.setdefault('DJANGO_CONFIGURATION', 'Dev')
 
-    print 'DJANGO_SETTINGS_MODULE = %s' % os.environ['DJANGO_SETTINGS_MODULE']
-    print 'DJANGO_CONFIGURATION = %s' % os.environ['DJANGO_CONFIGURATION']
+    logger.debug('DJANGO_SETTINGS_MODULE = %s' % os.environ['DJANGO_SETTINGS_MODULE'])
+    logger.debug('DJANGO_CONFIGURATION = %s' % os.environ['DJANGO_CONFIGURATION'])
 
     import configurations.importer
     configurations.importer.install()

@@ -1,19 +1,17 @@
+import logging
 import os
-from pprint import pprint, pformat
+from pprint import pformat
 import shutil
+import re
+
 from django.contrib import messages
-
 from django.core.urlresolvers import reverse
-
 from django.http.response import HttpResponseRedirect, HttpResponseBadRequest
 from django.shortcuts import render, render_to_response, get_object_or_404
 from django.template import loader
-from django.utils.decorators import classonlymethod
-from django.utils.safestring import mark_safe
 from guardian.decorators import permission_required_or_403
 from django.template.context import RequestContext
 from django.views.generic import View
-import re
 import guardian.shortcuts
 
 from archer.core.decorators import class_view_decorator
@@ -22,7 +20,10 @@ from archer.projects.models import Project
 from archer.packages.models import Package
 from archer.core import exceptions
 
+
 NUMBER_OF_PACKAGES = 5
+
+logger = logging.getLogger(__name__)
 
 
 def unauthenticated(request):
@@ -61,7 +62,7 @@ class UploadView(View):
         if form.is_valid():
             from guardian.shortcuts import assign_perm
             # handle files
-            pprint(form)
+            logger.debug(pformat(form))
             package = form.save(commit=False)
             package.status = Package.Status.uploaded
             package.project_id = project_id
@@ -307,6 +308,7 @@ def show(request, project_id, path=''):
                                                'path': relative_path,
                                                'pre': pre,
                                               })
+
         if not os.path.isdir(path):
             return None
         return _index(path)

@@ -1,3 +1,4 @@
+import logging
 import os
 import shutil
 import uuid
@@ -5,6 +6,7 @@ from django.utils.unittest import TestCase
 from archer.projects.models import Project, FileSystem
 from archer.core import exceptions
 
+logger = logging.getLogger(__name__)
 
 class ProjectTestCase(TestCase):
     def setUp(self):
@@ -34,7 +36,7 @@ class ProjectTestCase(TestCase):
         try:
             project2.clear_dir()
         except (IOError, OSError, exceptions.ValidationError) as e:
-            print(e)
+            logger.error(e)
             self.fail(e)
 
     def test_clear_dir_no_dir(self):

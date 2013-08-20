@@ -1,6 +1,9 @@
 # noinspection PyUnresolvedReferences
+import logging
 import re
 from archer.settings.common import Common
+
+logger = logging.getLogger(__name__)
 
 
 class Production(Common):
@@ -33,6 +36,7 @@ class Production(Common):
                 return value
 
         def set(option, value):
+            logger.debug('set %s = %s' % (option.upper(), value))
             setattr(cls, option.upper(), value)
 
         OPTIONS_AVAILABLE = {
@@ -48,19 +52,21 @@ class Production(Common):
         )
 
         config = ConfigParser.SafeConfigParser()
-        configs = ['./archer/settings/production.cfg', '/etc/stfc-stratum-uploader.cfg',
-                   os.path.expanduser('~/.uploader.cfg')]
+        configs = ['/etc/stfc-stratum-uploader.cfg',
+                   os.path.expanduser('~/.uploader.cfg'), ]
         if os.environ.has_key('DJANGO_CONFIG_FILE'):
             configs += os.environ.get('DJANGO_CONFIG_FILE')
+        # configs are read one by one
         config.read(configs)
+
         for section in config.sections():
             if section == 'database':
                 default_db = {}
                 for option in config.options(section):
                     default_db[option.upper()] = config.get(section, option)
-                set('DATABASE', {'default': default_db})
+                set('DATABASES', {'default': default_db})
             elif section == 'logging':
-                print 'TBD'
+                logger.error('TBD')
             else:
                 if section not in OPTIONS_AVAILABLE.keys():
                     raise ValueError('Unrecognized section: [%s]. Perhaps, [misc] should be used instead.' % section)
