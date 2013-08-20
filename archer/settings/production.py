@@ -44,6 +44,7 @@ class Production(Common):
             'url': ['HOSTNAME', 'MEDIA_URL', 'STATIC_URL'],
             'security': ['SECRET_KEY', 'CSRF_MIDDLEWARE_SECRET', 'ALLOWED_HOSTS'],
             'debug': ['DEBUG', 'TEMPLATE_DEBUG', 'VIEW_TEST', 'INTERNAL_IPS', 'SKIP_CSRF_MIDDLEWARE'],
+            'apps': ['ADD[0-9]+'],
             'misc': None,
         }
         LIST_TYPES = (
@@ -56,6 +57,7 @@ class Production(Common):
                    os.path.expanduser('~/.uploader.cfg'), ]
         if os.environ.has_key('DJANGO_CONFIG_FILE'):
             configs += os.environ.get('DJANGO_CONFIG_FILE')
+
         # configs are read one by one
         config.read(configs)
 
@@ -67,6 +69,11 @@ class Production(Common):
                 set('DATABASES', {'default': default_db})
             elif section == 'logging':
                 logger.error('TBD')
+            elif section == 'apps':
+                for option in config.options(section):
+                    option = option.upper()
+                    value = config.get(section, option)
+                    cls.INSTALLED_APPS = cls.INSTALLED_APPS + (value,)
             else:
                 if section not in OPTIONS_AVAILABLE.keys():
                     raise ValueError('Unrecognized section: [%s]. Perhaps, [misc] should be used instead.' % section)
