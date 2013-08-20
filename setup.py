@@ -19,7 +19,7 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 requirements = [str(ir.req) for ir in parse_requirements('requirements/common.txt')]
 
 setup(
-    name='stfc-stratum-uploader',
+    name='stfc_stratum_uploader',
     version=VERSION,
     author=u'Michal Knapik',
     author_email='Michael.Knapik@stfc.ac.uk',
@@ -30,7 +30,7 @@ setup(
     url='git://github.com/mknapik/uploader.git',
     license='Apache License',
     description='Provides interface for uploading and distributing software through cvmfs repositories.',
-    long_description='see README.md',
+    long_description=open('README.md').read,
     zip_safe=False,
     keywords=['cvmfs', 'django', 'uploader', 'vo', 'cern', 'stfc', 'ral'],
     # Adds dependencies
