@@ -18,3 +18,4 @@ gem 'guard-minify', github: 'smgt/guard-minify'
 gem 'uglifier'
 
 gem 'therubyracer'
+gem 'travis-lint'

@@ -25,7 +25,7 @@ setup(
     author_email='Michael.Knapik@stfc.ac.uk',
     package_dir={base_name: base_name},
     packages=find_packages(exclude=["*.tests"]), # include all packages under this directory
-    scripts=['manage.py'],
+    scripts=['manage-stfc-stratum-uploader.py'],
     include_package_data=True,
     url='git://github.com/mknapik/uploader.git',
     license='Apache License',

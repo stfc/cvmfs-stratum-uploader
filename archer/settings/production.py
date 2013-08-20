@@ -11,13 +11,14 @@ class Production(Common):
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-            'NAME': '%s/db/uploader.sqlite3' % Common.PROJECT_ROOT,  # Or path to database file if using sqlite3.
-            'USER': '',  # Not used with sqlite3.
-            'PASSWORD': '',  # Not used with sqlite3.
-            'HOST': '',  # Set to empty string for localhost. Not used with sqlite3.
-            'PORT': '',  # Set to empty string for default. Not used with sqlite3.
+            'NAME': '%s/db/uploader.sqlite3' % Common.PROJECT_ROOT, # Or path to database file if using sqlite3.
+            'USER': '', # Not used with sqlite3.
+            'PASSWORD': '', # Not used with sqlite3.
+            'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
+            'PORT': '', # Set to empty string for default. Not used with sqlite3.
         }
     }
+
     @classmethod
     def load_cfg(cls):
         import ConfigParser
@@ -47,7 +48,11 @@ class Production(Common):
         )
 
         config = ConfigParser.SafeConfigParser()
-        config.read(['/etc/uploader.cfg', os.path.expanduser('~/.uploader.cfg'), './archer/settings/production.cfg'])
+        configs = ['./archer/settings/production.cfg', '/etc/stfc-stratum-uploader.cfg',
+                   os.path.expanduser('~/.uploader.cfg')]
+        if os.environ.has_key('DJANGO_CONFIG_FILE'):
+            configs += os.environ.get('DJANGO_CONFIG_FILE')
+        config.read(configs)
         for section in config.sections():
             if section == 'database':
                 default_db = {}

@@ -2,7 +2,19 @@ language: python
 python:
   - '2.6'
   - '2.7'
-install: 'pip install -r requirements/test.txt --use-mirrors'
-env: DJANGO_SETTINGS_MODULE=archer.settings DJANGO_CONFIGURATION=Test
-script: python manage.py test
-
+  - 'pypy'
+env:
+  global:
+    - DJANGO_SETTINGS_MODULE=archer.settings
+    - REUSE_DB=0
+  matrix:
+    - REQUIREMENTS=postgres-ci DJANGO_CONFIGURATION=PostgresCI
+    - REQUIREMENTS=test DJANGO_CONFIGURATION=SqliteCI
+    - REQUIREMENTS=production DJANGO_CONFIGURATION=Production DJANGO_CONFIG_FILE='./archer/settings/ci.cfg'
+install: 'pip install -r requirements/${REQUIREMENTS}.txt --use-mirrors'
+script: python manage-stfc-stratum-uploader.py test
+services:
+  - PostgreSQL
+before_script:
+  - psql -c "CREATE DATABASE uploader_ci_test;" -U postgres
+  - psql -c "CREATE DATABASE uploader_ci_production;" -U postgres
