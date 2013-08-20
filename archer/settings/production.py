@@ -56,8 +56,7 @@ class Production(Common):
         configs = ['/etc/stfc-stratum-uploader.cfg',
                    os.path.expanduser('~/.uploader.cfg'), ]
         if os.environ.has_key('DJANGO_CONFIG_FILE'):
-            configs += os.environ.get('DJANGO_CONFIG_FILE')
-
+            configs.append(os.environ.get('DJANGO_CONFIG_FILE'))
         # configs are read one by one
         config.read(configs)
 
