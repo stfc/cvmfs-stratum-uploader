@@ -6,7 +6,7 @@ configurations.importer.install()
 from common import Common
 from dev import Dev
 from production import Production
-from test import Test
+from test import Test, PostgresCI, SqliteCI
 
 if os.environ['DJANGO_CONFIGURATION'] == 'Production':
     Production.load_cfg()
