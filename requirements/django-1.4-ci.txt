@@ -1,4 +1,4 @@
-Django>=1.4,<=1.5
+Django>=1.4,<1.5
 South>=0.8.1
 django-guardian==1.1.1
 https://github.com/mknapik/django-bootstrap-toolkit/archive/master.zip#egg=django-bootstrap-toolkit
