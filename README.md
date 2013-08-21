@@ -117,7 +117,7 @@ export APP_DIR=/var/www/t1student0.esc.rl.ac.uk
             DATABASES = {
                 'default': {
                     'ENGINE': 'django.db.backends.sqlite3',
-                    'NAME': '%s/db/uploader.sqlite3' % Common.PROJECT_ROOT,
+                    'NAME': '%s/db/uploader.sqlite3' % PROJECT_ROOT,
                     'USER': '',
                     'PASSWORD': '',
                     'HOST': '',
@@ -253,17 +253,17 @@ export APP_DIR=/var/www/t1student0.esc.rl.ac.uk
     1. Create database structure:
         
         ```bash
-        DJANGO_CONFIGURATION=Production python manage.py syncdb
-        DJANGO_CONFIGURATION=Production python manage.py migrate
+        DJANGO_CONFIGURATION=production python manage.py syncdb
+        DJANGO_CONFIGURATION=production python manage.py migrate
         ```
     2. Load example data:
         
         ```bash
-        DJANGO_CONFIGURATION=Production python manage.py loaddata fixtures/auth.json
-        DJANGO_CONFIGURATION=Production python manage.py loaddata fixtures/custom_auth.json
-        DJANGO_CONFIGURATION=Production python manage.py loaddata fixtures/guardian.json
-        DJANGO_CONFIGURATION=Production python manage.py loaddata fixtures/projects.json
-        DJANGO_CONFIGURATION=Production python manage.py sync_perms
+        DJANGO_CONFIGURATION=production python manage.py loaddata fixtures/auth.json
+        DJANGO_CONFIGURATION=production python manage.py loaddata fixtures/custom_auth.json
+        DJANGO_CONFIGURATION=production python manage.py loaddata fixtures/guardian.json
+        DJANGO_CONFIGURATION=production python manage.py loaddata fixtures/projects.json
+        DJANGO_CONFIGURATION=production python manage.py sync_perms
         ```
 
 # Development
