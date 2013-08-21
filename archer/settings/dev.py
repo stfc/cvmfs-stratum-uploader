@@ -13,6 +13,7 @@ class Dev(Common):
     INSTALLED_APPS = Common.INSTALLED_APPS + (
         'debug_toolbar',
         'gunicorn',
+        'django_extensions',
     )
 
     ## Debug Toolbar

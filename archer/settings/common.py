@@ -154,7 +154,6 @@ class Common(Settings):
         'archer.projects',
         'archer.packages',
         'archer.appsetup',
-        'django_extensions',
         'bootstrap_toolkit',
         'guardian',
         'south',

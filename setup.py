@@ -37,9 +37,4 @@ Uses Certificate Authentication provided by Apache `httpd` web server (or others
     keywords=['cvmfs', 'django', 'uploader', 'vo', 'cern', 'stfc', 'ral'],
     # Adds dependencies
     install_requires=requirements,
-    dependency_links=[
-        # git fetching doesn't work for old pip versions
-#        'git+https://github.com/mknapik/django-bootstrap-toolkit#egg=django-bootstrap-toolkit',
-        'https://github.com/mknapik/uploader/archive/master.zip3egg=django-bootstrap-toolkit'
-    ],
 )

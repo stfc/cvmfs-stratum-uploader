@@ -24,6 +24,7 @@ class Test(Common):
 
     INSTALLED_APPS = Common.INSTALLED_APPS + (
         'django_nose',
+        'django_extensions',
     )
 
     TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
