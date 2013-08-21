@@ -30,7 +30,9 @@ setup(
     url='git://github.com/mknapik/uploader.git',
     license='Apache License',
     description='Provides interface for uploading and distributing software through cvmfs repositories.',
-    long_description=open('README.md').read,
+    long_description="""Provides interface for uploading and distributing software through cvmfs repositories.
+
+Uses Certificate Authentication provided by Apache `httpd` web server (or others).""",
     zip_safe=False,
     keywords=['cvmfs', 'django', 'uploader', 'vo', 'cern', 'stfc', 'ral'],
     # Adds dependencies
