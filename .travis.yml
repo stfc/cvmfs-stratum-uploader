@@ -9,8 +9,10 @@ env:
     - REUSE_DB=0
   matrix:
     - REQUIREMENTS=postgres-ci DJANGO_CONFIGURATION=PostgresCI
+    - REQUIREMENTS=django-1.4-ci DJANGO_CONFIGURATION=SqliteCI
     - REQUIREMENTS=test DJANGO_CONFIGURATION=SqliteCI
-    - REQUIREMENTS=postgres-ci DJANGO_CONFIGURATION=Production DJANGO_CONFIG_FILE='./archer/settings/ci.cfg'
+    - REQUIREMENTS=django-1.4-ci DJANGO_CONFIGURATION=Production DJANGO_CONFIG_FILE='./archer/settings/ci.cfg'
+    - REQUIREMENTS=test DJANGO_CONFIGURATION=Production DJANGO_CONFIG_FILE='./archer/settings/ci.cfg'
 install:
   - 'pip install -r requirements/${REQUIREMENTS}.txt --use-mirrors'
   - pip install coveralls
