@@ -2,7 +2,7 @@
 import logging
 import re
 from archer.settings import common
-from archer.settings import *
+from archer.settings.common import *
 
 logger = logging.getLogger(__name__)
 
@@ -13,7 +13,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '%s/db/uploader.sqlite3' % common.PROJECT_ROOT, # Or path to database file if using sqlite3.
+        'NAME': '%s/db/uploader.sqlite3' % PROJECT_ROOT, # Or path to database file if using sqlite3.
         'USER': '', # Not used with sqlite3.
         'PASSWORD': '', # Not used with sqlite3.
         'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
