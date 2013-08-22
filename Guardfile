@@ -15,6 +15,10 @@ guard :copy, from: 'archer/assets/css', to: 'archer/static/css/', mkpath: true d
   watch(%r{^.+\.css$})
 end
 
+guard :copy, from: 'archer/assets/img', to: 'archer/static/img/', mkpath: true do
+  watch(%r{^.+\.png$})
+end
+
 guard :coffeescript, input: 'archer/assets/coffee', output: 'archer/static/js'
 
 guard :sass, input: 'archer/assets/sass', output: 'archer/static/css'
@@ -36,9 +40,17 @@ end
 #  guard 'minify', input: "#{file}.css", output: "#{file}.min.css"
 #end
 
+# like collectstatic
+guard :shell do
+  watch(%r{archer/static/.+\.(css|html|js|png)$}) do |m|
+    `python manage-stfc-stratum-uploader.py collectstatic --noinput`
+  end
+end
+
 guard 'livereload' do
-  watch(%r{archer/static/.+\.(css|html|js)$})
+  watch(%r{archer/static/.+\.(css|html|js|png)$})
   watch(%r{archer/.+\.(py)$})
+  watch(%r{archer/.+/templates/.+/\.(html)$})
 end
 
 guard 'nosetests' do

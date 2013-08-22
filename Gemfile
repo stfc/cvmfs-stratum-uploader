@@ -10,6 +10,7 @@ gem 'guard-livereload'
 gem 'guard-coffeescript'
 gem 'guard-sass'
 gem 'guard-rsync'
+gem 'guard-shell'
 gem 'guard-copy'
 
 gem 'guard-concat'
