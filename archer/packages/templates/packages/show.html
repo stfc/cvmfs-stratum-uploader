@@ -19,9 +19,12 @@
         <dl class='dl-horizontal dl-unwrapped-horizontal'>
             <dt>{% include 'packages/_status.html' with status=package.status_name %}</dt>
             <dd>
-                <a class='btn' href="{% url 'projects:index' %}">Back</a>
+                <a class='btn' href="{% url 'projects:show' package.project_id %}">Back</a>
                 {% if package.can_remove and can_remove %}
                     <a class='btn btn-danger' href="{% url 'packages:remove' package.id %}">Remove</a>
+                {% endif %}
+                {% if package.can_clear and can_remove %}
+                    <a class='btn btn-danger' href="{% url 'packages:clear' package.id %}">Clear</a>
                 {% endif %}
                 {% if package.can_deploy and can_deploy %}
                     <a class='btn btn-primary' href="{% url 'packages:deploy' package.id %}">Deploy</a>

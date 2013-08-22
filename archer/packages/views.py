@@ -1,5 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from guardian.decorators import permission_required_or_403
 from django.core.exceptions import PermissionDenied
@@ -23,7 +25,7 @@ def show(request, package_id):
         'package': package,
         'files': package.get_file_list(),
         'can_deploy': can_deploy,
-        'can_remove': can_remove})
+        'can_remove': can_remove,})
 
 
 @permission_required_or_403('packages.deploy_package', (Package, 'pk', 'package_id'))
@@ -55,6 +57,21 @@ def deploy(request, package_id):
 
 
 @permission_required_or_403('packages.remove_package', (Package, 'pk', 'package_id'))
+def clear(request, package_id):
+    package = get_object_or_404(Package, id=package_id)
+    project_id = package.project_id
+
+    if package.can_clear():
+        package.remove()
+        package.delete()
+        messages.add_message(request, messages.SUCCESS, 'Package was completely removed!')
+    else:
+        messages.add_message(request, messages.ERROR, 'Cannot delete package file!')
+        return render(request, 'packages/show.html', {'package': package, 'can_remove': True})
+    return HttpResponseRedirect(reverse('projects:show', args=[project_id]))
+
+
+@permission_required_or_403('packages.remove_package', (Package, 'pk', 'package_id'))
 def remove(request, package_id):
     package = get_object_or_404(Package, id=package_id)
 
@@ -69,4 +86,4 @@ def remove(request, package_id):
             messages.add_message(request, messages.ERROR, e)
     else:
         messages.add_message(request, messages.ERROR, 'Cannot delete package file!')
-    return render(request, 'packages/show.html', {'package': package})
+    return HttpResponseRedirect(reverse('packages:show', args=[package.id]))

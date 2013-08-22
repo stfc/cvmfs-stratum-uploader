@@ -6,6 +6,7 @@ import tarfile
 
 from django.db import models
 from django.conf import settings
+from django.utils.datetime_safe import datetime
 from archer.projects.models import Project
 from archer.core import exceptions
 
@@ -30,6 +31,7 @@ class Package(models.Model):
         blank=False,
         null=False
     )
+    deployed_at = models.DateTimeField(default=None, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -42,12 +44,15 @@ class Package(models.Model):
     def status_name(self):
         return Package.__STATUSES[self.status]
 
+    def can_clear(self):
+        return self.status in [Package.Status.deleted]
+
     def can_remove(self):
-        return self.status in [Package.Status.deployed, Package.Status.undeployed, Package.Status.uploaded]
+        return self.status not in [Package.Status.deleted, Package.Status.unpacking]
 
     def can_deploy(self):
-        if self.status in [Package.Status.uploaded, Package.Status.undeployed, Package.Status.cancelled,
-                           Package.Status.deployed]:
+        if self.status in [Package.Status.uploaded, Package.Status.undeployed,
+                           Package.Status.cancelled, Package.Status.deployed]:
             return os.path.isfile(self.file.path) and tarfile.is_tarfile(self.file.path)
         return False
 
@@ -118,6 +123,7 @@ class Package(models.Model):
                     tar.extractall(path=dir)
 
                     self.status = Package.Status.deployed
+                    self.deployed_at = datetime.now()
                     self.save()
                     return True
             except (Package.ContentsError, tarfile.TarError, IOError, OSError) as e:
