@@ -1,9 +1,0 @@
--r common.txt
-https://github.com/mknapik/django-bootstrap-toolkit/archive/master.zip#egg=django-bootstrap-toolkit
-psycopg2
-
-django-coverage
-django-nose
-mock
-nosexcover
--e git+https://github.com/SeanHayes/django-inmemorystorage.git#egg=django-inmemorystorage

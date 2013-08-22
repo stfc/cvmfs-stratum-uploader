@@ -7,19 +7,11 @@ env:
     - DJANGO_SETTINGS_MODULE=archer.settings
     - REUSE_DB=0
   matrix:
-    - REQUIREMENTS=postgres-ci DJANGO_CONFIGURATION=ci_postgres
-    - REQUIREMENTS=django-1.4-ci DJANGO_CONFIGURATION=ci_sqlite
-    - REQUIREMENTS=test DJANGO_CONFIGURATION=ci_sqlite
-    - REQUIREMENTS=django-1.4-ci DJANGO_CONFIGURATION=production DJANGO_CONFIG_FILE='./archer/settings/ci.cfg'
-    - REQUIREMENTS=test DJANGO_CONFIGURATION=production DJANGO_CONFIG_FILE='./archer/settings/ci.cfg'
+    - DJANGO_CONFIGURATION=ci_test
+    - DJANGO_CONFIGURATION=ci_production DJANGO_CONFIG_FILE='./archer/settings/ci.cfg'
 install:
-  - 'pip install -r requirements/${REQUIREMENTS}.txt --use-mirrors'
+  - 'pip install -r requirements/${DJANGO_CONFIGURATION}.txt --use-mirrors'
   - pip install coveralls
-services:
-  - PostgreSQL
-before_script:
-  - psql -c "CREATE DATABASE uploader_ci_test;" -U postgres
-  - psql -c "CREATE DATABASE uploader_ci_production;" -U postgres
 script:
   - coverage run --source=archer manage-stfc-stratum-uploader.py test
 after_script:

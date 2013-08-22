@@ -8,6 +8,6 @@ elif app_configuration == 'dev':
 elif app_configuration == 'test':
     from test import *
 elif app_configuration.startswith('ci_'):
-    exec "from archer.settings.%s import *" % app_configuration.split('ci_')[1]
+    exec "from archer.settings.ci_%s import *" % app_configuration.split('ci_')[1]
 else:
     raise ValueError('Incorrect DJANGO_CONFIGURATION=%s' % app_configuration)

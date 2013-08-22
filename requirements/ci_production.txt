@@ -1,0 +1,2 @@
+-r common.txt
+https://github.com/mknapik/django-bootstrap-toolkit/archive/master.zip#egg=django-bootstrap-toolkit
