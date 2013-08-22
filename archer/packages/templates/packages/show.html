@@ -8,25 +8,23 @@
         <h3>{{ package.filepath }}</h3>
         <dl class='dl-horizontal dl-unwrapped-horizontal'>
             <dt>file name</dt>
-            <dd>{{ package.filepath }}</dd>
-            <dt>current status</dt>
-            <dd>{% include 'packages/_status.html' with status=package.status_name %}</dd>
+            <dd>{{ package.filename }}</dd>
             <dt>project</dt>
             <dd><a href="{% url 'projects:show' package.project.id %}">{{ package.project }}</a></dd>
             <dt>upload date</dt>
-            <dd>{{ package.created_at }}</dd>
+            <dd>{{ package.created_at|date:"Y-m-d h:i" }}</dd>
             <dt>deployment date</dt>
-            <dd>???</dd>
+            <dd>{{ package.deployed_at|date:"Y-m-d h:i" }}</dd>
         </dl>
         <dl class='dl-horizontal dl-unwrapped-horizontal'>
-            <dt></dt>
+            <dt>{% include 'packages/_status.html' with status=package.status_name %}</dt>
             <dd>
-                <a href="{% url 'projects:index' %}">Back</a>
+                <a class='btn' href="{% url 'projects:index' %}">Back</a>
                 {% if package.can_remove and can_remove %}
-                    <a href="{% url 'packages:remove' package.id %}">Remove</a>
+                    <a class='btn btn-danger' href="{% url 'packages:remove' package.id %}">Remove</a>
                 {% endif %}
                 {% if package.can_deploy and can_deploy %}
-                    <a href="{% url 'packages:deploy' package.id %}">Deploy</a>
+                    <a class='btn btn-primary' href="{% url 'packages:deploy' package.id %}">Deploy</a>
                 {% endif %}
             </dd>
         </dl>

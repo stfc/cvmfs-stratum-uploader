@@ -9,13 +9,10 @@ from archer.projects.models import Project
 from archer.packages.models import Package
 
 
-def index(request):
-    return render(request, 'packages/index.html', {})
-
 def show(request, package_id):
     package = get_object_or_404(Package, id=package_id)
 
-    project = Project.objects.get(pk=package.project_id)
+    project = get_object_or_404(Project, id=package.project_id)
     if not request.user.has_perm('projects.view_project', project):
         raise PermissionDenied
 

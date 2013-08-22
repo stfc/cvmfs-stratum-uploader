@@ -4,7 +4,7 @@
 {% load guardian_tags %}
 
 {% block content %}
-    <div class='row'>
+    <div class='row-fluid'>
         <div class='span9'>
             {% if package_sets %}
                 {% for project, can_upload, packages in package_sets %}

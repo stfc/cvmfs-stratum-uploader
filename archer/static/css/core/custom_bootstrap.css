@@ -1,6 +1,5 @@
 body {
-  margin-left: 100px;
-  margin-right: 100px; }
+  padding-top: 60px; }
 
 .dl-unwrapped-horizontal dt {
   white-space: normal; }
@@ -12,7 +11,3 @@ body {
 
 .monospaced {
   font-family: Consolas, Lucida Console, monospace; }
-
-.container {
-  padding-top: 20px;
-  max-width: 1000px; }

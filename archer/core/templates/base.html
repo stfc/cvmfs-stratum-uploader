@@ -8,6 +8,7 @@
     <meta name="author" content="Michał Knapik">
     {% bootstrap_stylesheet_tag %}
     {% bootstrap_stylesheet_tag "responsive" %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel='stylesheet' href='{% static 'css/core.css' %}'>
     <link rel='stylesheet' href='{% static 'css/projects.css' %}'>
     <!--[if lt IE 9]>
@@ -22,18 +23,19 @@
 
 <body>
 
-<div class="navbar navbar-static-top">
+<div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
-        <div class="container">
-            <a class="brand" href="/">
-                <img alt="CVMFS Stratum Uploader" src="{% static 'img/logo.png' %}" />
+        <div class='container-fluid'>
+            <a class="brand" href="{% url 'projects:index' %}">
+{#                <img alt="CVMFS Stratum Uploader" src="{% static 'img/logo.png' %}" />#}
+                uploader
             </a>
             {% include "nav.html" %}
         </div>
     </div>
 </div>
 
-<div class="container">
+<div class='container-fluid'>
 
     {% bootstrap_messages %}
 

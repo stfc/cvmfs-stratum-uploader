@@ -1,25 +1,25 @@
 {% if status == 'new' %}
     <span>
 {% elif status == 'uploaded' %}
-    <span class='btn btn-mini btn-info'>
+    <span class='btn btn-info'>
     <i class='icon-upload'></i>
 {% elif status == 'unpacking' %}
-    <span class='btn btn-mini btn-primary'>
+    <span class='btn btn-primary'>
     <i class='icon-refresh'></i>
 {% elif status == 'deployed' %}
-    <span class='btn btn-mini btn-success'>
+    <span class='btn btn-success'>
     <i class='icon-ok'></i>
 {% elif status == 'cancelled' %}
-    <span class='btn btn-mini btn-warning'>
+    <span class='btn btn-warning'>
     <i class='icon-warning-sign'></i>
 {% elif status == 'undeployed' %}
-    <span class='btn btn-mini btn-warning'>
+    <span class='btn btn-warning'>
     <i class='icon-trash'></i>
 {% elif status == 'deleted' %}
-    <span class="btn btn-mini btn-danger">
+    <span class="btn btn-danger">
     <i class='icon-trash'></i>
 {% elif status == 'error' %}
-    <span class="btn btn-mini btn-danger">
+    <span class="btn btn-danger">
     <i class='icon-fire'></i>
 {% else %}
     <span>
