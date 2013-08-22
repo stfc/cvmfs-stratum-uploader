@@ -27,8 +27,8 @@ guard :sass, input: 'archer/assets/sass', output: 'archer/static/css'
 guard :concat, type: 'js', files: %w(tree), input_dir: "archer/static/js/projects", output: "archer/static/js/projects"
 guard :concat, type: 'js', files: %w(jquery-2.0.3 ajax), input_dir: "archer/static/js/core", output: "archer/static/js/core"
 
-guard :concat, type: 'css', files: %w(custom_bootstrap), input_dir: 'archer/static/css/core', output: 'archer/static/css/core'
-guard :concat, type: 'css', files: %w(tree actions), input_dir: 'archer/static/css/projects', output: 'archer/static/css/projects'
+guard :concat, type: 'css', files: %w(custom_bootstrap table), input_dir: 'archer/static/css/core', output: 'archer/static/css/core'
+guard :concat, type: 'css', files: %w(tree actions packages_list), input_dir: 'archer/static/css/projects', output: 'archer/static/css/projects'
 
 ['archer/static/js/projects', 'archer/static/js/core'].each do |file|
   guard 'uglify', input: "#{file}.js", output: "#{file}.min.js" do

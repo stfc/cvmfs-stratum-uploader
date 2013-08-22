@@ -1,26 +1,34 @@
 <table class='table table-striped table-hover' data-provides="rowlink">
     <thead>
     <tr>
-        <td>name</td>
-        <td>upload date</td>
+        <th>name</th>
+        <th>upload date</th>
     </tr>
     </thead>
     <tbody>
     {% for package in packages %}
-        <tr {% if package.status_name == 'deployed' %}class='success'{% endif %}>
-            <td>
-                <small>
-                    <a href='{% url 'packages:show' package.id %}'>
-                        {{ package.filename }}
-                    </a>
-                </small>
-            </td>
-            <td>
-                <small>
-                    {{ package.created_at|date:"Y-m-d h:i" }}
-                </small>
-            </td>
-        </tr>
+        {% if package.status_name == 'deployed' %}
+            <tr class='success'>
+                {% elif package.status_name == 'deleted' %}
+            <tr class='warning'>
+                {% elif package.status_name == 'error' %}
+            <tr class='error'>
+                {% else %}
+            <tr>
+        {% endif %}
+    <td>
+        <small>
+            <a href='{% url 'packages:show' package.id %}'>
+                {{ package.filename }}
+            </a>
+        </small>
+    </td>
+    <td>
+        <small>
+            {{ package.created_at|date:"Y-m-d h:i" }}
+        </small>
+    </td>
+    </tr>
     {% endfor %}
     </tbody>
 </table>

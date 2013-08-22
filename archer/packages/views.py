@@ -59,8 +59,6 @@ def remove(request, package_id):
     package = get_object_or_404(Package, id=package_id)
 
     if package.can_remove():
-        if package.status == Package.Status.deployed:
-            Package.clear_dir(package.project.full_path())
         try:
             if package.remove():
                 messages.add_message(request, messages.INFO, 'Package file successfully deleted!')

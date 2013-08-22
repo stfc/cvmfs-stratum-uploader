@@ -99,3 +99,15 @@
   background: #eeeeee;
   border: 1px solid #94a0b4;
   color: black; }
+
+.packages-legend > div {
+  padding-top: 5px;
+  text-align: center; }
+  .packages-legend > div.success {
+    background-color: #dff0d8 !important; }
+  .packages-legend > div.error {
+    background-color: #f2dede !important; }
+  .packages-legend > div.warning {
+    background-color: #fcf8e3 !important; }
+  .packages-legend > div.info {
+    background-color: #d9edf7 !important; }
