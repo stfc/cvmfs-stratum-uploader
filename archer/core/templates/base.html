@@ -6,34 +6,28 @@
     <meta charset="utf-8">
     <title>Archer Uploader</title>
     <meta name="author" content="Michał Knapik">
-    <link rel='stylesheet' href='{% static 'jasny/css/bootstrap-fileupload.min.css' %}'>
     {% bootstrap_stylesheet_tag %}
     {% bootstrap_stylesheet_tag "responsive" %}
     <link rel='stylesheet' href='{% static 'css/core.css' %}'>
     <link rel='stylesheet' href='{% static 'css/projects.css' %}'>
-    <style type="text/css">
-        body {
-            padding-top: 60px;
-            margin-left: 50px;
-            margin-right: 50px;
-        }
-    </style>
     <!--[if lt IE 9]>
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <script src='{% static 'jasny/js/bootstrap-fileupload.min.js' %}'></script>
     <script src='{% static 'js/core.min.js' %}'></script>
     <script src='{% static 'js/projects.min.js' %}'></script>
     {% bootstrap_javascript_tag %}
+    {{ form.media }}
     {% block extra_head %}{% endblock %}
 </head>
 
 <body>
 
-<div class="navbar navbar-fixed-top">
+<div class="navbar navbar-static-top">
     <div class="navbar-inner">
         <div class="container">
-            <a class="brand" href="/">uploader</a>
+            <a class="brand" href="/">
+                <img alt="CVMFS Stratum Uploader" src="{% static 'img/logo.png' %}" />
+            </a>
             {% include "nav.html" %}
         </div>
     </div>

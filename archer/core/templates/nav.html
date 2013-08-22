@@ -1,10 +1,26 @@
 <ul class="nav">
-    <li><a href="{% url 'projects:index' %}" class="">Home</a></li>
-    <li><a href="{% url 'projects:index' %}">Packages</a></li>
-    <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<b class="caret"></b></a>
-        <ul class="dropdown-menu">
-            <li><a href="dropdown">Vertical</a></li>
-        </ul>
-    </li>
+    <li><a href="{% url 'projects:index' %}" class="">Projects</a></li>
+    <li><a href="{% url 'packages:index' %}" class="">Packages</a></li>
+    {% if projects|length > 1 %}
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Browse<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                {% for project in projects %}
+                    <li><a href="{% url 'projects:show' project.id %}" class="">{{ project }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+    {% else %}
+        {% for project in projects %}
+            <li><a href="{% url 'projects:show' project.id %}" class="">{{ project }}</a></li>
+        {% endfor %}
+    {% endif %}
 </ul>
+{% if current_user %}
+    <ul class="nav">
+        You are logged in as:
+        {{ current_user.name }}
+        {{ current_user.surname }}
+        {{ current_user.email }}
+    </ul>
+{% endif %}

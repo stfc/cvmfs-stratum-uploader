@@ -42,7 +42,8 @@
       .tree li span.actions {
         visibility: hidden; }
     .tree li.parent_li > span.folder {
-      cursor: pointer; }
+      cursor: pointer;
+      width: 100%; }
     .tree li:last-child::before {
       height: 15px; }
     .tree li.parent_li > span.folder:hover {
@@ -54,8 +55,14 @@
         border: 1px solid transparent;
         color: black;
         visibility: visible; }
-    .tree li > span.file:hover > span.actions {
-      visibility: visible; }
+    .tree li > span.file {
+      width: 100%; }
+    .tree li > span.file:hover {
+      background: #eeeeee;
+      border: 1px solid #94a0b4;
+      color: black; }
+      .tree li > span.file:hover > span.actions {
+        visibility: visible; }
   .tree > ul > li::before, .tree > ul > li::after {
     border: 0; }
 

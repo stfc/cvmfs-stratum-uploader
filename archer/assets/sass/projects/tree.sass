@@ -43,6 +43,7 @@
         visibility: hidden
     &.parent_li > span.folder
       cursor: pointer
+      width: 100%
     &:last-child::before
       height: 15px
     &.parent_li > span.folder:hover
@@ -54,8 +55,14 @@
         border: 1px solid transparent
         color: black
         visibility: visible
-    > span.file:hover > span.actions
-      visibility: visible
+    > span.file
+      width: 100%
+    > span.file:hover
+      background: #eeeeee
+      border: 1px solid #94a0b4
+      color: black
+      > span.actions
+        visibility: visible
   > ul > li
     &::before, &::after
       border: 0

@@ -3,10 +3,14 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404
 from guardian.decorators import permission_required_or_403
 from django.core.exceptions import PermissionDenied
+from guardian.shortcuts import get_objects_for_user
 
 from archer.projects.models import Project
 from archer.packages.models import Package
 
+
+def index(request):
+    return render(request, 'packages/index.html', {})
 
 def show(request, package_id):
     package = get_object_or_404(Package, id=package_id)
