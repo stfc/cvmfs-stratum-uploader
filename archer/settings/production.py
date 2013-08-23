@@ -36,7 +36,7 @@ def load_cfg():
 
     def set_option(option, value):
         logger.debug('set %s = %s' % (option.upper(), value))
-        setattr(common, option.upper(), value)
+        globals()[option.upper()] = value
 
     OPTIONS_AVAILABLE = {
         'path': ['PROJECT_ROOT', 'MEDIA_ROOT', 'STATIC_ROOT'],
