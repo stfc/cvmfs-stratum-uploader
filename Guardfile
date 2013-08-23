@@ -43,7 +43,7 @@ end
 # like collectstatic
 guard :shell do
   watch(%r{archer/static/.+\.(css|html|js|png)$}) do |m|
-    `python manage-stfc-stratum-uploader.py collectstatic --noinput`
+    `python manage-cvmfs-stratum-uploader.py collectstatic --noinput`
   end
 end
 

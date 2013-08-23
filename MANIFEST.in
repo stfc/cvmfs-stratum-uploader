@@ -3,6 +3,6 @@ include README.md
 include README
 include manage.py
 include requirements/*
-include db/uploader.sqlite3
+include db/cvmfs-stratum-uploader.sqlite3
 include httpd.uploader.conf
 recursive-include archer *

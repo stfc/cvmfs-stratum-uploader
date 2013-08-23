@@ -13,7 +13,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '%s/db/uploader.sqlite3' % PROJECT_ROOT, # Or path to database file if using sqlite3.
+        'NAME': '%s/db/cvmfs-stratum-uploader.sqlite3' % PROJECT_ROOT, # Or path to database file if using sqlite3.
         'USER': '', # Not used with sqlite3.
         'PASSWORD': '', # Not used with sqlite3.
         'HOST': '', # Set to empty string for localhost. Not used with sqlite3.
@@ -52,8 +52,8 @@ def load_cfg():
     )
 
     config = ConfigParser.SafeConfigParser()
-    configs = ['/etc/stfc-stratum-uploader.cfg',
-               os.path.expanduser('~/.uploader.cfg'), ]
+    configs = ['/var/www/cvmfs-stratum-uploader/application.cfg',
+               os.path.expanduser('~/.cvmfs-stratum-uploader.cfg'), ]
     if os.environ.has_key('DJANGO_CONFIG_FILE'):
         configs.append(os.environ.get('DJANGO_CONFIG_FILE'))
     # configs are read one by one

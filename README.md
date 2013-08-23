@@ -30,7 +30,7 @@ Uses Certificate Authentication provided by Apache `httpd` web server (or others
 For convenience export the application directory as an environmental variable:
 
 ```bash
-export APP_DIR=/var/www/t1student0.esc.rl.ac.uk
+export APP_DIR=/var/www/cvmfs-stratum-uploader
 ```
 
 ## Database
@@ -82,7 +82,7 @@ export APP_DIR=/var/www/t1student0.esc.rl.ac.uk
 
 ## Web Application
 
-1. Get the application. The app can be placed anywhere but we will use `/var/www/t1student0.esc.rl.ac.uk`.
+1. Get the application. The app can be placed anywhere but we will use `/var/www/cvmfs-stratum-uploader`.
     + unpack the `uploader.tar.gz`:
 
         ```bash
@@ -150,7 +150,7 @@ export APP_DIR=/var/www/t1student0.esc.rl.ac.uk
         1. Set `PROJECT_ROOT` to application directory (`$APP_DIR`):
 
             ```python
-                PROJECT_ROOT = '/var/www/t1student0.esc.rl.ac.uk/'
+                PROJECT_ROOT = '/var/www/cvmfs-stratum-uploader/'
             ```
         1. Set `HOSTNAME`:
             
@@ -170,7 +170,7 @@ export APP_DIR=/var/www/t1student0.esc.rl.ac.uk
             # URL that handles the media served from MEDIA_ROOT. Make sure to use a
             # trailing slash.
             # Examples: "http://example.com/media/", "http://media.example.com/"
-                MEDIA_URL = 'http://t1student0.esc.rl.ac.uk/uploads/'
+                MEDIA_URL = 'http://__FULL_HOST_NAME__/uploads/'
             ```
         3. modify `STATIC_ROOT` to ...
 
