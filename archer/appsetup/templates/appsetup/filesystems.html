@@ -5,8 +5,8 @@
 
 {% block content %}
     <div class='row-fluid'>
-        <div class='span4'>
-            <h1>Create file system mount point</h1>
+        <div class='span5'>
+            <h2>Create file system mount point</h2>
 
             {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
@@ -20,13 +20,54 @@
             </form>
         </div>
         <div class='span3'>
-            <h3>currently existing mount points</h3>
+            <h4>currently existing mount points</h4>
             {% if filesystems %}
-                <ul>
+                <table class='table table-striped table-hover' data-provides="rowlink">
+                    <thead>
+                    <tr>
+                        <th>alias</th>
+                        <th>mount point</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                     {% for fs in filesystems %}
-                        <li>{{ fs }} - {{ fs.mount_point }}</li>
+                        <td>
+                            <small>
+                                {{ fs }}
+                            </small>
+                        </td>
+                        <td>
+                            <small>
+                                {{ fs.mount_point }}
+                            </small>
+                        </td>
+                        </tr>
                     {% endfor %}
-                </ul>
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+        <div class='offset1 span3'>
+            <h4>potential mount points</h4>
+            {% if mount_point_candidates %}
+                <table class='table table-striped table-hover' data-provides="rowlink">
+                    <thead>
+                    <tr>
+                        <th>mount point</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for mp in mount_point_candidates %}
+                        <tr>
+                            <td>
+                                <small>
+                                    {{ mp }}
+                                </small>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             {% endif %}
         </div>
     </div>

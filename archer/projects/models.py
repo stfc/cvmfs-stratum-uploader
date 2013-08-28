@@ -47,7 +47,7 @@ class FileSystem(models.Model):
         def validate_uniqueness_of_alias_and_mount_point(rethrow_error=None):
             uq_mount = self.__class__.objects.filter(
                 Q(alias=self.mount_point)
-            )
+            ).exclude(alias='')
             uq_alias = self.__class__.objects.filter(
                 Q(mount_point=self.alias)
             )
