@@ -19,6 +19,6 @@ urlpatterns = patterns('',
                        url(r'^projects/', include('archer.projects.urls', namespace='projects')),
                        url(r'^packages/', include('archer.packages.urls', namespace='packages')),
                        # Uncomment the next line to enable the admin:
-                       url(r'^admin/', include(admin.site.urls)),
+                       url(r'^admin/', include(admin.site.urls), name='admin'),
                        url(r'^unauthenticated$', views.unauthenticated, name='unauthenticated')
 )

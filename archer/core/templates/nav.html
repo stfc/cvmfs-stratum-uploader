@@ -16,8 +16,14 @@
     {% endif %}
 </ul>
 {% if user %}
-    <ul class="nav">
-        You are logged in as:
-        {{ user }}
+    <ul class="nav pull-right">
+        <li class='navbar-inverse'>
+            <a href="#">You are logged in as:
+                {{ user }}
+            </a>
+        </li>
+        {% if user.is_staff %}
+            <li><a href="{% url 'admin:index' %}">Admin</a></li>
+        {% endif %}
     </ul>
 {% endif %}
