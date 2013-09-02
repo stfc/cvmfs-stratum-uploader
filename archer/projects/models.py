@@ -22,7 +22,7 @@ def validator_dir_exists(path):
 
 
 def validator_relative_path(path):
-    rel_path = os.path.relpath(path)
+    rel_path = os.path.normpath(path)
     if re.match('^(\.\./.+|/.+|\.\.)$', rel_path):
         raise ValidationError(_('Directory path name must be relative path beneath the file system.'), code='dir_name')
 
