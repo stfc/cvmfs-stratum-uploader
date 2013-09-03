@@ -180,7 +180,8 @@ def project_delete_directory(sender, **kwargs):
 def project_create_project_group(sender, **kwargs):
     instance = kwargs['instance']
     group, created = Group.objects.get_or_create(name=instance.alias_path())
-    for permission in ['view_project', 'upload_package', 'deploy_package', 'make_directory', 'remove_directory']:
+    for permission in ['view_project', 'upload_package', 'deploy_package',
+                       'make_directory', 'remove_directory', 'remove_file']:
         assign_perm('projects.%s' % permission, group, instance)
 
 
