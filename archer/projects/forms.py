@@ -37,10 +37,10 @@ class MakeDirectoryForm(forms.Form):
         new_directory = self.cleaned_data['new_directory']
         if not len(new_directory) > 0:
             raise forms.ValidationError('Directory name cannot be empty!')
-        if not re.match('^([\.\-]|\w)+$', new_directory):
+        if not re.match('^([\.\- ]|\w)+$', new_directory):
             raise forms.ValidationError(_('Directory name must consist of ' +
                                           'alphanumeric characters, hyphens, ' +
-                                          'dots or underscores only! (([\.\-]|\w)+)'), code='dir_name')
+                                          'dots, underscores or spaces only! (([\.\- ]|\w)+)'), code='dir_name')
 
         dir_full_path = os.path.join(self.parent_directory, new_directory)
         if os.path.exists(dir_full_path):

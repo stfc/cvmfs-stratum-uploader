@@ -26,7 +26,10 @@
                     {{ file }}
                 </span>
                 <span class='actions'>
-                    <a title="remove file" href='{% url 'projects:rm' project_id path|add:'/'|add:file %}'><i class='icon-trash'></i></a>
+                {% if can_delete %}
+                    <a title="remove file" href='{% url 'projects:rm' project_id file %}'><i
+                            class='icon-trash'></i></a>
+                {% endif %}
                 </span>
             </span>
         </li>

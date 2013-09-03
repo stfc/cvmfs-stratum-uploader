@@ -202,8 +202,13 @@ class Remove(ModifyDirectory):
 
 @class_view_decorator(permission_required_or_403('projects.remove_file', (Project, 'pk', 'project_id')))
 class RemoveFile(Remove):
+    def validate_is_root_file(self, project_id, path):
+        if path.count('/') > 0:
+            raise exceptions.ValidationError('File "%s" is not in root directory' % path)
+        return self.validate_file(project_id, path)
+
     def get(self, request, project_id, path):
-        project, to_remove = self.validate_file(project_id, path)
+        project, to_remove = self.validate_is_root_file(project_id, path)
         return super(RemoveFile, self)._get(request, project, path, to_remove,
                                             form_class=RemoveFileForm,
                                             template='projects/rm.html',
@@ -269,7 +274,7 @@ class MakeDirectory(ModifyDirectory):
 
 @permission_required_or_403('projects.view_project', (Project, 'pk', 'project_id'))
 def show(request, project_id, path=''):
-    SHOW_PRE_FILES_THRESHOLD = 100
+    SHOW_PRE_FILES_THRESHOLD = 10
 
     project = Project.objects.get(pk=project_id)
     can_upload = request.user.has_perm('projects.upload_package', project)
@@ -298,13 +303,15 @@ def show(request, project_id, path=''):
                     continue
                 files_only += [mfile]
             if len(files_only) > 0:
-                pre = len(files_only) > SHOW_PRE_FILES_THRESHOLD
                 relative_path = root[len(path) + 1:]
+                can_delete = (relative_path is None or len(relative_path) == 0)
+                pre = (len(files_only) > SHOW_PRE_FILES_THRESHOLD) and not can_delete
                 if pre:
                     files_only = "\n".join(files_only)
                 yield loader.render_to_string('tree/_files.html',
                                               {'files': files_only,
                                                'project_id': project_id,
+                                               'can_delete': can_delete,
                                                'path': relative_path,
                                                'pre': pre,
                                               })
