@@ -1,6 +1,6 @@
 ## Uploader
 
-[![Build Status](https://travis-ci.org/mknapik/uploader.png)](https://travis-ci.org/mknapik/uploader)
+[![Build Status](https://travis-ci.org/mknapik/cvmfs-stratum-uploader.png)](https://travis-ci.org/mknapik/cvmfs-stratum-uploader)
 
 Provides interface for uploading and distributing software through cvmfs repositories.
 
