@@ -6,28 +6,131 @@ Provides interface for uploading and distributing software through cvmfs reposit
 
 Uses Certificate Authentication provided by Apache `httpd` web server (or others).
 
-## Prerequisites
 
-+ **Python** 2.7.3
-+ **[virtualenv](http://www.virtualenv.org/en/latest/)** 1.7.1.2 -
-    Install it with pip or from distribution packages.
+## Building RPMs
+
+### Prerequisites
+
++ **Python** 2.6.6 or
++ **Sqlite3** 3.6.20
++ Apache **httpd** 2.2.22
++ Git and Mercurial (in case of downloading sources from repositories)
+
+### Dependencies
+
+1. Download all dependencies:
+    + [Django](https://www.djangoproject.com/)>=`1.5.1`
+    + [South](http://south.aeracode.org/)>=`0.8.1`
+    + [django-guardian](http://pythonhosted.org/django-guardian/)>=`1.1.1`
+    + [django-bootstrap-toolkit (fork: `mknapik`)](http://github.com/mknapik/django-bootstrap-toolkit)
+
+2. Current versions can be downloaded as follows:
+    + download `tar`/`zip`s from project websites and unpack
+    + or fetch sources from repositories and switch to correct branch/tag:
+
+        ```bash
+        git clone https://github.com/django/django.git
+        hg clone https://bitbucket.org/andrewgodwin/south
+        git clone https://github.com/lukaszb/django-guardian.git
+        git clone https://github.com/mknapik/django-bootstrap-toolkit.git
+
+        ```
+
+        ```bash
+        cd ./django; git checkout 1.5.1
+        cd ../south; hg checkout 0.8.2
+        cd ../django-guardian; git checkout v1.1.1
+        cd ../django-bootstrap-toolkit; git checkout master
+        cd ../
+
+        ```
+
+3. Build RPM for all dependencies with setuptools:
+
+    ```bash
+    cd ./django
+    python setup.py bdist_rpm
+    cd ../south
+    python setup.py bdist_rpm
+    cd ../django-guardian
+    python setup.py bdist_rpm
+    cd ../django-bootstrap-toolkit
+    python setup.py bdist_rpm
+    cd ../
+    
+    cp */dist/*noarch.rpm .
+    ```
+
+### cvmfs-stratum-uploader
+
+1. Fetch newest version of `cvmfs-stratum-uploader`:
+
+    ```bash
+    git clone https://github.com/mknapik/cvmfs-stratum-uploader.git
+    ```
+
+2. Build RPM with setuptools:
+
+    ```bash
+    cd cvmfs-stratum-uploader
+    python setup.py bdist_rpm
+    cd ../
+    cp cvmfs-stratum-uploader/dist/*.noarch.rpm .
+    ```
+
+### Cut-Across
+
+The commands below should download the application and all dependencies and create required RPMs.
+
+
+    mkdir cvmfs-stratum-uploader-rpms
+    cd cvmfs-stratum-uploader-rpms
+
+    git clone https://github.com/django/django.git
+    hg clone https://bitbucket.org/andrewgodwin/south
+    git clone https://github.com/lukaszb/django-guardian.git
+    git clone https://github.com/mknapik/django-bootstrap-toolkit.git
+    git clone https://github.com/mknapik/cvmfs-stratum-uploader.git
+
+    cd ./django
+    git checkout 1.5.1
+    python setup.py bdist_rpm --requires='python'
+    cd ../south
+    hg checkout 0.8.2
+    python setup.py bdist_rpm --requires='python>=2.6, Django>=1.2'
+    cd ../django-guardian
+    git checkout v1.1.1
+    python setup.py bdist_rpm
+    cd ../django-bootstrap-toolkit
+    git checkout master
+    python setup.py bdist_rpm --requires='Django>=1.5'
+    cd ../cvmfs-stratum-uploader 
+    git checkout master
+    python setup.py bdist_rpm
+    cd ../
+
+    cp */dist/*noarch.rpm .
+
+## Development
+
+### Prerequisites
+
++ **Python** 2.6.6 or
++ **Sqlite3** 3.6.20
++ Apache **httpd** 2.2.22
++ Git and Mercurial
++ **[virtualenv](http://www.virtualenv.org/en/latest/)** 1.7.1.2 - Install it with pip or from distribution packages.
 
     ```bash
     sudo pip install virtualenv
     ```
-<!---
 + **virtualenvwrapper** 4.1.1
 
     ```bash
     sudo pip install virtualenvwrapper
     source /usr/local/bin/virtualenvwrapper.sh
     ```
--->
-+ **PostgreSQL** 9.1.9
-+ Apache **httpd** 2.2.22
-
-
-For convenience export the application directory as an environmental variable:
++ For convenience export the application directory as an environmental variable:
 
 ```bash
 export APP_DIR=/var/www/cvmfs-stratum-uploader
