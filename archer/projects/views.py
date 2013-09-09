@@ -302,16 +302,16 @@ def show(request, project_id, path=''):
                                                   })
                     continue
                 files_only += [mfile]
-            if len(files_only) > 0:
+            no_of_files = len(files_only)
+            if no_of_files > 0:
                 relative_path = root[len(path) + 1:]
-                can_delete = (relative_path is None or len(relative_path) == 0)
-                pre = (len(files_only) > SHOW_PRE_FILES_THRESHOLD) and not can_delete
+                pre = not (relative_path is None or len(relative_path) == 0)
                 if pre:
                     files_only = "\n".join(files_only)
                 yield loader.render_to_string('tree/_files.html',
                                               {'files': files_only,
+                                               'no_of_files': no_of_files,
                                                'project_id': project_id,
-                                               'can_delete': can_delete,
                                                'path': relative_path,
                                                'pre': pre,
                                               })

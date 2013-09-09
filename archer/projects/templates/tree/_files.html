@@ -1,21 +1,12 @@
-{#{% for file in files %}#}
-{#    <li>#}
-{#                {{ file }}#}
-{#        </li>#}
-{#        <span class='file'>#}
-{#            <span class='name'>#}
-{#                <i class='icon-file'></i>#}
-{#                {{ file }}#}
-{#            </span>#}
-{#            <span class='actions'>#}
-{#                <a href='{% url 'projects:rm' project_id path %}'><i class='icon-trash'></i></a>#}
-{#            </span>#}
-{#        </span>#}
-{#    </li>#}
-{#{% endfor %}#}
 {% if pre %}
     <li>
-        <pre>{{ files }}</pre>
+        <span class='file'>
+            <span class='name'>
+                <i style="float: left;" class='icon-file'></i>
+                {{ no_of_files }} file{{ no_of_files|pluralize }}
+            <pre>{{ files }}</pre>
+            </span>
+        </span>
     </li>
 {% else %}
     {% for file in files %}
@@ -26,10 +17,8 @@
                     {{ file }}
                 </span>
                 <span class='actions'>
-                {% if can_delete %}
                     <a title="remove file" href='{% url 'projects:rm' project_id file %}'><i
                             class='icon-trash'></i></a>
-                {% endif %}
                 </span>
             </span>
         </li>
