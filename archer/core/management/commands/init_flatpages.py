@@ -21,11 +21,11 @@ class Command(BaseCommand):
 
         try:
             page = FlatPage.objects.get(url='/getting-started/')
-            page.sites = site
+            page.sites = [site]
             page.save()
         except FlatPage.DoesNotExist:
             page = FlatPage(url='/getting-started/', title='Getting Started', registration_required=False)
             page.content = 'Go to admin panel to change welcome message!'
             page.save()
-            page.sites = site
+            page.sites = [site]
             page.save()
