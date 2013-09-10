@@ -25,6 +25,8 @@ class CustomUserCreationForm(UserCreationForm):
                                 error_messages={
                                     'invalid': _("This value may contain only letters, numbers and "
                                                  "@/./+/-/_/=/ // characters.")})
+    password1 = forms.CharField(required=False)
+    password2 = forms.CharField(required=False)
 
     def clean_username(self):
         # Since User.username is unique, this check is redundant,
@@ -36,13 +38,22 @@ class CustomUserCreationForm(UserCreationForm):
             return username
         raise forms.ValidationError(self.error_messages['duplicate_username'])
 
-    class Meta(UserCreationForm.Meta):
+    class Meta:
         model = User
+        fields = ("username",)
 
 
 class CustomUserAdmin(UserAdmin, GuardedModelAdmin):
+    add_form_template = 'custom_auth/user/add_form.html'
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
+
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username',),
+        }),
+    )
 
 
 admin.site.register(User, CustomUserAdmin)
