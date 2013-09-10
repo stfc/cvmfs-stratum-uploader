@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.admin import ModelAdmin
 from archer.custom_auth.models import User
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
@@ -43,11 +44,18 @@ class CustomUserCreationForm(UserCreationForm):
         fields = ("username",)
 
 
-class CustomUserAdmin(UserAdmin, GuardedModelAdmin):
-    add_form_template = 'custom_auth/user/add_form.html'
+class CustomUserAdmin(UserAdmin, ModelAdmin):
+    add_form_template = 'admin/custom_auth/user/add_form.html'
     form = CustomUserChangeForm
     add_form = CustomUserCreationForm
+    readonly_fields = ('last_login', 'date_joined', )
 
+    fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups',)}),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+    )
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
