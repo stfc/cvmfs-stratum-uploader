@@ -8,13 +8,16 @@ class Command(BaseCommand):
     help = 'initialize static pages like "Getting Started"'
 
     def handle(self, *args, **options):
+        site = Site.objects.get()
         if args:
             if len(args) > 1:
                 raise CommandError('Command accept at most one parameter.')
-            site = Site.objects.get_or_create(domain=args[0], name=args[0])
+            site.domain = args[0]
+            site.name = args[0]
         else:
             hostname = get_host_name()
-            site = Site.objects.get_or_create(domain=hostname, name=hostname)
+            site.domain = hostname
+            site.name = hostname
 
         try:
             page = FlatPage.objects.get(url='/getting-started/')
