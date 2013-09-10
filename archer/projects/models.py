@@ -5,7 +5,7 @@ from django.contrib.auth.models import Group
 from django.core.exceptions import ValidationError, NON_FIELD_ERRORS
 from django.db import models
 from django.db.models import Q
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, post_delete, pre_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from guardian.shortcuts import assign_perm
@@ -99,6 +99,7 @@ class FileSystem(models.Model):
 class Project(models.Model):
     file_system = models.ForeignKey(FileSystem, null=False)
     directory = models.CharField(max_length=200, null=False, blank=False, validators=[validator_relative_path])
+    old_full_path = None
 
     class Meta:
         unique_together = ('file_system', 'directory')
@@ -157,16 +158,26 @@ class Project(models.Model):
         return self.alias_path()
 
 
-class MyModel(models.Model):
-    field1 = models.TextField()
-    field2 = models.IntegerField()
+@receiver(pre_save, sender=Project)
+def project_remember_directory(sender, **kwargs):
+    project = kwargs['instance']
+    if project.id is not None:
+        project.old_full_path = Project.objects.get(pk=project.id).full_path()
 
 
 @receiver(post_save, sender=Project)
 def project_create_directory(sender, **kwargs):
-    path = kwargs['instance'].full_path()
-    if not os.path.exists(path):
-        os.makedirs(path, mode=0755)
+    project = kwargs['instance']
+    path = project.full_path()
+    created = kwargs['created']
+    if created:
+        if not os.path.exists(path):
+            os.makedirs(path, mode=0755)
+    elif project.old_full_path is not None:
+        if project.old_full_path != path:
+            if not os.path.exists(path):
+                shutil.move(project.old_full_path, path)
+    project.old_full_path = None
 
 
 @receiver(post_delete, sender=Project)
