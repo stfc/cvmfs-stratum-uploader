@@ -28,34 +28,6 @@ def show(request, package_id):
         'can_remove': can_remove,})
 
 
-@permission_required_or_403('packages.deploy_package', (Package, 'pk', 'package_id'))
-def deploy(request, package_id):
-    package = get_object_or_404(Package, id=package_id)
-
-    project = Project.objects.get(pk=package.project_id)
-    if not request.user.has_perm('projects.deploy_package', project):
-        raise PermissionDenied
-    if not package.can_deploy():
-        messages.add_message(request, messages.ERROR, 'Cannot deploy a package!')
-        return render(request, 'packages/show.html', {'package': package})
-    else:
-        # for p in Package.objects.filter(status=Package.Status.deployed):
-        #     p.undeploy()
-        try:
-            if request.POST.has_key('subdir'):
-                result = package.deploy(request.POST['subdir'])
-            else:
-                result = package.deploy()
-            if result:
-                messages.add_message(request, messages.INFO, 'Package deployed!')
-            else:
-                messages.add_message(request, messages.ERROR, 'Error during deployment of the package.')
-        except IOError as e:
-            messages.add_message(request, messages.ERROR, 'Error during deployment of the package: ' + str(e))
-
-        return render(request, 'packages/show.html', {'package': package})
-
-
 @permission_required_or_403('packages.remove_package', (Package, 'pk', 'package_id'))
 def clear(request, package_id):
     package = get_object_or_404(Package, id=package_id)

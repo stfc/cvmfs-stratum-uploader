@@ -27,7 +27,7 @@ logger = logging.getLogger(__name__)
 
 
 def unauthenticated(request):
-    return render(request, 'unauthenticated.html')
+    return HttpResponseRedirect(reverse('getting-started'))
 
 
 def get_objects_for_user(user, perms, klass=None, use_groups=True, any_perm=False):
@@ -41,6 +41,8 @@ def index(request):
                   'environ': pformat(dict(os.environ.items())),
                   'meta': pformat(dict(request.META))}
     projects = get_objects_for_user(request.user, 'projects.view_project')
+    if len(projects) == 0:
+        return unauthenticated(request)
     package_sets = [(project,
                      request.user.has_perm('projects.upload_package', project),
                      [package for package in project.package_set.order_by('-id')],
@@ -274,8 +276,6 @@ class MakeDirectory(ModifyDirectory):
 
 @permission_required_or_403('projects.view_project', (Project, 'pk', 'project_id'))
 def show(request, project_id, path=''):
-    SHOW_PRE_FILES_THRESHOLD = 10
-
     project = Project.objects.get(pk=project_id)
     can_upload = request.user.has_perm('projects.upload_package', project)
     can_deploy = request.user.has_perm('projects.deploy_package', project)
