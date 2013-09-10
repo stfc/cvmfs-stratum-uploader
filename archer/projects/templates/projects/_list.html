@@ -2,7 +2,7 @@
     <thead>
     <tr>
         <th>name</th>
-        <th>upload date</th>
+        <th>expires in</th>
     </tr>
     </thead>
     <tbody>
@@ -25,10 +25,18 @@
     </td>
     <td>
         <small>
-            {{ package.created_at|date:"Y-m-d h:i" }}
+            <span id='package_expiration_date_{{ package.id }}'>
+            </span>
         </small>
     </td>
     </tr>
     {% endfor %}
     </tbody>
 </table>
+<script type="text/javascript">
+    $(document).ready(function () {
+        {% for package in packages %}
+            Packages.initializeCountdown('#package_expiration_date_{{ package.id }}', '{{ package.expires_at|date:"r" }}');
+        {% endfor %}
+    });
+</script>

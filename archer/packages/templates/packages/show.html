@@ -15,6 +15,8 @@
             <dd>{{ package.created_at|date:"Y-m-d h:i" }}</dd>
             <dt>deployment date</dt>
             <dd>{{ package.deployed_at|date:"Y-m-d h:i" }}</dd>
+            <dt>expires in</dt>
+            <dd class='packageExpirationCountDown'></dd>
         </dl>
         <dl class='dl-horizontal dl-unwrapped-horizontal'>
             <dt>{% include 'packages/_status.html' with status=package.status_name %}</dt>
@@ -26,13 +28,18 @@
                 {% if package.can_clear and can_remove %}
                     <a class='btn btn-danger' href="{% url 'packages:clear' package.id %}">Clear</a>
                 {% endif %}
-                {% if package.can_deploy and can_deploy %}
-                    <a class='btn btn-primary' href="{% url 'packages:deploy' package.id %}">Deploy</a>
-                {% endif %}
             </dd>
         </dl>
     </div>
     {% if files %}
         {% include '_filelist.html' with name='package content' files=files uid=package.id %}
     {% endif %}
+
+    <script type="text/javascript">
+        $(function () {
+            $(document).ready(function () {
+                Packages.initializeCountdown('.packageExpirationCountDown', "{{ package.expires_at|date:"r" }}")
+            });
+        });
+    </script>
 {% endblock %}

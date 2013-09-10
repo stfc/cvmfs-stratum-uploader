@@ -9,6 +9,7 @@ from django.conf import settings
 from django.utils.datetime_safe import datetime
 from archer.projects.models import Project
 from archer.core import exceptions
+from datetime import timedelta
 
 
 class Package(models.Model):
@@ -144,6 +145,9 @@ class Package(models.Model):
         self.status = Package.Status.deleted
         self.save()
         return result
+
+    def expires_at(self):
+        return self.created_at + timedelta(days=7)
 
     def __unicode__(self):
         return self.filename()

@@ -22,9 +22,6 @@
                                 <dd><a href="{% url 'projects:show' project.id %}">{{ project }}</a></dd>
                                 <dt>mounting point</dt>
                                 <dd>{{ project.file_system }}</dd>
-                                <dt>last deployment</dt>
-                                <dd>{{ project.last_deployed_package }}</dd>
-                                <dd>{{ project.last_deployment_time }}</dd>
                             </dl>
                             <dl class='dl-horizontal dl-unwrapped-horizontal'>
                                 <dt></dt>
