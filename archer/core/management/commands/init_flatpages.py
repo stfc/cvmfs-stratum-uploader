@@ -18,6 +18,7 @@ class Command(BaseCommand):
             hostname = get_host_name()
             site.domain = hostname
             site.name = hostname
+        site.save()
 
         try:
             page = FlatPage.objects.get(url='/getting-started/')
