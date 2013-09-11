@@ -1,6 +1,6 @@
 <ul class="nav">
 </ul>
-{% if user %}
+{% if user.is_authenticated %}
     <ul class="nav pull-right">
         <li class='navbar-inverse'>
             <a href="#">You are logged in as:

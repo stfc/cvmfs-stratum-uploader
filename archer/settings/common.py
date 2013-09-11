@@ -122,8 +122,9 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'archer.core.middleware.CustomHeaderMiddleware',
+    'django.contrib.auth.middleware.RemoteUserMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'archer.custom_auth.middleware.NoLoginAdminRedirectMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -193,7 +194,7 @@ LOGGING = {
 LOGIN_URL = 'unauthenticated'
 
 AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.RemoteUserBackend',
+    'archer.custom_auth.backends.RemoteUserBackend',
     'guardian.backends.ObjectPermissionBackend',
 )
 

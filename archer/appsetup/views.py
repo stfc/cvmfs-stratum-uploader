@@ -5,7 +5,8 @@ from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.http.response import HttpResponseBadRequest
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
+from django.template import RequestContext
 from guardian.decorators import permission_required_or_403
 from archer.projects.models import Project, FileSystem
 from archer.custom_auth.models import User
@@ -21,19 +22,21 @@ def index(request):
     })
 
 
-@login_required
 def admin(request):
     if User.superuser_exist():
-        messages.add_message(request, messages.ERROR, 'Cannot initialize the application. System admin already exists.')
-        return HttpResponseRedirect(reverse('projects:index'))
-    form = GrantAdminForm(request.POST)
-    if request.method == 'GET':
-        users = User.objects.all()
-        return render(request, 'appsetup/admin.html', {'users': users})
-    elif request.method == 'POST':
+        user = request.user
+        if user.is_authenticated():
+            messages.add_message(request, messages.ERROR,
+                                 'Cannot initialize the application. System admin already exists.')
+            return HttpResponseRedirect(reverse('index'))
+        else:
+            return HttpResponseRedirect(reverse('index'))
+
+    if request.method == 'POST':
+        form = GrantAdminForm(request.POST)
         if form.is_valid():
             try:
-                user = request.user
+                user = form.save(commit=False)
                 user.is_staff = True
                 user.is_superuser = True
                 user.save()
@@ -41,10 +44,10 @@ def admin(request):
                 return HttpResponseRedirect(reverse('appsetup:index'))
             except (ValidationError, ) as e:
                 messages.add_message(request, messages.ERROR, 'Failed to save user: %s' % e)
-
-        return render(request, 'appsetup/admin.html', {'form': form, })
     else:
-        return HttpResponseBadRequest()
+        form = GrantAdminForm()
+        users = User.objects.all()
+    return render(request, 'appsetup/admin.html', {'form': form, 'users': users, })
 
 
 @permission_required_or_403('projects.setup_filesystem')

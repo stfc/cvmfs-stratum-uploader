@@ -1,9 +1,12 @@
 from django import forms
 from archer.projects.models import FileSystem
+from archer.custom_auth.models import User
 
 
-class GrantAdminForm(forms.Form):
-    pass
+class GrantAdminForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username']
 
 
 class FileSystemForm(forms.ModelForm):
