@@ -38,10 +38,8 @@ def admin(request):
                 user.is_active = True
                 user.is_staff = True
                 user.is_superuser = True
-                if user.save():
-                    messages.add_message(request, messages.SUCCESS, 'Admin privileges granted!')
-                else:
-                    messages.add_message(request, messages.ERROR, 'Admin could not be created!')
+                user.save()
+                messages.add_message(request, messages.SUCCESS, 'Admin privileges granted!')
                 return HttpResponseRedirect(reverse('appsetup:index'))
             except (ValidationError, ) as e:
                 messages.add_message(request, messages.ERROR, 'Failed to save user: %s' % e)
