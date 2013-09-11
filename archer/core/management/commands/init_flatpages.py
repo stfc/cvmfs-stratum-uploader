@@ -8,7 +8,11 @@ class Command(BaseCommand):
     help = 'initialize static pages like "Getting Started"'
 
     def handle(self, *args, **options):
-        site = Site.objects.get()
+
+        try:
+            site = Site.objects.get()
+        except Site.DoesNotExist:
+            site = Site()
         if args:
             if len(args) > 1:
                 raise CommandError('Command accept at most one parameter.')
