@@ -1,17 +1,17 @@
 # Create your views here.
+import os
+
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.http.response import HttpResponseBadRequest
-from django.shortcuts import render, render_to_response
-from django.template import RequestContext
+from django.shortcuts import render
 from guardian.decorators import permission_required_or_403
-from archer.projects.models import Project, FileSystem
+
+from archer.projects.models import FileSystem
 from archer.custom_auth.models import User
 from forms import GrantAdminForm, FileSystemForm
-import os
 
 
 def index(request):
@@ -28,26 +28,28 @@ def admin(request):
         if user.is_authenticated():
             messages.add_message(request, messages.ERROR,
                                  'Cannot initialize the application. System admin already exists.')
-            return HttpResponseRedirect(reverse('index'))
-        else:
-            return HttpResponseRedirect(reverse('index'))
+        return HttpResponseRedirect(reverse('index'))
 
     if request.method == 'POST':
         form = GrantAdminForm(request.POST)
         if form.is_valid():
             try:
                 user = form.save(commit=False)
+                user.is_active = True
                 user.is_staff = True
                 user.is_superuser = True
-                user.save()
-                messages.add_message(request, messages.SUCCESS, 'Admin privileges granted!')
+                if user.save():
+                    messages.add_message(request, messages.SUCCESS, 'Admin privileges granted!')
+                else:
+                    messages.add_message(request, messages.ERROR, 'Admin could not be created!')
                 return HttpResponseRedirect(reverse('appsetup:index'))
             except (ValidationError, ) as e:
                 messages.add_message(request, messages.ERROR, 'Failed to save user: %s' % e)
     else:
         form = GrantAdminForm()
-        users = User.objects.all()
-    return render(request, 'appsetup/admin.html', {'form': form, 'users': users, })
+    users = User.objects.all()
+    return render(request, 'appsetup/admin.html',
+                  {'form': form, 'users': users, 'current_dn': request.META['REMOTE_USER']}, )
 
 
 @permission_required_or_403('projects.setup_filesystem')

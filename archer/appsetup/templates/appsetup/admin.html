@@ -5,7 +5,7 @@
 
 {% block content %}
     <div class='row-fluid'>
-        <div class='span4'>
+        <div class='span6'>
             <h1>Grant Admin Privileges</h1>
 
             {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
@@ -14,12 +14,17 @@
                 {% csrf_token %}
                 {{ form | as_bootstrap }}
                 <div class="form-actions">
-                    <input type="submit" class="btn btn-info" value="Grant"/>
+                    <input type="submit" class="btn btn-info" value="Create Admin"/>
                     <a class='btn' href='{% url 'appsetup:index' %}'>Cancel</a>
                 </div>
             </form>
         </div>
         <div class='span6'>
+            {% if current_dn %}
+            <h3>user DN</h3>
+                <pre>{{ current_dn }}</pre>
+            {% endif %}
+
             <h3>currently existing users</h3>
             {% if users %}
                 <ul>
