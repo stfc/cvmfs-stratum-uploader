@@ -11,18 +11,18 @@ Uses Certificate Authentication provided by Apache `httpd` web server (or others
 
 ### Prerequisites
 
-+ **Python** 2.6.6 or
-+ **Sqlite3** 3.6.20
-+ Apache **httpd** 2.2.22
++ **Python** `2.6.6`
++ **Sqlite3** `3.6.20`
++ Apache **httpd** `2.2.22`
 + Git and Mercurial (in case of downloading sources from repositories)
 
 ### Dependencies
 
 1. Download all dependencies:
-    + [Django](https://www.djangoproject.com/)>=`1.5.1`
-    + [South](http://south.aeracode.org/)>=`0.8.1`
-    + [django-guardian](http://pythonhosted.org/django-guardian/)>=`1.1.1`
-    + [django-grappelli](https://django-grappelli.readthedocs.org/en/2.4.6/)>=`2.4.6`
+    + [Django](https://www.djangoproject.com/)`>=1.5.1`
+    + [South](http://south.aeracode.org/)`>=0.8.1`
+    + [django-guardian](http://pythonhosted.org/django-guardian/)`>=1.1.1`
+    + [django-grappelli](https://django-grappelli.readthedocs.org/en/2.4.6/)`>=2.4.6`
     + [django-bootstrap-toolkit (fork: `mknapik`)](http://github.com/mknapik/django-bootstrap-toolkit)
 
 2. Current versions can be downloaded as follows:
@@ -119,6 +119,11 @@ The commands below should download the application and all dependencies and crea
     cd ../
 
     cp */dist/*noarch.rpm .
+
+### cvmfs-stratum-uploader-config
+
+Go to [cvmfs-stratum-uploader-config](https://github.com/mknapik/cvmfs-stratum-uploader-config) project
+for detailed description about building RPM with configuration.
 
 ## Development
 
