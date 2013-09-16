@@ -37,9 +37,6 @@ def get_objects_for_user(user, perms, klass=None, use_groups=True, any_perm=Fals
 
 
 def index(request):
-    debug_info = {'user': pformat(request.user.__dict__),
-                  'environ': pformat(dict(os.environ.items())),
-                  'meta': pformat(dict(request.META))}
     projects = get_objects_for_user(request.user, 'projects.view_project')
     if len(projects) == 0:
         return unauthenticated(request)
@@ -47,7 +44,7 @@ def index(request):
                      request.user.has_perm('projects.upload_package', project),
                      [package for package in project.package_set.order_by('-id')],
                     ) for project in projects]
-    context = {'package_sets': package_sets, 'debug_info': debug_info}
+    context = {'package_sets': package_sets}
     return render(request, 'projects/index.html', context)
 
 
@@ -64,7 +61,6 @@ class UploadView(View):
         if form.is_valid():
             from guardian.shortcuts import assign_perm
             # handle files
-            logger.debug(pformat(form))
             package = form.save(commit=False)
             package.status = Package.Status.uploaded
             package.project_id = project_id
