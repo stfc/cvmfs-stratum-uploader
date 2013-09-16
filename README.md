@@ -1,4 +1,4 @@
-## Uploader
+# Uploader
 
 [![Build Status](https://travis-ci.org/mknapik/cvmfs-stratum-uploader.png)](https://travis-ci.org/mknapik/cvmfs-stratum-uploader)
 
@@ -6,6 +6,33 @@ Provides interface for uploading and distributing software through cvmfs reposit
 
 Uses Certificate Authentication provided by Apache `httpd` web server (or others).
 
+## Installation
+
+For production best way to deploy the application is to install it with RPMs. See how to [build RPMs](#building-rpms).
+
+1. Install all dependencies:
+    1. `httpd`
+    2. `python`
+    3. `mod_wsgi` for **httpd**
+    4. Python packages:
+
+        ```bash
+        rpm -i Django-*.*.*-*.noarch.rpm \
+            South-*.*.*-*.noarch.rpm \
+            django-guardian-*.*.*-*.noarch.rpm \
+            django-grappelli-*.*.*-*.noarch.rpm \
+            django-bootstrap-toolkit-*.*.*-*.noarch.rpm
+        ```
+2. Install **uploader** and **config**:
+
+    ```bash
+    rpm -i cvmfs-stratum-uploader-config-*.*.*-*.noarch.rpm cvmfs-stratum-uploader-*.*.*-*.noarch.rpm
+    ```
+
+3. Restart `httpd`
+4. Open https://hostname/setup and setup an admin account:
+    1. Provide `DN` of the application's admin
+    2. Log in as admin and setup the application
 
 ## Building RPMs
 
@@ -129,16 +156,16 @@ for detailed description about building RPM with configuration.
 
 ### Prerequisites
 
-+ **Python** 2.6.6 or
-+ **Sqlite3** 3.6.20
-+ Apache **httpd** 2.2.22
++ **Python** `2.6.6`
++ **Sqlite3** `3.6.20`
++ Apache **httpd** `2.2.22`
 + Git and Mercurial
-+ **[virtualenv](http://www.virtualenv.org/en/latest/)** 1.7.1.2 - Install it with pip or from distribution packages.
++ **[virtualenv](http://www.virtualenv.org/en/latest/)** `1.7.1.2` - Install it with pip or from distribution packages.
 
     ```bash
     sudo pip install virtualenv
     ```
-+ **virtualenvwrapper** 4.1.1
++ **virtualenvwrapper** `4.1.1`
 
     ```bash
     sudo pip install virtualenvwrapper
@@ -150,9 +177,9 @@ for detailed description about building RPM with configuration.
 export APP_DIR=/var/www/cvmfs-stratum-uploader
 ```
 
-## Database
+### Database
 
-### sqlite3
+#### sqlite3
 
 1. Create empty database file with proper `chmod`:
 
@@ -166,25 +193,11 @@ export APP_DIR=/var/www/cvmfs-stratum-uploader
     chgrp www-data $APP_DIR/db
     ```
 
-### PostgreSQL
+#### other
 
-1. Login to `psql`:
+Application should work with any database supported by Django but only **Sqlite3** is supported by the project.
 
-    ```bash
-    su postgres -c psql
-    ```
-2. Create a new database user `django` (you can also use an existing one):
-
-    ```sql
-    CREATE USER django WITH PASSWORD 'password';
-    ```
-3. Create a new database `uploader` with created owner:
-
-    ```sql
-    CREATE DATABASE uploader WITH OWNER=django;
-    ```
-
-## VirtualEnv
+### VirtualEnv
 
 1. Create new `VirtualEnv` for the project. You can choose any location from which `httpd` can read from. Add `--system-site-packages` option if using PostgreSQL.
 
@@ -197,7 +210,7 @@ export APP_DIR=/var/www/cvmfs-stratum-uploader
     source /opt/venv/uploader/bin/activate
     ```
 
-## Web Application
+### Web Application
 
 1. Get the application. The app can be placed anywhere but we will use `/var/www/cvmfs-stratum-uploader`.
     + unpack the `uploader.tar.gz`:
@@ -211,6 +224,7 @@ export APP_DIR=/var/www/cvmfs-stratum-uploader
         ```bash
         git clone https://github.com/mknapik/uploader.git $APP_DIR
         ```
+
 3. Install application dependencies using `pip`.
     1. Make sure you activated just created `VirtualEnv`.
     2. Install dependencies using either:
@@ -225,7 +239,7 @@ export APP_DIR=/var/www/cvmfs-stratum-uploader
             pip install -r requirements.txt
             ```
 
-## Configure the Uploader
+### Configure the Uploader
 
 1. Open `archer/settings/production.py` and set the database connection credentials
     + sqlite3:
@@ -308,7 +322,7 @@ export APP_DIR=/var/www/cvmfs-stratum-uploader
 
 9. ...
 
-## httpd
+### httpd
 
 1. Make sure `mod_wsgi` is installed and enabled.
     + check if `mod_wsgi` is available:
@@ -364,38 +378,21 @@ export APP_DIR=/var/www/cvmfs-stratum-uploader
 6. Set correct `chmod`/`chown` for `media`, `uploads` and `cvmfs` directories.
 ...
 
-## Uploader initial data
+### Uploader initial schema and data
 
-1. The database can be initialized with `manage.py`:
+1. The database can be initialized with `manage-cvmfs-stratum-uploader.py`:
     1. Create database structure:
         
         ```bash
-        DJANGO_CONFIGURATION=production python manage.py syncdb
-        DJANGO_CONFIGURATION=production python manage.py migrate
-        ```
-    2. Load example data:
-        
-        ```bash
-        DJANGO_CONFIGURATION=production python manage.py loaddata fixtures/auth.json
-        DJANGO_CONFIGURATION=production python manage.py loaddata fixtures/custom_auth.json
-        DJANGO_CONFIGURATION=production python manage.py loaddata fixtures/guardian.json
-        DJANGO_CONFIGURATION=production python manage.py loaddata fixtures/projects.json
-        DJANGO_CONFIGURATION=production python manage.py sync_perms
+        DJANGO_CONFIGURATION=production python manage-cvmfs-stratum-uploader.py syncdb
+        DJANGO_CONFIGURATION=production python manage-cvmfs-stratum-uploader.py migrate
         ```
 
-# Development
-
-## Create a bundle
-
-```bash
-pip bundle dev.pybundle -r requirements.txt
-```
-
-## About
+# About
 
 The application is developed by [Michał Knapik](http://github.com/mknapik) for [SCD STFC](http://www.stfc.ac.uk/SCD)
 
-## License
+# License
 
     Copyright 2013 Michał Knapik
 
