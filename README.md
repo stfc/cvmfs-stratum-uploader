@@ -28,9 +28,10 @@ For production best way to deploy the application is to install it with RPMs. Se
     ```bash
     rpm -i cvmfs-stratum-uploader-config-*.*.*-*.noarch.rpm cvmfs-stratum-uploader-*.*.*-*.noarch.rpm
     ```
-
-3. Restart `httpd`
-4. Open https://hostname/setup and setup an admin account:
+3. Provide `ALLOWED_HOSTS` list in `/var/www/cvmfs-stratum-uploader`.
+For development can be set to `ALLOWED_HOSTS: *`.
+4. Restart `httpd`
+5. Open https://hostname/setup and setup an admin account:
     1. Provide `DN` of the application's admin
     2. Log in as admin and setup the application
 
