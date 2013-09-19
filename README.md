@@ -200,7 +200,7 @@ Application should work with any database supported by Django but only **Sqlite3
 
 ### VirtualEnv
 
-1. Create new `VirtualEnv` for the project. You can choose any location from which `httpd` can read from. Add `--system-site-packages` option if using PostgreSQL.
+1. Create new `VirtualEnv` for the project. You can choose any location from which `httpd` can read from.
 
     ```bash
     virtualenv /opt/venv/uploader
@@ -243,34 +243,19 @@ Application should work with any database supported by Django but only **Sqlite3
 ### Configure the Uploader
 
 1. Open `archer/settings/production.py` and set the database connection credentials
-    + sqlite3:
 
-        ```python
-            DATABASES = {
-                'default': {
-                    'ENGINE': 'django.db.backends.sqlite3',
-                    'NAME': '%s/db/uploader.sqlite3' % PROJECT_ROOT,
-                    'USER': '',
-                    'PASSWORD': '',
-                    'HOST': '',
-                    'PORT': '',
-                },
-            }
-        ```
-    + PostgreSQL:
-
-        ```python
-            DATABASES = {
-                'default': {
-                    'ENGINE': 'django.db.backends.postgresql_psycopg2',
-                    'NAME': 'uploader',
-                    'USER': 'django',
-                    'PASSWORD': 'password',
-                    'HOST': 'localhost', # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-                    'PORT': '', # Set to empty string for default.
-                },
-            }
-        ```
+    ```python
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': '%s/db/uploader.sqlite3' % PROJECT_ROOT,
+                'USER': '',
+                'PASSWORD': '',
+                'HOST': '',
+                'PORT': '',
+            },
+        }
+    ```
 
 2. Open `archer/settings/common.py` and set paths to directories.
     2. Change `SECRET_KEY` (production only):
