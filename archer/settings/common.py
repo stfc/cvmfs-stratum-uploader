@@ -134,7 +134,10 @@ ROOT_URLCONF = 'archer.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'archer.wsgi.application'
 
-TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), '../../', 'templates').replace('\\', '/'),)
+TEMPLATE_DIRS = ()
+#pwd = os.path.dirname(os.path.realpath(__file__))
+#TEMPLATE_DIRS = ([os.path.normpath(os.path.join(pwd, '..', project, 'templates').replace('\\', '/'))
+#                   for project in ('appsetup', 'core', 'custom_auth', 'packages', 'projects',)],)
 
 INSTALLED_APPS = (
     'django.contrib.auth',
