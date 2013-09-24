@@ -1,5 +1,5 @@
 -r common.txt
--e git+https://github.com/mknapik/django-bootstrap-toolkit.git#egg=django-bootstrap-toolkit
+-e git+https://github.com/stfc/django-bootstrap-toolkit.git#egg=django-bootstrap-toolkit
 
 django-extensions==1.1.1
 django-coverage

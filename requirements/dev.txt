@@ -3,4 +3,4 @@ django-debug-toolbar==0.9.4
 django-extensions==1.1.1
 gunicorn==17.5
 Werkzeug
--e git+https://github.com/mknapik/django-bootstrap-toolkit.git#egg=django-bootstrap-toolkit
+-e git+https://github.com/stfc/django-bootstrap-toolkit.git#egg=django-bootstrap-toolkit

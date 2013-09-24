@@ -1,6 +1,6 @@
 # Uploader
 
-[![Build Status](https://travis-ci.org/mknapik/cvmfs-stratum-uploader.png)](https://travis-ci.org/mknapik/cvmfs-stratum-uploader)
+[![Build Status](https://travis-ci.org/stfc/cvmfs-stratum-uploader.png)](https://travis-ci.org/stfc/cvmfs-stratum-uploader)
 
 Provides interface for uploading and distributing software through cvmfs repositories.
 
@@ -49,7 +49,7 @@ For development can be set to `ALLOWED_HOSTS: *`.
     + [Django](https://www.djangoproject.com/)`>=1.5.1`
     + [South](http://south.aeracode.org/)`>=0.8.1`
     + [django-guardian](http://pythonhosted.org/django-guardian/)`>=1.1.1`
-    + [django-bootstrap-toolkit (fork: `mknapik`)](http://github.com/mknapik/django-bootstrap-toolkit)
+    + [django-bootstrap-toolkit (fork: `stfc`)](http://github.com/stfc/django-bootstrap-toolkit)
 
 2. Current versions can be downloaded as follows:
     + download `tar`/`zip`s from project websites and unpack
@@ -59,7 +59,7 @@ For development can be set to `ALLOWED_HOSTS: *`.
         git clone https://github.com/django/django.git
         hg clone https://bitbucket.org/andrewgodwin/south
         git clone https://github.com/lukaszb/django-guardian.git
-        git clone https://github.com/mknapik/django-bootstrap-toolkit.git
+        git clone https://github.com/stfc/django-bootstrap-toolkit.git
 
         ```
 
@@ -93,7 +93,7 @@ For development can be set to `ALLOWED_HOSTS: *`.
 1. Fetch newest version of `cvmfs-stratum-uploader`:
 
     ```bash
-    git clone https://github.com/mknapik/cvmfs-stratum-uploader.git
+    git clone https://github.com/stfc/cvmfs-stratum-uploader.git
     ```
 
 2. Build RPM with setuptools:
@@ -116,8 +116,8 @@ The commands below should download the application and all dependencies and crea
     git clone https://github.com/django/django.git
     hg clone https://bitbucket.org/andrewgodwin/south
     git clone https://github.com/lukaszb/django-guardian.git
-    git clone https://github.com/mknapik/django-bootstrap-toolkit.git
-    git clone https://github.com/mknapik/cvmfs-stratum-uploader.git
+    git clone https://github.com/stfc/django-bootstrap-toolkit.git
+    git clone https://github.com/stfc/cvmfs-stratum-uploader.git
 
     cd ./django
     git checkout 1.5.1
@@ -140,7 +140,7 @@ The commands below should download the application and all dependencies and crea
 
 ### cvmfs-stratum-uploader-config
 
-Go to [cvmfs-stratum-uploader-config](https://github.com/mknapik/cvmfs-stratum-uploader-config) project
+Go to [cvmfs-stratum-uploader-config](https://github.com/stfc/cvmfs-stratum-uploader-config) project
 for detailed description about building RPM with configuration.
 
 ## Development
@@ -213,7 +213,7 @@ Application should work with any database supported by Django but only **Sqlite3
     + or clone it with `git`:
 
         ```bash
-        git clone https://github.com/mknapik/uploader.git $APP_DIR
+        git clone https://github.com/stfc/cvmfs-stratum-uploader.git $APP_DIR
         ```
 
 3. Install application dependencies using `pip`.
@@ -366,11 +366,11 @@ Application should work with any database supported by Django but only **Sqlite3
 
 # About
 
-The application is developed by [Michał Knapik](http://github.com/mknapik) for [SCD STFC](http://www.stfc.ac.uk/SCD)
+The application was developed by [Michał Knapik](http://github.com/mknapik) for [SCD STFC](http://www.stfc.ac.uk/SCD)
 
 # License
 
-    Copyright 2013 Michał Knapik
+    Copyright 2013 Science and Technology Facilities Council
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

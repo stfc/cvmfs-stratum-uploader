@@ -27,7 +27,7 @@ setup(
     packages=find_packages(exclude=["*.tests"]), # include all packages under this directory
     scripts=['manage-cvmfs-stratum-uploader.py'],
     include_package_data=True,
-    url='git://github.com/mknapik/cvmfs-stratum-uploader.git',
+    url='git://github.com/stfc/cvmfs-stratum-uploader.git',
     license='Apache License',
     description='Provides interface for uploading and distributing software through cvmfs repositories.',
     long_description="""Provides interface for uploading and distributing software through cvmfs repositories.
