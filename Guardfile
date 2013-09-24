@@ -29,6 +29,7 @@ guard :concat, type: 'js', files: %w(tree), input_dir: "archer/static/js/project
 guard :concat, type: 'js', files: %w(jquery-2.0.3 ajax), input_dir: "archer/static/js/core", output: "archer/static/js/core"
 
 guard :concat, type: 'css', files: %w(custom_bootstrap table), input_dir: 'archer/static/css/core', output: 'archer/static/css/core'
+guard :concat, type: 'css', files: %w(form), input_dir: 'archer/static/css/appsetup', output: 'archer/static/css/appsetup'
 guard :concat, type: 'css', files: %w(tree actions packages_list), input_dir: 'archer/static/css/projects', output: 'archer/static/css/projects'
 
 ['archer/static/js/projects', 'archer/static/js/packages', 'archer/static/js/core'].each do |file|

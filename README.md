@@ -20,7 +20,6 @@ For production best way to deploy the application is to install it with RPMs. Se
         rpm -i Django-*.*.*-*.noarch.rpm \
             South-*.*.*-*.noarch.rpm \
             django-guardian-*.*.*-*.noarch.rpm \
-            django-grappelli-*.*.*-*.noarch.rpm \
             django-bootstrap-toolkit-*.*.*-*.noarch.rpm
         ```
 2. Install **uploader** and **config**:
@@ -50,7 +49,6 @@ For development can be set to `ALLOWED_HOSTS: *`.
     + [Django](https://www.djangoproject.com/)`>=1.5.1`
     + [South](http://south.aeracode.org/)`>=0.8.1`
     + [django-guardian](http://pythonhosted.org/django-guardian/)`>=1.1.1`
-    + [django-grappelli](https://django-grappelli.readthedocs.org/en/2.4.6/)`>=2.4.6`
     + [django-bootstrap-toolkit (fork: `mknapik`)](http://github.com/mknapik/django-bootstrap-toolkit)
 
 2. Current versions can be downloaded as follows:
@@ -61,7 +59,6 @@ For development can be set to `ALLOWED_HOSTS: *`.
         git clone https://github.com/django/django.git
         hg clone https://bitbucket.org/andrewgodwin/south
         git clone https://github.com/lukaszb/django-guardian.git
-        git clone https://github.com/sehmaschine/django-grappelli.git
         git clone https://github.com/mknapik/django-bootstrap-toolkit.git
 
         ```
@@ -70,7 +67,6 @@ For development can be set to `ALLOWED_HOSTS: *`.
         cd ./django; git checkout 1.5.1
         cd ../south; hg checkout 0.8.2
         cd ../django-guardian; git checkout v1.1.1
-        cd ../django-grappelli; git checkout 2.4.6
         cd ../django-bootstrap-toolkit; git checkout master
         cd ../
 
@@ -85,8 +81,6 @@ For development can be set to `ALLOWED_HOSTS: *`.
     python setup.py bdist_rpm --requires='python >= 2.6, Django >= 1.2'
     cd ../django-guardian
     python setup.py bdist_rpm
-    cd ../django-grappelli
-    python setup.py bdist_rpm --requires='Django >= 1.4'
     cd ../django-bootstrap-toolkit
     python setup.py bdist_rpm --requires='Django >= 1.5'
     cd ../
@@ -122,7 +116,6 @@ The commands below should download the application and all dependencies and crea
     git clone https://github.com/django/django.git
     hg clone https://bitbucket.org/andrewgodwin/south
     git clone https://github.com/lukaszb/django-guardian.git
-    git clone https://github.com/sehmaschine/django-grappelli.git
     git clone https://github.com/mknapik/django-bootstrap-toolkit.git
     git clone https://github.com/mknapik/cvmfs-stratum-uploader.git
 
@@ -135,9 +128,6 @@ The commands below should download the application and all dependencies and crea
     cd ../django-guardian
     git checkout v1.1.1
     python setup.py bdist_rpm
-    cd ../django-grappelli
-    git checkout 2.4.6
-    python setup.py bdist_rpm --requires='Django >= 1.4'
     cd ../django-bootstrap-toolkit
     git checkout master
     python setup.py bdist_rpm --requires='Django >= 1.5'

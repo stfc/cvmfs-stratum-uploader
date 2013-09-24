@@ -144,8 +144,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.flatpages',
-    # Themes:
-    'grappelli',
     # 'django_admin_bootstrapped',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
