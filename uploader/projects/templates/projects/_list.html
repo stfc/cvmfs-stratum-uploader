@@ -2,7 +2,7 @@
     <thead>
     <tr>
         <th>name</th>
-        <th>expires in</th>
+        <th>uploaded at</th>
     </tr>
     </thead>
     <tbody>
@@ -26,6 +26,7 @@
     <td>
         <small>
             <span id='package_expiration_date_{{ package.id }}'>
+                {{ package.uploaded_at }}
             </span>
         </small>
     </td>
@@ -33,10 +34,3 @@
     {% endfor %}
     </tbody>
 </table>
-<script type="text/javascript">
-    $(document).ready(function () {
-        {% for package in packages %}
-            Packages.initializeCountdown('#package_expiration_date_{{ package.id }}', '{{ package.expires_at|date:"r" }}');
-        {% endfor %}
-    });
-</script>

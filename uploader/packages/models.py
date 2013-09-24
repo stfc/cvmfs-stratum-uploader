@@ -147,8 +147,8 @@ class Package(models.Model):
         self.save()
         return result
 
-    def expires_at(self):
-        return self.created_at + timedelta(days=7)
+    def uploaded_at(self):
+        return self.created_at.strftime('%d %b %Y, %H:%M')
 
     def __unicode__(self):
         return self.filename()

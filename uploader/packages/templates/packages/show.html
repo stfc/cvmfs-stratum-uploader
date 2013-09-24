@@ -12,11 +12,9 @@
             <dt>project</dt>
             <dd><a href="{% url 'projects:show' package.project.id %}">{{ package.project }}</a></dd>
             <dt>upload date</dt>
-            <dd>{{ package.created_at|date:"Y-m-d h:i" }}</dd>
+            <dd>{{ package.uploaded_at }}</dd>
             <dt>deployment date</dt>
-            <dd>{{ package.deployed_at|date:"Y-m-d h:i" }}</dd>
-            <dt>expires in</dt>
-            <dd class='packageExpirationCountDown'></dd>
+            <dd>{{ package.deployed_at }}</dd>
         </dl>
         <dl class='dl-horizontal dl-unwrapped-horizontal'>
             <dt>{% include 'packages/_status.html' with status=package.status_name %}</dt>
@@ -34,12 +32,4 @@
     {% if files %}
         {% include '_filelist.html' with name='package content' files=files uid=package.id %}
     {% endif %}
-
-    <script type="text/javascript">
-        $(function () {
-            $(document).ready(function () {
-                Packages.initializeCountdown('.packageExpirationCountDown', "{{ package.expires_at|date:"r" }}")
-            });
-        });
-    </script>
 {% endblock %}

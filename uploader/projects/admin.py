@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import admin
+from django.contrib.admin import ModelAdmin
 from guardian.admin import GuardedModelAdmin
 from uploader.projects.models import FileSystem, Project
 
@@ -13,7 +14,7 @@ class ProjectAdmin(GuardedModelAdmin):
     list_display = ('__unicode__', 'file_system', 'directory')
 
 
-class FileSystemAdmin(GuardedModelAdmin):
+class FileSystemAdmin(ModelAdmin):
     list_display = ('__unicode__', 'alias', 'mount_point')
     form = FileSystemAdminForm
 

@@ -4,9 +4,11 @@ from uploader.packages.models import Package
 
 
 class PackageAdmin(GuardedModelAdmin):
-    list_display = ('project', 'file', 'status', 'created_at', 'updated_at')
+    actions = None
 
-    readonly_fields = ('project', 'file', 'status', 'deployed_at')
+    list_display = ('project', 'file', 'status', 'uploaded_at', 'deployed_at')
+
+    readonly_fields = ('project', 'file', 'status', 'uploaded_at', 'deployed_at')
 
     def has_add_permission(self, request):
         return False
