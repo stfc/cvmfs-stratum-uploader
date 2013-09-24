@@ -8,17 +8,13 @@ from archer.core import exceptions
 
 logger = logging.getLogger(__name__)
 
+
 class ProjectTestCase(TestCase):
     def setUp(self):
         uid = str(uuid.uuid4())[0:8]
         self.mount_point = ('/tmp/cvmfs-%s' % uid)
         self.fs = FileSystem.objects.create(mount_point=self.mount_point)
         os.makedirs(self.fs.mount_point)
-
-        # def remove_mount_point():
-        #     os.chmod(self.fs.mount_point, 02700)
-        #     shutil.rmtree(self.fs.mount_point)
-        # self.addCleanup(remove_mount_point())
 
         self.project1 = Project(file_system=self.fs, directory='project1')
 

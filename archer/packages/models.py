@@ -28,6 +28,7 @@ class Package(models.Model):
     project = models.ForeignKey(Project)
     file = models.FileField(upload_to=__get_upload_path, max_length=1024)
     status = models.IntegerField(
+        default=0,
         choices=__STATUSES.items(),
         blank=False,
         null=False
