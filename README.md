@@ -232,7 +232,7 @@ Application should work with any database supported by Django but only **Sqlite3
 
 ### Configure the Uploader
 
-1. Open `archer/settings/production.py` and set the database connection credentials
+1. Open `uploader/settings/production.py` and set the database connection credentials
 
     ```python
         DATABASES = {
@@ -247,7 +247,7 @@ Application should work with any database supported by Django but only **Sqlite3
         }
     ```
 
-2. Open `archer/settings/common.py` and set paths to directories.
+2. Open `uploader/settings/common.py` and set paths to directories.
     2. Change `SECRET_KEY` (production only):
 
         ```python

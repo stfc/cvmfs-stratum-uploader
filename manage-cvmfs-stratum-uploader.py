@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'archer.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'uploader.settings')
 
     if len(sys.argv) > 1 and sys.argv[1] == 'test':
         os.environ.setdefault('DJANGO_CONFIGURATION', 'test')

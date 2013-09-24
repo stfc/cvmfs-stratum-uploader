@@ -4,4 +4,4 @@ include README
 include manage.py
 include requirements/*
 include db/cvmfs-stratum-uploader.sqlite3
-recursive-include archer *
+recursive-include uploader *

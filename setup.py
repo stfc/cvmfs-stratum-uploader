@@ -6,7 +6,7 @@ from pip.req import parse_requirements
 import re
 import os
 
-base_name = 'archer'
+base_name = 'uploader'
 v_file = open(os.path.join(os.path.dirname(__file__),
                            base_name, '__init__.py'))
 

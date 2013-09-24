@@ -4,16 +4,16 @@ python:
   - '2.7'
 env:
   global:
-    - DJANGO_SETTINGS_MODULE=archer.settings
+    - DJANGO_SETTINGS_MODULE=uploader.settings
     - REUSE_DB=0
   matrix:
     - DJANGO_CONFIGURATION=ci_test
-    - DJANGO_CONFIGURATION=ci_production DJANGO_CONFIG_FILE='./archer/settings/ci.cfg'
+    - DJANGO_CONFIGURATION=ci_production DJANGO_CONFIG_FILE='./uploader/settings/ci.cfg'
 install:
   - 'pip install -r requirements/${DJANGO_CONFIGURATION}.txt --use-mirrors'
   - pip install coveralls
 script:
-  - coverage run --source=archer manage-cvmfs-stratum-uploader.py test
+  - coverage run --source=uploader manage-cvmfs-stratum-uploader.py test
 after_script:
   - python setup.py bdist
 

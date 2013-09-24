@@ -7,54 +7,54 @@ guard 'bundler' do
   # watch(/^.+\.gemspec/)
 end
 
-guard :copy, from: 'archer/assets/js', to: 'archer/static/js/', mkpath: true do
+guard :copy, from: 'uploader/assets/js', to: 'uploader/static/js/', mkpath: true do
   watch(%r{^.+\.js$})
 end
 
-guard :copy, from: 'archer/assets/css', to: 'archer/static/css/', mkpath: true do
+guard :copy, from: 'uploader/assets/css', to: 'uploader/static/css/', mkpath: true do
   watch(%r{^.+\.css$})
 end
 
-guard :copy, from: 'archer/assets/img', to: 'archer/static/img/', mkpath: true do
+guard :copy, from: 'uploader/assets/img', to: 'uploader/static/img/', mkpath: true do
   watch(%r{^.+\.png$})
 end
 
-guard :coffeescript, input: 'archer/assets/coffee', output: 'archer/static/js'
+guard :coffeescript, input: 'uploader/assets/coffee', output: 'uploader/static/js'
 
-guard :sass, input: 'archer/assets/sass', output: 'archer/static/css'
+guard :sass, input: 'uploader/assets/sass', output: 'uploader/static/css'
 
 # This will concatenate the javascript files specified in :files to public/js/all.js
-guard :concat, type: 'js', files: %w(countdown jquery.countdown), input_dir: "archer/static/js/packages", output: "archer/static/js/packages"
-guard :concat, type: 'js', files: %w(tree), input_dir: "archer/static/js/projects", output: "archer/static/js/projects"
-guard :concat, type: 'js', files: %w(jquery-2.0.3 ajax), input_dir: "archer/static/js/core", output: "archer/static/js/core"
+guard :concat, type: 'js', files: %w(countdown jquery.countdown), input_dir: "uploader/static/js/packages", output: "uploader/static/js/packages"
+guard :concat, type: 'js', files: %w(tree), input_dir: "uploader/static/js/projects", output: "uploader/static/js/projects"
+guard :concat, type: 'js', files: %w(jquery-2.0.3 ajax), input_dir: "uploader/static/js/core", output: "uploader/static/js/core"
 
-guard :concat, type: 'css', files: %w(custom_bootstrap table), input_dir: 'archer/static/css/core', output: 'archer/static/css/core'
-guard :concat, type: 'css', files: %w(form), input_dir: 'archer/static/css/appsetup', output: 'archer/static/css/appsetup'
-guard :concat, type: 'css', files: %w(tree actions packages_list), input_dir: 'archer/static/css/projects', output: 'archer/static/css/projects'
+guard :concat, type: 'css', files: %w(custom_bootstrap table), input_dir: 'uploader/static/css/core', output: 'uploader/static/css/core'
+guard :concat, type: 'css', files: %w(form), input_dir: 'uploader/static/css/appsetup', output: 'uploader/static/css/appsetup'
+guard :concat, type: 'css', files: %w(tree actions packages_list), input_dir: 'uploader/static/css/projects', output: 'uploader/static/css/projects'
 
-['archer/static/js/projects', 'archer/static/js/packages', 'archer/static/js/core'].each do |file|
+['uploader/static/js/projects', 'uploader/static/js/packages', 'uploader/static/js/core'].each do |file|
   guard 'uglify', input: "#{file}.js", output: "#{file}.min.js" do
     watch ("#{file}.js")
   end
 end
 
-#['archer/static/css/projects'].each do |file|
+#['uploader/static/css/projects'].each do |file|
 #  guard 'minify', input: "#{file}.css", output: "#{file}.min.css"
 #end
 
 # like collectstatic
 guard :shell do
-  watch(%r{archer/static/.+\.(css|html|js|png)$}) do |m|
+  watch(%r{uploader/static/.+\.(css|html|js|png)$}) do |m|
     `python manage-cvmfs-stratum-uploader.py collectstatic --noinput`
   end
 end
 
 guard 'livereload' do
-  watch(%r{archer/static/.+\.(css|html|js|png)$})
-  watch(%r{archer/.+\.(py)$})
-  watch(%r{archer/.+/templates/.+/\.(html)$})
+  watch(%r{uploader/static/.+\.(css|html|js|png)$})
+  watch(%r{uploader/.+\.(py)$})
+  watch(%r{uploader/.+/templates/.+/\.(html)$})
 end
 
 guard 'nosetests' do
-  watch(%r{^archer/[a-z]+/tests.py$})
+  watch(%r{^uploader/[a-z]+/tests.py$})
 end
