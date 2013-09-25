@@ -1,4 +1,4 @@
-# Uploader
+# CVMFS Stratum-0 Uploader
 
 [![Build Status](https://travis-ci.org/stfc/cvmfs-stratum-uploader.png)](https://travis-ci.org/stfc/cvmfs-stratum-uploader)
 
@@ -218,13 +218,7 @@ Application should work with any database supported by Django but only **Sqlite3
 
 3. Install application dependencies using `pip`.
     1. Make sure you activated just created `VirtualEnv`.
-    2. Install dependencies using either:
-        + provided bundle
-
-            ```bash
-            pip install production.pybundle
-            ```
-        + or by downloading packages from the internet
+    2. Install dependencies with pip:
 
             ```bash
             pip install -r requirements.txt
@@ -296,8 +290,6 @@ Application should work with any database supported by Django but only **Sqlite3
                 STATIC_URL = '/static/'
             ```
 
-9. ...
-
 ### httpd
 
 1. Make sure `mod_wsgi` is installed and enabled.
@@ -352,7 +344,7 @@ Application should work with any database supported by Django but only **Sqlite3
         ln -s ../sites-available/uploader.conf
         ```
 6. Set correct `chmod`/`chown` for `media`, `uploads` and `cvmfs` directories.
-...
+
 
 ### Uploader initial schema and data
 
@@ -362,7 +354,23 @@ Application should work with any database supported by Django but only **Sqlite3
         ```bash
         DJANGO_CONFIGURATION=production python manage-cvmfs-stratum-uploader.py syncdb
         DJANGO_CONFIGURATION=production python manage-cvmfs-stratum-uploader.py migrate
+        DJANGO_CONFIGURATION=production python manage-cvmfs-stratum-uploader.py init_flatpages
         ```
+
+### Asset pipeline
+
+Project is using [guard](https://github.com/guard/guard) to compile and minify static assets like CSS and JS.
+Application is using Coffescript and SASS.
+
+To run `guard` Ruby and Bundler is required. To install dependencies run:
+```bash
+bundle
+```
+
+All Ruby gems should be installed. To monitor changes and compile assets automatically run `guard`:
+```bash
+guard
+```
 
 # About
 
