@@ -16,7 +16,9 @@
                             {% endif %}
                         </div>
                         <div class='span7'>
-                            {% include 'projects/_list.html' with project=projec packages=packages %}
+                            {% if packages %}
+                                {% include 'projects/_list.html' with project=projec packages=packages %}
+                            {% endif %}
                         </div>
                     </div>
                 {% endfor %}

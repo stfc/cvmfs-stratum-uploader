@@ -9,7 +9,6 @@ from django.conf import settings
 from django.utils.datetime_safe import datetime
 from uploader.projects.models import Project
 from uploader.core import exceptions
-from datetime import timedelta
 
 
 class Package(models.Model):

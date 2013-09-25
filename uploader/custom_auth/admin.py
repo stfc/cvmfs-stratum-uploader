@@ -16,7 +16,7 @@ class CustomUserChangeForm(UserChangeForm):
         error_messages={
             'invalid': _("This value may contain only letters, numbers and "
                          "@/./+/-/_/=/ // characters.")},
-        widget=forms.Textarea(attrs={'rows': '2', 'cols': '100'})
+        widget=forms.TextInput(attrs={'style': 'width: 70%;'})
     )
 
 
@@ -28,7 +28,7 @@ class CustomUserCreationForm(UserCreationForm):
                                 error_messages={
                                     'invalid': _("This value may contain only letters, numbers and "
                                                  "@/./+/-/_/=/ // characters.")},
-                                widget=forms.Textarea(attrs={'rows': '2', 'cols': '100'})
+                                widget=forms.TextInput(attrs={'style': 'width: 70%;'})
     )
     password1 = forms.CharField(required=False)
     password2 = forms.CharField(required=False)

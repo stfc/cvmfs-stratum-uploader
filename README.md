@@ -370,7 +370,7 @@ The application was developed by [Michał Knapik](http://github.com/mknapik) for
 
 # License
 
-    Copyright 2013 Science and Technology Facilities Council
+    Copyright 2013 Science and Technology Facilities Council UK
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

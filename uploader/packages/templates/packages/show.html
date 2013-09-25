@@ -12,9 +12,17 @@
             <dt>project</dt>
             <dd><a href="{% url 'projects:show' package.project.id %}">{{ package.project }}</a></dd>
             <dt>upload date</dt>
-            <dd>{{ package.uploaded_at }}</dd>
+            <dd>
+                {% if package.uploaded_at %}
+                    {{ package.uploaded_at }}
+                {% endif %}
+            </dd>
             <dt>deployment date</dt>
-            <dd>{{ package.deployed_at }}</dd>
+            <dd>
+                {% if package.deployed_at %}
+                    {{ package.deployed_at }}
+                {% endif %}
+            </dd>
         </dl>
         <dl class='dl-horizontal dl-unwrapped-horizontal'>
             <dt>{% include 'packages/_status.html' with status=package.status_name %}</dt>
