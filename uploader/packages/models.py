@@ -6,6 +6,8 @@ import tarfile
 
 from django.db import models
 from django.conf import settings
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 from django.utils.datetime_safe import datetime
 from uploader.projects.models import Project
 from uploader.core import exceptions
@@ -151,3 +153,10 @@ class Package(models.Model):
 
     def __unicode__(self):
         return self.filename()
+
+
+@receiver(pre_delete, sender=Package)
+def project_delete_directory(sender, **kwargs):
+    f = kwargs['instance'].file
+    if os.path.exists(f.path) and os.path.isfile(f.path) and os.access(f.path, os.W_OK):
+        os.remove(f.path)
